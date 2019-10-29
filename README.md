@@ -1,2 +1,2 @@
 # punirl.github.io
-New Instrument Research Lab
+NIRL : New Instrument Research Lab at Princeton University
