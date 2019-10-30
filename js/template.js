@@ -3,11 +3,11 @@ function updateAddressDisplayed()
 {
     if (history.pushState)
     {
-      window.history.pushState("", "PLOrk", "plork.princeton.edu");
+      window.history.pushState("", "NIRL", "punirl.github.io");
     } 
     else 
     {
-      document.location.href = "plork.princeton.edu";
+      document.location.href = "punirl.github.io";
     }
 }
 
