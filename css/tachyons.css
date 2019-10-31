@@ -848,7 +848,7 @@ code, .code { font-family: Consolas, monaco, monospace; }
      -l  = large
 
 */
-.tracked { letter-spacing: .1em; }
+.tracked { letter-spacing: .07em; }
 .tracked-tight { letter-spacing: -.05em; }
 .tracked-mega { letter-spacing: .25em; }
 /*
@@ -976,6 +976,7 @@ code, .code { font-family: Consolas, monaco, monospace; }
 .w4 { width: 8rem; }
 .w5 { width: 16rem; }
 .w-10 { width: 10%; }
+.w-15 { width: 15%; }
 .w-20 { width: 20%; }
 .w-25 { width: 25%; }
 .w-30 { width: 30%; }
@@ -2054,8 +2055,8 @@ code, .code { font-family: Consolas, monaco, monospace; }
  .outline-ns { outline: 1px solid; }
  .outline-transparent-ns { outline: 1px solid transparent; }
  .outline-0-ns { outline: 0; }
- .ba-ns { border-style: solid; border-width: 1px; }
- .bt-ns { border-top-style: solid; border-top-width: 1px; }
+ .ba-ns { border-style: solid; border-width: 5px; }
+ .bt-ns { border-top-style: solid; border-top-width: 10px; }
  .br-ns { border-right-style: solid; border-right-width: 1px; }
  .bb-ns { border-bottom-style: solid; border-bottom-width: 10px; }
  .bl-ns { border-left-style: solid; border-left-width: 1px; }
@@ -2229,6 +2230,7 @@ code, .code { font-family: Consolas, monaco, monospace; }
  .w4-ns { width: 8rem; }
  .w5-ns { width: 16rem; }
  .w-10-ns { width: 10%; }
+ .w-15-ns { width: 10%; }
  .w-20-ns { width: 20%; }
  .w-25-ns { width: 25%; }
  .w-30-ns { width: 30%; }
