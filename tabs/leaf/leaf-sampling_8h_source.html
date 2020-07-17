@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -137,163 +137,187 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//==============================================================================</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> RecordMode</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        RecordOneShot = 0,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        RecordLoop,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        RecordModeNil</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    } RecordMode;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tBuffer</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        uint32_t idx;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        uint32_t bufferLength;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        uint32_t recordedLength;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        RecordMode mode;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">int</span> active;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } _tBuffer;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">typedef</span> _tBuffer* tBuffer;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span>  tBuffer_init                  (tBuffer* <span class="keyword">const</span>, uint32_t length);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>  tBuffer_initToPool            (tBuffer* <span class="keyword">const</span>, uint32_t length, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>  tBuffer_free                  (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  tBuffer_tick                  (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span>  tBuffer_read                  (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">float</span>* buff, uint32_t len);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">float</span> tBuffer_get                   (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">int</span> idx);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>  tBuffer_record                (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>  tBuffer_stop                  (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">int</span>   tBuffer_getRecordPosition     (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>   tBuffer_setRecordPosition     (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">int</span> pos);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>  tBuffer_setRecordMode         (tBuffer* <span class="keyword">const</span>, RecordMode mode);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  tBuffer_clear                 (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    uint32_t tBuffer_getBufferLength    (tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    uint32_t tBuffer_getRecordedLength  (tBuffer* <span class="keyword">const</span> sb);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>    tBuffer_setRecordedLength   (tBuffer* <span class="keyword">const</span> sb, <span class="keywordtype">int</span> length);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">int</span>     tBuffer_isActive            (tBuffer* <span class="keyword">const</span> sb);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> PlayMode</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        PlayNormal,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        PlayLoop,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        PlayBackAndForth,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        PlayModeNil</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    } PlayMode;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSampler</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        tBuffer samp;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        tRamp gain;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordtype">float</span> idx;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">float</span> inc;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">float</span> last;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordtype">float</span> iinc;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        int8_t dir;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        int8_t flip;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        int8_t bnf;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        int32_t start, targetstart;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        int32_t end, targetend;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        uint32_t len;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        uint32_t cfxlen;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordtype">float</span> numticks;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        PlayMode mode;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">int</span> retrigger;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordtype">int</span> active;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        uint8_t inCrossfade;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordtype">float</span> flipStart;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordtype">float</span> flipIdx;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    } _tSampler;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">typedef</span> _tSampler* tSampler;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span>    tSampler_init               (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span>    tSampler_initToPool         (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span>    tSampler_free               (tSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">float</span>   tSampler_tick               (tSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span>    tSampler_setSample          (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>    tSampler_setMode            (tSampler* <span class="keyword">const</span>, PlayMode mode);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span>    tSampler_play               (tSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">void</span>    tSampler_stop               (tSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span>    tSampler_setStart           (tSampler* <span class="keyword">const</span>, int32_t start);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">void</span>    tSampler_setEnd             (tSampler* <span class="keyword">const</span>, int32_t end);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">void</span>    tSampler_setLength             (tSampler* <span class="keyword">const</span>, int32_t length);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">void</span>    tSampler_setCrossfadeLength (tSampler* <span class="keyword">const</span> sp, uint32_t length);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">void</span>    tSampler_setRate            (tSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> rate);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> RecordMode</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        RecordOneShot = 0,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        RecordLoop,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        RecordModeNil</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    } RecordMode;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tBuffer</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        uint32_t idx;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        uint32_t bufferLength;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        uint32_t recordedLength;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        RecordMode mode;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordtype">int</span> active;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    } _tBuffer;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">typedef</span> _tBuffer* tBuffer;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga8a8c1eaf2d737e0360f421c3dab411d4">tBuffer_init</a>                  (tBuffer* <span class="keyword">const</span>, uint32_t length);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#gaf1ea8c1b204681a0a4e3c2818e28d023">tBuffer_initToPool</a>            (tBuffer* <span class="keyword">const</span>, uint32_t length, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#gaa7addef34b26a9464a59f023d690ec04">tBuffer_free</a>                  (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#gadad3503c475071c5240b37c768f64be2">tBuffer_tick</a>                  (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga73438e2159fac7b67563b1009ca9c7f6">tBuffer_read</a>                  (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">float</span>* buff, uint32_t len);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="group__tbuffer.html#ga69d5397829f174b81a621170367a8550">tBuffer_get</a>                   (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">int</span> idx);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga55baf7685651fd7f9926dc0ed5b2d73b">tBuffer_record</a>                (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga9fcb0f6e0fb037edf1146a3983d8424d">tBuffer_stop</a>                  (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">int</span>   <a class="code" href="group__tbuffer.html#gaa7ff30c7c2c6de87ed61c8025620429f">tBuffer_getRecordPosition</a>     (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span>   <a class="code" href="group__tbuffer.html#ga893981a1b088cb6cd43359f869069689">tBuffer_setRecordPosition</a>    (tBuffer* <span class="keyword">const</span>, <span class="keywordtype">int</span> pos);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga22b4855b2f2e94a7f870de419b3c3c84">tBuffer_setRecordMode</a>         (tBuffer* <span class="keyword">const</span>, RecordMode mode);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="group__tbuffer.html#ga39fb5d9d5ed963390e45322a2a97a1f1">tBuffer_clear</a>                 (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    uint32_t <a class="code" href="group__tbuffer.html#ga79955880600cfd3ec722b7110a4aab33">tBuffer_getBufferLength</a>    (tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    uint32_t <a class="code" href="group__tbuffer.html#gaa68440f784cd947e6bb4eb00cd6473b5">tBuffer_getRecordedLength</a>  (tBuffer* <span class="keyword">const</span> sb);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tbuffer.html#ga28a6063f2d763e4ba9414c797c1884b4">tBuffer_setRecordedLength</a>   (tBuffer* <span class="keyword">const</span> sb, <span class="keywordtype">int</span> length);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tbuffer.html#ga37ffab4845668d588eac944f4adb1f65">tBuffer_isActive</a>            (tBuffer* <span class="keyword">const</span> sb);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    </div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">//==============================================================================</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAutoSampler</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        tSampler sampler;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        tEnvelopeFollower ef;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        uint32_t windowSize;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordtype">float</span> threshold;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">float</span> previousPower;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        uint32_t sampleCounter;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        uint32_t powerCounter;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        uint8_t sampleTriggered;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    } _tAutoSampler;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">typedef</span> _tAutoSampler* tAutoSampler;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_init               (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_initToPool         (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_free               (tAutoSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">float</span>   tAutoSampler_tick               (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setBuffer          (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setMode            (tAutoSampler* <span class="keyword">const</span>, PlayMode mode);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_play               (tAutoSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_stop               (tAutoSampler* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setThreshold       (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> thresh);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setWindowSize      (tAutoSampler* <span class="keyword">const</span>, uint32_t size);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setCrossfadeLength (tAutoSampler* <span class="keyword">const</span>, uint32_t length);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span>    tAutoSampler_setRate            (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> rate);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;}</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#endif // LEAF_SAMPLING_H_INCLUDED</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> PlayMode</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        PlayNormal,</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        PlayLoop,</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        PlayBackAndForth,</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        PlayModeNil</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    } PlayMode;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSampler</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    {</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        tBuffer samp;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        tRamp gain;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="keywordtype">float</span> idx;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordtype">float</span> inc;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordtype">float</span> last;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordtype">float</span> iinc;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        int8_t dir;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        int8_t flip;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        int8_t bnf;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        int32_t start, targetstart;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        int32_t end, targetend;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        uint32_t len;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        uint32_t cfxlen;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="keywordtype">float</span> numticks;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        PlayMode mode;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordtype">int</span> retrigger;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordtype">int</span> active;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        uint8_t inCrossfade;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordtype">float</span> flipStart;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordtype">float</span> flipIdx;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    } _tSampler;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">typedef</span> _tSampler* tSampler;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#ga550d6495eae4ab7d6d7578db55ab8222">tSampler_init</a>               (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gae569a0943fd4281aca7d34f6d9b07e2c">tSampler_initToPool</a>         (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#ga8294d4396e241ff583d5a0208a262a6f">tSampler_free</a>               (tSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tsampler.html#gaf22e3192bf74770101ecae67268ed465">tSampler_tick</a>               (tSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gaf6e374c6d252d986b46415223980088e">tSampler_setSample</a>          (tSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#ga7790cb700416a22238238fea75f0c632">tSampler_setMode</a>            (tSampler* <span class="keyword">const</span>, PlayMode mode);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gaca8fd3a386f7b5c12584820b76be70b6">tSampler_play</a>               (tSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gaf3dd0f9013b69cf4c3a6199b674925c0">tSampler_stop</a>               (tSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gac7dc95f6705399e73778c96904df2390">tSampler_setStart</a>           (tSampler* <span class="keyword">const</span>, int32_t start);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#ga36696178ca3f0bc7b8eef6786fe81faa">tSampler_setEnd</a>             (tSampler* <span class="keyword">const</span>, int32_t end);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#ga498ced8a867faef896eb7ed194f86040">tSampler_setLength</a>             (tSampler* <span class="keyword">const</span>, int32_t length);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gaa3b3bdfaff5b05513c777a586ad7fac5">tSampler_setCrossfadeLength</a> (tSampler* <span class="keyword">const</span> sp, uint32_t length);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsampler.html#gadaccb8d16c9870ba327b4ab51ebc3b7e">tSampler_setRate</a>            (tSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> rate);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAutoSampler</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    {</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        tSampler sampler;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        tEnvelopeFollower ef;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        uint32_t windowSize;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordtype">float</span> threshold;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordtype">float</span> previousPower;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        uint32_t sampleCounter;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        uint32_t powerCounter;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        uint8_t sampleTriggered;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    } _tAutoSampler;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keyword">typedef</span> _tAutoSampler* tAutoSampler;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga9365340596e45793ffb0324990bb850f">tAutoSampler_init</a>               (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#gaca0c3973ad17a3b7192e9898aa798f44">tAutoSampler_initToPool</a>         (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga1317602e4195ebc58d6df3f0263c4bb8">tAutoSampler_free</a>               (tAutoSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    </div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tautosampler.html#ga201113e0c5d4a209bc98719162d256c0">tAutoSampler_tick</a>               (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#gae3740600b81b2d3ecc2f76b354996873">tAutoSampler_setBuffer</a>          (tAutoSampler* <span class="keyword">const</span>, tBuffer* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga2310af54d4e60debedd10003d6ec8113">tAutoSampler_setMode</a>            (tAutoSampler* <span class="keyword">const</span>, PlayMode mode);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga49675d40778b000fce44454eca05f476">tAutoSampler_play</a>               (tAutoSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#gaa267e6bad2805ca746b9189ea38cf040">tAutoSampler_stop</a>               (tAutoSampler* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#gaa163a4ea5f76285fdb51de157185740e">tAutoSampler_setThreshold</a>       (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> thresh);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#gabe80e37e28f7b454acf1621ab703506f">tAutoSampler_setWindowSize</a>      (tAutoSampler* <span class="keyword">const</span>, uint32_t size);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga45d69e59ff3924446ff833940adba2db">tAutoSampler_setCrossfadeLength</a> (tAutoSampler* <span class="keyword">const</span>, uint32_t length);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautosampler.html#ga8abfe84e7aaf00dc70b5b6e96d99af63">tAutoSampler_setRate</a>            (tAutoSampler* <span class="keyword">const</span>, <span class="keywordtype">float</span> rate);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;}</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="preprocessor">#endif // LEAF_SAMPLING_H_INCLUDED</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">//==============================================================================</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="agroup__tbuffer_html_ga893981a1b088cb6cd43359f869069689"><div class="ttname"><a href="group__tbuffer.html#ga893981a1b088cb6cd43359f869069689">tBuffer_setRecordPosition</a></div><div class="ttdeci">void tBuffer_setRecordPosition(tBuffer *const, int pos)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:117</div></div>
+<div class="ttc" id="agroup__tautosampler_html_gaa267e6bad2805ca746b9189ea38cf040"><div class="ttname"><a href="group__tautosampler.html#gaa267e6bad2805ca746b9189ea38cf040">tAutoSampler_stop</a></div><div class="ttdeci">void tAutoSampler_stop(tAutoSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:848</div></div>
+<div class="ttc" id="agroup__tsampler_html_gadaccb8d16c9870ba327b4ab51ebc3b7e"><div class="ttname"><a href="group__tsampler.html#gadaccb8d16c9870ba327b4ab51ebc3b7e">tSampler_setRate</a></div><div class="ttdeci">void tSampler_setRate(tSampler *const, float rate)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:738</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga39fb5d9d5ed963390e45322a2a97a1f1"><div class="ttname"><a href="group__tbuffer.html#ga39fb5d9d5ed963390e45322a2a97a1f1">tBuffer_clear</a></div><div class="ttdeci">void tBuffer_clear(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:129</div></div>
+<div class="ttc" id="agroup__tsampler_html_gaca8fd3a386f7b5c12584820b76be70b6"><div class="ttname"><a href="group__tsampler.html#gaca8fd3a386f7b5c12584820b76be70b6">tSampler_play</a></div><div class="ttdeci">void tSampler_play(tSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:517</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga73438e2159fac7b67563b1009ca9c7f6"><div class="ttname"><a href="group__tbuffer.html#ga73438e2159fac7b67563b1009ca9c7f6">tBuffer_read</a></div><div class="ttdeci">void tBuffer_read(tBuffer *const, float *buff, uint32_t len)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:80</div></div>
+<div class="ttc" id="agroup__tbuffer_html_gaa7ff30c7c2c6de87ed61c8025620429f"><div class="ttname"><a href="group__tbuffer.html#gaa7ff30c7c2c6de87ed61c8025620429f">tBuffer_getRecordPosition</a></div><div class="ttdeci">int tBuffer_getRecordPosition(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:111</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga49675d40778b000fce44454eca05f476"><div class="ttname"><a href="group__tautosampler.html#ga49675d40778b000fce44454eca05f476">tAutoSampler_play</a></div><div class="ttdeci">void tAutoSampler_play(tAutoSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:843</div></div>
+<div class="ttc" id="agroup__tsampler_html_ga550d6495eae4ab7d6d7578db55ab8222"><div class="ttname"><a href="group__tsampler.html#ga550d6495eae4ab7d6d7578db55ab8222">tSampler_init</a></div><div class="ttdeci">void tSampler_init(tSampler *const, tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:169</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga28a6063f2d763e4ba9414c797c1884b4"><div class="ttname"><a href="group__tbuffer.html#ga28a6063f2d763e4ba9414c797c1884b4">tBuffer_setRecordedLength</a></div><div class="ttdeci">void tBuffer_setRecordedLength(tBuffer *const sb, int length)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:151</div></div>
+<div class="ttc" id="agroup__tsampler_html_ga498ced8a867faef896eb7ed194f86040"><div class="ttname"><a href="group__tsampler.html#ga498ced8a867faef896eb7ed194f86040">tSampler_setLength</a></div><div class="ttdeci">void tSampler_setLength(tSampler *const, int32_t length)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:731</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga22b4855b2f2e94a7f870de419b3c3c84"><div class="ttname"><a href="group__tbuffer.html#ga22b4855b2f2e94a7f870de419b3c3c84">tBuffer_setRecordMode</a></div><div class="ttdeci">void tBuffer_setRecordMode(tBuffer *const, RecordMode mode)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:123</div></div>
+<div class="ttc" id="agroup__tbuffer_html_gadad3503c475071c5240b37c768f64be2"><div class="ttname"><a href="group__tbuffer.html#gadad3503c475071c5240b37c768f64be2">tBuffer_tick</a></div><div class="ttdeci">void tBuffer_tick(tBuffer *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:55</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga45d69e59ff3924446ff833940adba2db"><div class="ttname"><a href="group__tautosampler.html#ga45d69e59ff3924446ff833940adba2db">tAutoSampler_setCrossfadeLength</a></div><div class="ttdeci">void tAutoSampler_setCrossfadeLength(tAutoSampler *const, uint32_t length)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:868</div></div>
+<div class="ttc" id="agroup__tbuffer_html_gaf1ea8c1b204681a0a4e3c2818e28d023"><div class="ttname"><a href="group__tbuffer.html#gaf1ea8c1b204681a0a4e3c2818e28d023">tBuffer_initToPool</a></div><div class="ttdeci">void tBuffer_initToPool(tBuffer *const, uint32_t length, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:32</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga37ffab4845668d588eac944f4adb1f65"><div class="ttname"><a href="group__tbuffer.html#ga37ffab4845668d588eac944f4adb1f65">tBuffer_isActive</a></div><div class="ttdeci">int tBuffer_isActive(tBuffer *const sb)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:157</div></div>
+<div class="ttc" id="agroup__tsampler_html_gaf3dd0f9013b69cf4c3a6199b674925c0"><div class="ttname"><a href="group__tsampler.html#gaf3dd0f9013b69cf4c3a6199b674925c0">tSampler_stop</a></div><div class="ttdeci">void tSampler_stop(tSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:549</div></div>
+<div class="ttc" id="agroup__tsampler_html_ga36696178ca3f0bc7b8eef6786fe81faa"><div class="ttname"><a href="group__tsampler.html#ga36696178ca3f0bc7b8eef6786fe81faa">tSampler_setEnd</a></div><div class="ttdeci">void tSampler_setEnd(tSampler *const, int32_t end)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:661</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga55baf7685651fd7f9926dc0ed5b2d73b"><div class="ttname"><a href="group__tbuffer.html#ga55baf7685651fd7f9926dc0ed5b2d73b">tBuffer_record</a></div><div class="ttdeci">void tBuffer_record(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:98</div></div>
+<div class="ttc" id="agroup__tautosampler_html_gaa163a4ea5f76285fdb51de157185740e"><div class="ttname"><a href="group__tautosampler.html#gaa163a4ea5f76285fdb51de157185740e">tAutoSampler_setThreshold</a></div><div class="ttdeci">void tAutoSampler_setThreshold(tAutoSampler *const, float thresh)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:854</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga79955880600cfd3ec722b7110a4aab33"><div class="ttname"><a href="group__tbuffer.html#ga79955880600cfd3ec722b7110a4aab33">tBuffer_getBufferLength</a></div><div class="ttdeci">uint32_t tBuffer_getBufferLength(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:139</div></div>
+<div class="ttc" id="agroup__tautosampler_html_gaca0c3973ad17a3b7192e9898aa798f44"><div class="ttname"><a href="group__tautosampler.html#gaca0c3973ad17a3b7192e9898aa798f44">tAutoSampler_initToPool</a></div><div class="ttdeci">void tAutoSampler_initToPool(tAutoSampler *const, tBuffer *const, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:763</div></div>
+<div class="ttc" id="agroup__tsampler_html_ga8294d4396e241ff583d5a0208a262a6f"><div class="ttname"><a href="group__tsampler.html#ga8294d4396e241ff583d5a0208a262a6f">tSampler_free</a></div><div class="ttdeci">void tSampler_free(tSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:214</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga69d5397829f174b81a621170367a8550"><div class="ttname"><a href="group__tbuffer.html#ga69d5397829f174b81a621170367a8550">tBuffer_get</a></div><div class="ttdeci">float tBuffer_get(tBuffer *const, int idx)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:91</div></div>
+<div class="ttc" id="agroup__tsampler_html_gaa3b3bdfaff5b05513c777a586ad7fac5"><div class="ttname"><a href="group__tsampler.html#gaa3b3bdfaff5b05513c777a586ad7fac5">tSampler_setCrossfadeLength</a></div><div class="ttdeci">void tSampler_setCrossfadeLength(tSampler *const sp, uint32_t length)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:508</div></div>
+<div class="ttc" id="agroup__tsampler_html_ga7790cb700416a22238238fea75f0c632"><div class="ttname"><a href="group__tsampler.html#ga7790cb700416a22238238fea75f0c632">tSampler_setMode</a></div><div class="ttdeci">void tSampler_setMode(tSampler *const, PlayMode mode)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:502</div></div>
+<div class="ttc" id="agroup__tsampler_html_gaf6e374c6d252d986b46415223980088e"><div class="ttname"><a href="group__tsampler.html#gaf6e374c6d252d986b46415223980088e">tSampler_setSample</a></div><div class="ttdeci">void tSampler_setSample(tSampler *const, tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:222</div></div>
+<div class="ttc" id="agroup__tautosampler_html_gae3740600b81b2d3ecc2f76b354996873"><div class="ttname"><a href="group__tautosampler.html#gae3740600b81b2d3ecc2f76b354996873">tAutoSampler_setBuffer</a></div><div class="ttdeci">void tAutoSampler_setBuffer(tAutoSampler *const, tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:828</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga9365340596e45793ffb0324990bb850f"><div class="ttname"><a href="group__tautosampler.html#ga9365340596e45793ffb0324990bb850f">tAutoSampler_init</a></div><div class="ttdeci">void tAutoSampler_init(tAutoSampler *const, tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:758</div></div>
+<div class="ttc" id="agroup__tautosampler_html_gabe80e37e28f7b454acf1621ab703506f"><div class="ttname"><a href="group__tautosampler.html#gabe80e37e28f7b454acf1621ab703506f">tAutoSampler_setWindowSize</a></div><div class="ttdeci">void tAutoSampler_setWindowSize(tAutoSampler *const, uint32_t size)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:860</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga8a8c1eaf2d737e0360f421c3dab411d4"><div class="ttname"><a href="group__tbuffer.html#ga8a8c1eaf2d737e0360f421c3dab411d4">tBuffer_init</a></div><div class="ttdeci">void tBuffer_init(tBuffer *const, uint32_t length)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:27</div></div>
+<div class="ttc" id="agroup__tbuffer_html_gaa68440f784cd947e6bb4eb00cd6473b5"><div class="ttname"><a href="group__tbuffer.html#gaa68440f784cd947e6bb4eb00cd6473b5">tBuffer_getRecordedLength</a></div><div class="ttdeci">uint32_t tBuffer_getRecordedLength(tBuffer *const sb)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:145</div></div>
+<div class="ttc" id="agroup__tbuffer_html_gaa7addef34b26a9464a59f023d690ec04"><div class="ttname"><a href="group__tbuffer.html#gaa7addef34b26a9464a59f023d690ec04">tBuffer_free</a></div><div class="ttdeci">void tBuffer_free(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:47</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga201113e0c5d4a209bc98719162d256c0"><div class="ttname"><a href="group__tautosampler.html#ga201113e0c5d4a209bc98719162d256c0">tAutoSampler_tick</a></div><div class="ttdeci">float tAutoSampler_tick(tAutoSampler *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:785</div></div>
+<div class="ttc" id="agroup__tsampler_html_gac7dc95f6705399e73778c96904df2390"><div class="ttname"><a href="group__tsampler.html#gac7dc95f6705399e73778c96904df2390">tSampler_setStart</a></div><div class="ttdeci">void tSampler_setStart(tSampler *const, int32_t start)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:591</div></div>
+<div class="ttc" id="agroup__tbuffer_html_ga9fcb0f6e0fb037edf1146a3983d8424d"><div class="ttname"><a href="group__tbuffer.html#ga9fcb0f6e0fb037edf1146a3983d8424d">tBuffer_stop</a></div><div class="ttdeci">void tBuffer_stop(tBuffer *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:105</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga1317602e4195ebc58d6df3f0263c4bb8"><div class="ttname"><a href="group__tautosampler.html#ga1317602e4195ebc58d6df3f0263c4bb8">tAutoSampler_free</a></div><div class="ttdeci">void tAutoSampler_free(tAutoSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:775</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga2310af54d4e60debedd10003d6ec8113"><div class="ttname"><a href="group__tautosampler.html#ga2310af54d4e60debedd10003d6ec8113">tAutoSampler_setMode</a></div><div class="ttdeci">void tAutoSampler_setMode(tAutoSampler *const, PlayMode mode)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:837</div></div>
+<div class="ttc" id="agroup__tautosampler_html_ga8abfe84e7aaf00dc70b5b6e96d99af63"><div class="ttname"><a href="group__tautosampler.html#ga8abfe84e7aaf00dc70b5b6e96d99af63">tAutoSampler_setRate</a></div><div class="ttdeci">void tAutoSampler_setRate(tAutoSampler *const, float rate)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:874</div></div>
+<div class="ttc" id="agroup__tsampler_html_gae569a0943fd4281aca7d34f6d9b07e2c"><div class="ttname"><a href="group__tsampler.html#gae569a0943fd4281aca7d34f6d9b07e2c">tSampler_initToPool</a></div><div class="ttdeci">void tSampler_initToPool(tSampler *const, tBuffer *const, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:174</div></div>
+<div class="ttc" id="agroup__tsampler_html_gaf22e3192bf74770101ecae67268ed465"><div class="ttname"><a href="group__tsampler.html#gaf22e3192bf74770101ecae67268ed465">tSampler_tick</a></div><div class="ttdeci">float tSampler_tick(tSampler *const)</div><div class="ttdef"><b>Definition:</b> leaf-sampling.c:239</div></div>
 <!-- HTML footer for doxygen 1.8.18-->
 <!-- start footer part -->
 <footer></footer><script>getFooter()</script>

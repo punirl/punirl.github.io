@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -136,393 +136,472 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">//==============================================================================</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">/* tTalkbox */</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define NUM_TALKBOX_PARAM 4</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTalkbox</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">float</span> param[NUM_TALKBOX_PARAM];</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">int</span> bufsize;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">float</span>* car0;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">float</span>* car1;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">float</span>* window;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">float</span>* buf0;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">float</span>* buf1;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordtype">float</span>* k;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">float</span> warpFactor;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        int32_t warpOn;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">int</span> freeze;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">float</span> emphasis;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        int32_t K, N, O, pos;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">float</span> wet, dry, FX;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">float</span> d0, d1, d2, d3, d4;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">float</span> u0, u1, u2, u3, u4;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">float</span> G;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">double</span>* dl;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">double</span>* Rt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    } _tTalkbox;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">typedef</span> _tTalkbox* tTalkbox;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_init           (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_initToPool     (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_free           (tTalkbox* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">float</span>   tTalkbox_tick           (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">float</span>   tTalkbox_tickFrozen     (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_update         (tTalkbox* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_suspend        (tTalkbox* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_lpcDurbin      (<span class="keywordtype">float</span> *r, <span class="keywordtype">int</span> p, <span class="keywordtype">float</span> *k, <span class="keywordtype">float</span> *g);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_lpc            (<span class="keywordtype">float</span> *buf, <span class="keywordtype">float</span> *car, <span class="keywordtype">double</span>* dl, <span class="keywordtype">double</span>* Rt, int32_t n, int32_t o, <span class="keywordtype">float</span> warp, <span class="keywordtype">int</span> warpOn, <span class="keywordtype">float</span> *k, <span class="keywordtype">int</span> freeze, <span class="keywordtype">float</span> *G);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_setQuality     (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">float</span> quality);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_setWarpFactor  (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warp);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_setWarpOn      (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warpOn);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_setFreeze      (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> freeze);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_warpedAutocorrelate    (<span class="keywordtype">float</span> * x, <span class="keywordtype">double</span>* dl, <span class="keywordtype">double</span>* Rt, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> L, <span class="keywordtype">float</span> * R, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> P, <span class="keywordtype">float</span> lambda);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTalkboxFloat</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;          tMempool mempool;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;          </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;          <span class="keywordtype">float</span> param[NUM_TALKBOX_PARAM];</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;          <span class="keywordtype">int</span> bufsize;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          <span class="keywordtype">float</span>* car0;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;          <span class="keywordtype">float</span>* car1;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;          <span class="keywordtype">float</span>* window;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          <span class="keywordtype">float</span>* buf0;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          <span class="keywordtype">float</span>* buf1;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;          <span class="keywordtype">float</span>* k;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;          <span class="keywordtype">float</span> warpFactor;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          int32_t warpOn;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          <span class="keywordtype">int</span> freeze;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;          <span class="keywordtype">float</span> emphasis;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;          int32_t K, N, O, pos;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;          <span class="keywordtype">float</span> wet, dry, FX;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;          <span class="keywordtype">float</span> d0, d1, d2, d3, d4;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;          <span class="keywordtype">float</span> u0, u1, u2, u3, u4;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;          <span class="keywordtype">float</span> G;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          <span class="keywordtype">float</span>* dl;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;          <span class="keywordtype">float</span>* Rt;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      } _tTalkboxFloat;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      <span class="keyword">typedef</span> _tTalkboxFloat* tTalkboxFloat;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_init           (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_initToPool     (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_free           (tTalkboxFloat* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="keywordtype">float</span>   tTalkboxFloat_tick           (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keywordtype">float</span>     tTalkboxFloat_tickFrozen        (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_update         (tTalkboxFloat* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_suspend        (tTalkboxFloat* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_lpcDurbin      (<span class="keywordtype">float</span> *r, <span class="keywordtype">int</span> p, <span class="keywordtype">float</span> *k, <span class="keywordtype">float</span> *g);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_lpc           (<span class="keywordtype">float</span> *buf, <span class="keywordtype">float</span> *car, <span class="keywordtype">float</span>* dl, <span class="keywordtype">float</span>* Rt, int32_t n, int32_t o, <span class="keywordtype">float</span> warp, <span class="keywordtype">int</span> warpOn, <span class="keywordtype">float</span> *k, <span class="keywordtype">int</span> freeze, <span class="keywordtype">float</span> *G);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="keywordtype">void</span>    tTalkboxFloat_setQuality     (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">float</span> quality);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_setWarpFactor (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warp);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_setWarpOn     (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warpOn);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_setFreeze     (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> freeze);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_warpedAutocorrelate   (<span class="keywordtype">float</span> * x, <span class="keywordtype">float</span>* dl, <span class="keywordtype">float</span>* Rt, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> L, <span class="keywordtype">float</span> * R, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> P, <span class="keywordtype">float</span> lambda);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="comment">/* tVocoder */</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#define NUM_VOCODER_PARAM 8</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#define NBANDS 16</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tVocoder</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordtype">float</span> param[NUM_VOCODER_PARAM];</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordtype">float</span> gain;         <span class="comment">//output level</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordtype">float</span> thru, high;   <span class="comment">//hf thru</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordtype">float</span> kout;         <span class="comment">//downsampled output</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        int32_t  kval;      <span class="comment">//downsample counter</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        int32_t  nbnd;      <span class="comment">//number of bands</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="comment">//filter coeffs and buffers - seems it&#39;s faster to leave this global than make local copy</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordtype">float</span> f[NBANDS][13]; <span class="comment">//[0-8][0 1 2 | 0 1 2 3 | 0 1 2 3 | val rate]</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    } _tVocoder;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keyword">typedef</span> _tVocoder* tVocoder;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">void</span>    tVocoder_init           (tVocoder* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span>    tVocoder_initToPool     (tVocoder* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">void</span>    tVocoder_free           (tVocoder* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">float</span>   tVocoder_tick           (tVocoder* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordtype">void</span>    tVocoder_update         (tVocoder* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">void</span>    tVocoder_suspend        (tVocoder* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="comment">// tRosenbergGlottalPulse</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tRosenbergGlottalPulse</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordtype">float</span> phase;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordtype">float</span> openLength;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordtype">float</span> pulseLength;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordtype">float</span> invPulseLengthMinusOpenLength;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordtype">float</span> freq;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordtype">float</span> inc;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    } _tRosenbergGlottalPulse;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">typedef</span> _tRosenbergGlottalPulse* tRosenbergGlottalPulse;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordtype">void</span>    tRosenbergGlottalPulse_init           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">void</span>    tRosenbergGlottalPulse_initToPool     (tRosenbergGlottalPulse* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">void</span>    tRosenbergGlottalPulse_free           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">float</span>   tRosenbergGlottalPulse_tick           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">float</span>   tRosenbergGlottalPulse_tickHQ           (tRosenbergGlottalPulse* <span class="keyword">const</span> gp);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span>   tRosenbergGlottalPulse_setFreq           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> freq);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">void</span>   tRosenbergGlottalPulse_setOpenLength           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> openLength);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordtype">void</span>   tRosenbergGlottalPulse_setPulseLength           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> pulseLength);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">void</span>   tRosenbergGlottalPulse_setOpenLengthAndPulseLength           (tRosenbergGlottalPulse* <span class="keyword">const</span> gp, <span class="keywordtype">float</span> openLength, <span class="keywordtype">float</span> pulseLength);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">/* tSOLAD : pitch shifting algorithm that underlies tRetune etc */</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">// from Katja Vetters http://www.katjaas.nl/pitchshiftlowlatency/pitchshiftlowlatency.html</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#define LOOPSIZE (2048*2)      // (4096*2) // loop size must be power of two</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">#define LOOPMASK (LOOPSIZE - 1)</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#define PITCHFACTORDEFAULT 1.0f</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">#define INITPERIOD 64.0f</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">#define MAXPERIOD (float)((LOOPSIZE - w-&gt;blocksize) * 0.8f)</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#define MINPERIOD 8.0f</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSOLAD</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        uint16_t timeindex;              <span class="comment">// current reference time, write index</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        uint16_t blocksize;              <span class="comment">// signal input / output block size</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordtype">float</span> pitchfactor;        <span class="comment">// pitch factor between 0.25 and 4</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordtype">float</span> readlag;            <span class="comment">// read pointer&#39;s lag behind write pointer</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keywordtype">float</span> period;             <span class="comment">// period length in input signal</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordtype">float</span> jump;               <span class="comment">// read pointer jump length and direction</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordtype">float</span> xfadelength;        <span class="comment">// crossfade length expressed at input sample rate</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordtype">float</span> xfadevalue;         <span class="comment">// crossfade phase and value</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordtype">float</span>* delaybuf;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    } _tSOLAD;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    </div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">typedef</span> _tSOLAD* tSOLAD;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_init             (tSOLAD* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_initToPool       (tSOLAD* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_free             (tSOLAD* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">// send one block of input samples, receive one block of output samples</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_ioSamples        (tSOLAD *w, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> blocksize);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// set periodicity analysis data</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_setPeriod        (tSOLAD *w, <span class="keywordtype">float</span> period);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="comment">// set pitch factor between 0.25 and 4</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_setPitchFactor   (tSOLAD *w, <span class="keywordtype">float</span> pitchfactor);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">// force readpointer lag</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_setReadLag       (tSOLAD *w, <span class="keywordtype">float</span> readlag);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">// reset state variables</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_resetState       (tSOLAD *w);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="comment">// Pitch shift</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPitchShift</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        tSOLAD sola;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        tHighpass hp;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        tPeriodDetection* p;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="keywordtype">float</span>* outBuffer;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordtype">int</span> framesPerBuffer;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordtype">int</span> curBlock;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordtype">int</span> lastBlock;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keywordtype">int</span> index;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordtype">float</span> pitchFactor;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordtype">float</span> radius;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    } _tPitchShift;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">typedef</span> _tPitchShift* tPitchShift;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordtype">void</span>    tPitchShift_init            (tPitchShift* <span class="keyword">const</span>, tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keywordtype">void</span>    tPitchShift_initToPool      (tPitchShift* <span class="keyword">const</span>, tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordtype">void</span>    tPitchShift_free            (tPitchShift* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">float</span>   tPitchShift_shift           (tPitchShift* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">float</span>   tPitchShift_shiftToFunc     (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> (*fun)(<span class="keywordtype">float</span>));</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">float</span>   tPitchShift_shiftToFreq     (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> freq);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">void</span>    tPitchShift_setPitchFactor  (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="comment">// Retune</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tRetune</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    {</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        tPeriodDetection pd;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        tPitchShift* ps;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        <span class="keywordtype">float</span>** outBuffers;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordtype">float</span>* tickOutput;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        uint16_t hopSize;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        uint16_t windowSize;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        uint8_t fba;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        </div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordtype">float</span>* pitchFactor;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keywordtype">float</span> radius;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        </div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keywordtype">float</span> inputPeriod;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        </div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordtype">int</span> numVoices;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    } _tRetune;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">typedef</span> _tRetune* tRetune;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keywordtype">void</span>    tRetune_init                (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keywordtype">void</span>    tRetune_initToPool          (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordtype">void</span>    tRetune_free                (tRetune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordtype">float</span>*  tRetune_tick                (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="keywordtype">void</span>    tRetune_setNumVoices        (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">void</span>    tRetune_setPitchFactors     (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordtype">void</span>    tRetune_setPitchFactor      (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf, <span class="keywordtype">int</span> voice);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordtype">void</span>    tRetune_setTimeConstant     (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tc);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordtype">void</span>    tRetune_setHopSize          (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordtype">void</span>    tRetune_setWindowSize       (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">void</span>    tRetune_setFidelityThreshold(tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keywordtype">float</span>   tRetune_getInputPeriod      (tRetune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordtype">float</span>   tRetune_getInputFreq        (tRetune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    </div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">// Autotune</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAutotune</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        tPeriodDetection pd;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        tPitchShift* ps;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="keywordtype">float</span>** outBuffers;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordtype">float</span>* tickOutput;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        uint16_t hopSize;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        uint16_t windowSize;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        uint8_t fba;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordtype">float</span>* freq;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordtype">float</span> radius;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        </div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordtype">float</span> inputPeriod;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordtype">int</span> shiftOn;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordtype">int</span> numVoices;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    } _tAutotune;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    </div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keyword">typedef</span> _tAutotune* tAutotune;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keywordtype">void</span>    tAutotune_init                  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keywordtype">void</span>    tAutotune_initToPool            (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordtype">void</span>    tAutotune_free                  (tAutotune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordtype">float</span>*  tAutotune_tick                  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setNumVoices          (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setFreqs              (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> f);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setFreq               (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> f, <span class="keywordtype">int</span> voice);</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setTimeConstant       (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tc);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setHopSize            (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setWindowSize         (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setFidelityThreshold  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setAlpha              (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> alpha);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keywordtype">void</span>    tAutotune_setTolerance          (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tolerance);</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordtype">float</span>   tAutotune_getInputPeriod        (tAutotune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <span class="keywordtype">float</span>   tAutotune_getInputFreq          (tAutotune* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    </div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    </div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tFormantShifter</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordtype">int</span> ford;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keywordtype">float</span> falph;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordtype">float</span> flamb;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keywordtype">float</span>* fk;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordtype">float</span>* fb;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keywordtype">float</span>* fc;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        <span class="keywordtype">float</span>* frb;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordtype">float</span>* frc;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordtype">float</span>* fsig;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordtype">float</span>* fsmooth;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordtype">float</span> fhp;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="keywordtype">float</span> flp;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordtype">float</span> flpa;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keywordtype">float</span>* fbuff;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="keywordtype">float</span>* ftvec;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordtype">float</span> fmute;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="keywordtype">float</span> fmutealph;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cbi;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordtype">float</span> shiftFactor;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        <span class="keywordtype">float</span> intensity, invIntensity;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        tHighpass hp;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        tHighpass hp2;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        tFeedbackLeveler fbl1;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        tFeedbackLeveler fbl2;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    } _tFormantShifter;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    </div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keyword">typedef</span> _tFormantShifter* tFormantShifter;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    </div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_init            (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">int</span> order);</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_initToPool      (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">int</span> order, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_free            (tFormantShifter* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keywordtype">float</span>   tFormantShifter_tick            (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keywordtype">float</span>   tFormantShifter_remove          (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    <span class="keywordtype">float</span>   tFormantShifter_add             (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_ioSamples       (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> size, <span class="keywordtype">float</span> fwarp);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_setShiftFactor  (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> shiftFactor);</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keywordtype">void</span>    tFormantShifter_setIntensity    (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> intensity);</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    </div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;}</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">#endif  // LEAF_EFFECTS_H_INCLUDED</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#define NUM_TALKBOX_PARAM 4</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTalkbox</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordtype">float</span> param[NUM_TALKBOX_PARAM];</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">int</span> bufsize;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordtype">float</span>* car0;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordtype">float</span>* car1;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">float</span>* window;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">float</span>* buf0;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordtype">float</span>* buf1;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordtype">float</span>* k;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordtype">float</span> warpFactor;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        int32_t warpOn;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">int</span> freeze;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">float</span> emphasis;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        int32_t K, N, O, pos;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">float</span> wet, dry, FX;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">float</span> d0, d1, d2, d3, d4;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">float</span> u0, u1, u2, u3, u4;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordtype">float</span> G;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordtype">double</span>* dl;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">double</span>* Rt;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    } _tTalkbox;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">typedef</span> _tTalkbox* tTalkbox;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#gac42065cf3278a41a73c1b42cdb4ab906">tTalkbox_init</a>           (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga8f10b76186682cda5b4a546df84c35e3">tTalkbox_initToPool</a>     (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga5f1f85266d1c3e968b9f277fd6530e61">tTalkbox_free</a>           (tTalkbox* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttalkbox.html#gab45e4c3be7561f157b4ab47de8d939db">tTalkbox_tick</a>           (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttalkbox.html#gafd5193315cf309b8c7607795bc5ad995">tTalkbox_tickFrozen</a>     (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#gabdfa3fca0a50509623d4c57d851f3315">tTalkbox_update</a>         (tTalkbox* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga361f8a48a8ac118804852e99022a2144">tTalkbox_suspend</a>        (tTalkbox* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#gaaba470c9d175927857b9befd5e903da8">tTalkbox_lpcDurbin</a>      (<span class="keywordtype">float</span> *r, <span class="keywordtype">int</span> p, <span class="keywordtype">float</span> *k, <span class="keywordtype">float</span> *g);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>    tTalkbox_lpc            (<span class="keywordtype">float</span> *buf, <span class="keywordtype">float</span> *car, <span class="keywordtype">double</span>* dl, <span class="keywordtype">double</span>* Rt, int32_t n, int32_t o, <span class="keywordtype">float</span> warp, <span class="keywordtype">int</span> warpOn, <span class="keywordtype">float</span> *k, <span class="keywordtype">int</span> freeze, <span class="keywordtype">float</span> *G);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#gae0e16e4627683deeb7d849f9f6b13367">tTalkbox_setQuality</a>     (tTalkbox* <span class="keyword">const</span>, <span class="keywordtype">float</span> quality);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga15d263af4269739442c7187a403996e4">tTalkbox_setWarpFactor</a>  (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warp);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga37320fd9c7f3c4d065fa4ae27431bc61">tTalkbox_setWarpOn</a>      (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warpOn);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga9345cb1b1bdb78e2c264dc711c29050b">tTalkbox_setFreeze</a>      (tTalkbox* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> freeze);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttalkbox.html#ga881ae8cbae41f12f2fb4a7446d73a6be">tTalkbox_warpedAutocorrelate</a>    (<span class="keywordtype">float</span> * x, <span class="keywordtype">double</span>* dl, <span class="keywordtype">double</span>* Rt, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> L, <span class="keywordtype">float</span> * R, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> P, <span class="keywordtype">float</span> lambda);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTalkboxFloat</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;          tMempool mempool;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;          </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;          <span class="keywordtype">float</span> param[NUM_TALKBOX_PARAM];</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;          <span class="keywordtype">int</span> bufsize;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;          <span class="keywordtype">float</span>* car0;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;          <span class="keywordtype">float</span>* car1;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;          <span class="keywordtype">float</span>* window;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;          <span class="keywordtype">float</span>* buf0;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;          <span class="keywordtype">float</span>* buf1;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;          <span class="keywordtype">float</span>* k;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          <span class="keywordtype">float</span> warpFactor;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;          int32_t warpOn;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;          <span class="keywordtype">int</span> freeze;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          <span class="keywordtype">float</span> emphasis;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;          int32_t K, N, O, pos;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;          <span class="keywordtype">float</span> wet, dry, FX;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;          <span class="keywordtype">float</span> d0, d1, d2, d3, d4;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;          <span class="keywordtype">float</span> u0, u1, u2, u3, u4;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;          <span class="keywordtype">float</span> G;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;          <span class="keywordtype">float</span>* dl;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;          <span class="keywordtype">float</span>* Rt;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;      } _tTalkboxFloat;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      <span class="keyword">typedef</span> _tTalkboxFloat* tTalkboxFloat;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#gaaf24817cade6b1e44ec8224e385eaf76">tTalkboxFloat_init</a>           (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#ga10ab230431665f2b621fd0b21b366e02">tTalkboxFloat_initToPool</a>     (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">int</span> bufsize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#gabbd684033b9869aaac6eb57a694904d9">tTalkboxFloat_free</a>           (tTalkboxFloat* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      <span class="keywordtype">float</span>   <a class="code" href="group__ttalkboxfloat.html#ga83b3a42d6348a062eaed4eace6fa9461">tTalkboxFloat_tick</a>           (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      <span class="keywordtype">float</span>     <a class="code" href="group__ttalkboxfloat.html#ga7d3e3bc6ecf3e1bd9c1ebe5f717ba06b">tTalkboxFloat_tickFrozen</a>        (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#ga994b70735a97c25f30a7f26981c3334e">tTalkboxFloat_update</a>         (tTalkboxFloat* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#gac8456d804e084f2c4938d1255c723cfc">tTalkboxFloat_suspend</a>        (tTalkboxFloat* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#ga667dcd77640c7a6b2fa3995d6d2190be">tTalkboxFloat_lpcDurbin</a>      (<span class="keywordtype">float</span> *r, <span class="keywordtype">int</span> p, <span class="keywordtype">float</span> *k, <span class="keywordtype">float</span> *g);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      <span class="keywordtype">void</span>  tTalkboxFloat_lpc           (<span class="keywordtype">float</span> *buf, <span class="keywordtype">float</span> *car, <span class="keywordtype">float</span>* dl, <span class="keywordtype">float</span>* Rt, int32_t n, int32_t o, <span class="keywordtype">float</span> warp, <span class="keywordtype">int</span> warpOn, <span class="keywordtype">float</span> *k, <span class="keywordtype">int</span> freeze, <span class="keywordtype">float</span> *G);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      <span class="keywordtype">void</span>    <a class="code" href="group__ttalkboxfloat.html#ga9f9fbc4bd62efcd9502a0217740e5366">tTalkboxFloat_setQuality</a>     (tTalkboxFloat* <span class="keyword">const</span>, <span class="keywordtype">float</span> quality);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      <span class="keywordtype">void</span>  <a class="code" href="group__ttalkboxfloat.html#gad01eb39b5892107d65a3590f3ea69fec">tTalkboxFloat_setWarpFactor</a> (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warp);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      <span class="keywordtype">void</span>  <a class="code" href="group__ttalkboxfloat.html#ga911daf1ba7f4c9ca71813522b9c41e93">tTalkboxFloat_setWarpOn</a>     (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> warpOn);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      <span class="keywordtype">void</span>  <a class="code" href="group__ttalkboxfloat.html#gae08e32413cb892b0aa5c489d9e9ef3dd">tTalkboxFloat_setFreeze</a>     (tTalkboxFloat* <span class="keyword">const</span> voc, <span class="keywordtype">float</span> freeze);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      <span class="keywordtype">void</span>  <a class="code" href="group__ttalkboxfloat.html#gadcbdd544e5d6a3d5b46cead0044dfcfa">tTalkboxFloat_warpedAutocorrelate</a>   (<span class="keywordtype">float</span> * x, <span class="keywordtype">float</span>* dl, <span class="keywordtype">float</span>* Rt, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> L, <span class="keywordtype">float</span> * R, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> P, <span class="keywordtype">float</span> lambda);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="preprocessor">#define NUM_VOCODER_PARAM 8</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#define NBANDS 16</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tVocoder</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordtype">float</span> param[NUM_VOCODER_PARAM];</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordtype">float</span> gain;         <span class="comment">//output level</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordtype">float</span> thru, high;   <span class="comment">//hf thru</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keywordtype">float</span> kout;         <span class="comment">//downsampled output</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        int32_t  kval;      <span class="comment">//downsample counter</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        int32_t  nbnd;      <span class="comment">//number of bands</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="comment">//filter coeffs and buffers - seems it&#39;s faster to leave this global than make local copy</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordtype">float</span> f[NBANDS][13]; <span class="comment">//[0-8][0 1 2 | 0 1 2 3 | 0 1 2 3 | val rate]</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    } _tVocoder;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keyword">typedef</span> _tVocoder* tVocoder;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tvocoder.html#ga5a0dc03419aff30be9341416d5143f50">tVocoder_init</a>           (tVocoder* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tvocoder.html#gad625ecd68ef438606e5a82fe11a3484f">tVocoder_initToPool</a>     (tVocoder* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tvocoder.html#gaa54cfb22d5fab7c12d70d7e5fd4a0cd0">tVocoder_free</a>           (tVocoder* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tvocoder.html#gaf809f26807d22a348156bbcced99ae91">tVocoder_tick</a>           (tVocoder* <span class="keyword">const</span>, <span class="keywordtype">float</span> synth, <span class="keywordtype">float</span> voice);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tvocoder.html#ga6ae72878b932a14fac7503e4f3226312">tVocoder_update</a>         (tVocoder* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tvocoder.html#gae4c7fd1376d81bcfce49f4a8a407ec16">tVocoder_suspend</a>        (tVocoder* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    </div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tRosenbergGlottalPulse</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    {</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        <span class="keywordtype">float</span> phase;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordtype">float</span> openLength;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keywordtype">float</span> pulseLength;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordtype">float</span> invPulseLengthMinusOpenLength;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keywordtype">float</span> freq;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordtype">float</span> inc;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    } _tRosenbergGlottalPulse;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">typedef</span> _tRosenbergGlottalPulse* tRosenbergGlottalPulse;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__trosenbergglottalpulse.html#ga8a3cc4f44b1a271133982d2aea9ed544">tRosenbergGlottalPulse_init</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__trosenbergglottalpulse.html#ga337b99d9c13835ad7d44dc496de018d6">tRosenbergGlottalPulse_initToPool</a>     (tRosenbergGlottalPulse* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__trosenbergglottalpulse.html#gac23f160eacd6098f0be43ef2ad50adba">tRosenbergGlottalPulse_free</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__trosenbergglottalpulse.html#gaa13740e5d8e0cab56e61eb0cb242fabe">tRosenbergGlottalPulse_tick</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__trosenbergglottalpulse.html#gadbf13772282402d02eb7623fda03d496">tRosenbergGlottalPulse_tickHQ</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span> gp);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="keywordtype">void</span>   <a class="code" href="group__trosenbergglottalpulse.html#ga199fe228e20140018c943b72347ba434">tRosenbergGlottalPulse_setFreq</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> freq);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keywordtype">void</span>   <a class="code" href="group__trosenbergglottalpulse.html#ga703d56589fa0121e978609f5315ea1e7">tRosenbergGlottalPulse_setOpenLength</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> openLength);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="keywordtype">void</span>   <a class="code" href="group__trosenbergglottalpulse.html#ga7339007dec7bc4164d850e63d57a75ec">tRosenbergGlottalPulse_setPulseLength</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span>, <span class="keywordtype">float</span> pulseLength);</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keywordtype">void</span>   <a class="code" href="group__trosenbergglottalpulse.html#ga0ebbc0ca662434c8685cbca2e44f656a">tRosenbergGlottalPulse_setOpenLengthAndPulseLength</a>           (tRosenbergGlottalPulse* <span class="keyword">const</span> gp, <span class="keywordtype">float</span> openLength, <span class="keywordtype">float</span> pulseLength);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    </div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="preprocessor">#define LOOPSIZE (2048*2)      // (4096*2) // loop size must be power of two</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="preprocessor">#define LOOPMASK (LOOPSIZE - 1)</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="preprocessor">#define PITCHFACTORDEFAULT 1.0f</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="preprocessor">#define INITPERIOD 64.0f</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="preprocessor">#define MAXPERIOD (float)((LOOPSIZE - w-&gt;blocksize) * 0.8f)</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="preprocessor">#define MINPERIOD 8.0f</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    </div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSOLAD</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    {</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        </div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        uint16_t timeindex;              <span class="comment">// current reference time, write index</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        uint16_t blocksize;              <span class="comment">// signal input / output block size</span></div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        <span class="keywordtype">float</span> pitchfactor;        <span class="comment">// pitch factor between 0.25 and 4</span></div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        <span class="keywordtype">float</span> readlag;            <span class="comment">// read pointer&#39;s lag behind write pointer</span></div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        <span class="keywordtype">float</span> period;             <span class="comment">// period length in input signal</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <span class="keywordtype">float</span> jump;               <span class="comment">// read pointer jump length and direction</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        <span class="keywordtype">float</span> xfadelength;        <span class="comment">// crossfade length expressed at input sample rate</span></div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        <span class="keywordtype">float</span> xfadevalue;         <span class="comment">// crossfade phase and value</span></div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        </div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        <span class="keywordtype">float</span>* delaybuf;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        </div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    } _tSOLAD;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    </div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">typedef</span> _tSOLAD* tSOLAD;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    </div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga1a4f834888e5c77c8bfc8e85f827127b">tSOLAD_init</a>             (tSOLAD* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#gaca4ac87e9a68d8b88402fc4642956613">tSOLAD_initToPool</a>       (tSOLAD* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga2e51fbab57ccc810832c23dc3286efb1">tSOLAD_free</a>             (tSOLAD* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    </div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <span class="comment">// send one block of input samples, receive one block of output samples</span></div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keywordtype">void</span>    tSOLAD_ioSamples        (tSOLAD *w, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> blocksize);</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <span class="comment">// set periodicity analysis data</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga6ff97dea55ab5fa791fca6a6c4cacdbc">tSOLAD_setPeriod</a>        (tSOLAD *w, <span class="keywordtype">float</span> period);</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="comment">// set pitch factor between 0.25 and 4</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga1b3ffa561a92ba5f64e51eeb670e16ac">tSOLAD_setPitchFactor</a>   (tSOLAD *w, <span class="keywordtype">float</span> pitchfactor);</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <span class="comment">// force readpointer lag</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga92607d41da7f4fbf93386e071806f788">tSOLAD_setReadLag</a>       (tSOLAD *w, <span class="keywordtype">float</span> readlag);</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="comment">// reset state variables</span></div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsolad.html#ga69b20c8acef373a2590f4e3138d1d4d8">tSOLAD_resetState</a>       (tSOLAD *w);</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    </div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPitchShift</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    {</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        </div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        tSOLAD sola;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        tHighpass hp;</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        tPeriodDetection* p;</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        </div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        <span class="keywordtype">float</span>* outBuffer;</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        </div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        <span class="keywordtype">int</span> framesPerBuffer;</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        <span class="keywordtype">int</span> curBlock;</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordtype">int</span> lastBlock;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        <span class="keywordtype">int</span> index;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        </div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        <span class="keywordtype">float</span> pitchFactor;</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        <span class="keywordtype">float</span> radius;</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    } _tPitchShift;</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    </div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;    <span class="keyword">typedef</span> _tPitchShift* tPitchShift;</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    </div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchshift.html#gac3dd2f153d36d17692c54a2b766d2494">tPitchShift_init</a>            (tPitchShift* <span class="keyword">const</span>, tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize);</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchshift.html#gadd4842e734ce7a996920a77d252c43cf">tPitchShift_initToPool</a>      (tPitchShift* <span class="keyword">const</span>, tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchshift.html#gaa11d2bf41d69ed89fe86f5840fe1b612">tPitchShift_free</a>            (tPitchShift* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    </div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchshift.html#gae40ca7ded73c082a64e62597ba0d726b">tPitchShift_shift</a>           (tPitchShift* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchshift.html#gad3fcea1040f86daa6bbd791c9f10c3a5">tPitchShift_shiftToFunc</a>     (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> (*fun)(<span class="keywordtype">float</span>));</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchshift.html#ga6544286393ef4dbd68f8366345ec137e">tPitchShift_shiftToFreq</a>     (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> freq);</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchshift.html#ga4d727726fcc33c1b3d8ecea7e82e71d8">tPitchShift_setPitchFactor</a>  (tPitchShift* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf);</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    </div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tRetune</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;    {</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        </div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        tPeriodDetection pd;</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        tPitchShift* ps;</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        </div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        <span class="keywordtype">float</span>** outBuffers;</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;        <span class="keywordtype">float</span>* tickOutput;</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        </div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;        uint16_t hopSize;</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        uint16_t windowSize;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        uint8_t fba;</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        </div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="keywordtype">float</span>* pitchFactor;</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        <span class="keywordtype">float</span> radius;</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        </div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        <span class="keywordtype">float</span> inputPeriod;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        </div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        <span class="keywordtype">int</span> numVoices;</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    } _tRetune;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    </div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    <span class="keyword">typedef</span> _tRetune* tRetune;</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    </div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga44aa80248c741e3a86ff7ae91cba01ca">tRetune_init</a>                (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga11143bcfb7ebdd4a38c183a8a87e987f">tRetune_initToPool</a>          (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga9054a73b7bb08d4721b109b7c2c94042">tRetune_free</a>                (tRetune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    </div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    <span class="keywordtype">float</span>*  <a class="code" href="group__tretune.html#gae5ed387f5a71deac43ab89b8f8986060">tRetune_tick</a>                (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga126c94026f5b022a4e50dec9a5b8e294">tRetune_setNumVoices</a>        (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices);</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga3a31091641537dbbf7dc897294c38370">tRetune_setPitchFactors</a>     (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf);</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#gac89bc566816f8f0fd7c309e13bc329c5">tRetune_setPitchFactor</a>      (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> pf, <span class="keywordtype">int</span> voice);</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga1cf5ae651d2cbf0d903f14d7833d3d43">tRetune_setTimeConstant</a>     (tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tc);</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#gadc97a085cc8e8bd4ba2900b215dd92ad">tRetune_setHopSize</a>          (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#gaf650307cc15069f1436d7e20d7ec88f2">tRetune_setWindowSize</a>       (tRetune* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tretune.html#ga1c10ee19cf9b6549b07618a3f36de226">tRetune_setFidelityThreshold</a>(tRetune* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tretune.html#ga95cb1e0f1f285c8e8b515bffcfc525e2">tRetune_getInputPeriod</a>      (tRetune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tretune.html#ga7b3b6fe968a292311a29d688829c0f2b">tRetune_getInputFreq</a>        (tRetune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    </div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAutotune</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    {</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        </div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        tPeriodDetection pd;</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        tPitchShift* ps;</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;        </div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keywordtype">float</span>** outBuffers;</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        <span class="keywordtype">float</span>* tickOutput;</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        </div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        uint16_t hopSize;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        uint16_t windowSize;</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        uint8_t fba;</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        </div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;        <span class="keywordtype">float</span>* freq;</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        <span class="keywordtype">float</span> radius;</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        </div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        <span class="keywordtype">float</span> inputPeriod;</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <span class="keywordtype">int</span> shiftOn;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        <span class="keywordtype">int</span> numVoices;</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    } _tAutotune;</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    </div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    <span class="keyword">typedef</span> _tAutotune* tAutotune;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    </div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gaf98c92df2312518b1d0069e76dd6c724">tAutotune_init</a>                  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga6b306f7b3f6abc6a2e48ce932d74e720">tAutotune_initToPool</a>            (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga8ed1845d8de81a427d4ea23881588ed0">tAutotune_free</a>                  (tAutotune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    </div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordtype">float</span>*  <a class="code" href="group__tautotune.html#ga6197f6afcadbd023e1036c030c175fb1">tAutotune_tick</a>                  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga7e94d16d57e24df5fd16a812101d2f4c">tAutotune_setNumVoices</a>          (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> numVoices);</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gace8c9bc009963933acd5817b8bab7ac8">tAutotune_setFreqs</a>              (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> f);</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga4a9d62be45b3f85144efb5f6bb5d1d73">tAutotune_setFreq</a>               (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> f, <span class="keywordtype">int</span> voice);</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gac157ad740e040242b7ccd75680653501">tAutotune_setTimeConstant</a>       (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tc);</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga37ce5ae24b2262dcf2ae676d78cc7bb7">tAutotune_setHopSize</a>            (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gafa9741473b8bd0e90d3f9ef2df04bbe3">tAutotune_setWindowSize</a>         (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gaf151ba40269001a3518cd3d591e1d4b3">tAutotune_setFidelityThreshold</a>  (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#ga7435d0f32dbeaeb3e1483fad156ad104">tAutotune_setAlpha</a>              (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> alpha);</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tautotune.html#gaf23dfecfff0ae55ece6af4b396ebbdeb">tAutotune_setTolerance</a>          (tAutotune* <span class="keyword">const</span>, <span class="keywordtype">float</span> tolerance);</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tautotune.html#ga074c2670dc08cf1c4a8f27737a96c3a6">tAutotune_getInputPeriod</a>        (tAutotune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tautotune.html#ga95658493f0095108e79de5c1ee685a22">tAutotune_getInputFreq</a>          (tAutotune* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    </div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    </div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tFormantShifter</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    {</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        <span class="keywordtype">int</span> ford;</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="keywordtype">float</span> falph;</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;        <span class="keywordtype">float</span> flamb;</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        <span class="keywordtype">float</span>* fk;</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        <span class="keywordtype">float</span>* fb;</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        <span class="keywordtype">float</span>* fc;</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        <span class="keywordtype">float</span>* frb;</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        <span class="keywordtype">float</span>* frc;</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;        <span class="keywordtype">float</span>* fsig;</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        <span class="keywordtype">float</span>* fsmooth;</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        <span class="keywordtype">float</span> fhp;</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;        <span class="keywordtype">float</span> flp;</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;        <span class="keywordtype">float</span> flpa;</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        <span class="keywordtype">float</span>* fbuff;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        <span class="keywordtype">float</span>* ftvec;</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        <span class="keywordtype">float</span> fmute;</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        <span class="keywordtype">float</span> fmutealph;</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cbi;</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        <span class="keywordtype">float</span> shiftFactor;</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        <span class="keywordtype">float</span> intensity, invIntensity;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        tHighpass hp;</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        tHighpass hp2;</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        tFeedbackLeveler fbl1;</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;        tFeedbackLeveler fbl2;</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    } _tFormantShifter;</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    </div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    <span class="keyword">typedef</span> _tFormantShifter* tFormantShifter;</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    </div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#gab1f033c37da7572103cb168e4a49449c">tFormantShifter_init</a>            (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">int</span> order);</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#gad79a5e074c0f99ac7c7af3d530fdd214">tFormantShifter_initToPool</a>      (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">int</span> order, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#gab4d9198bc06d81125663dd3da00fbf47">tFormantShifter_free</a>            (tFormantShifter* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    </div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tformantshifter.html#ga6e02d685feef8233a0949e19718b2884">tFormantShifter_tick</a>            (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tformantshifter.html#ga20c5dcc163a256e5b7792b1cd4788d59">tFormantShifter_remove</a>          (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tformantshifter.html#gaa1697aa8f5614be25546943c7a3c6f46">tFormantShifter_add</a>             (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#gadf13d01a3ed6e8941d93e521769f5447">tFormantShifter_ioSamples</a>       (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> size, <span class="keywordtype">float</span> fwarp);</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#ga3f5493a4bce93a71124aed52d374cfdc">tFormantShifter_setShiftFactor</a>  (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> shiftFactor);</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tformantshifter.html#gaf975f968b7428a7d744b2493c68267d4">tFormantShifter_setIntensity</a>    (tFormantShifter* <span class="keyword">const</span>, <span class="keywordtype">float</span> intensity);</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    </div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    </div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;}</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160; </div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="preprocessor">#endif  // LEAF_EFFECTS_H_INCLUDED</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="comment">//==============================================================================</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="agroup__ttalkboxfloat_html_gadcbdd544e5d6a3d5b46cead0044dfcfa"><div class="ttname"><a href="group__ttalkboxfloat.html#gadcbdd544e5d6a3d5b46cead0044dfcfa">tTalkboxFloat_warpedAutocorrelate</a></div><div class="ttdeci">void tTalkboxFloat_warpedAutocorrelate(float *x, float *dl, float *Rt, unsigned int L, float *R, unsigned int P, float lambda)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:464</div></div>
+<div class="ttc" id="agroup__tretune_html_ga1c10ee19cf9b6549b07618a3f36de226"><div class="ttname"><a href="group__tretune.html#ga1c10ee19cf9b6549b07618a3f36de226">tRetune_setFidelityThreshold</a></div><div class="ttdeci">void tRetune_setFidelityThreshold(tRetune *const, float threshold)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1645</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_ga20c5dcc163a256e5b7792b1cd4788d59"><div class="ttname"><a href="group__tformantshifter.html#ga20c5dcc163a256e5b7792b1cd4788d59">tFormantShifter_remove</a></div><div class="ttdeci">float tFormantShifter_remove(tFormantShifter *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1904</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga911daf1ba7f4c9ca71813522b9c41e93"><div class="ttname"><a href="group__ttalkboxfloat.html#ga911daf1ba7f4c9ca71813522b9c41e93">tTalkboxFloat_setWarpOn</a></div><div class="ttdeci">void tTalkboxFloat_setWarpOn(tTalkboxFloat *const voc, float warpOn)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:661</div></div>
+<div class="ttc" id="agroup__tautotune_html_gace8c9bc009963933acd5817b8bab7ac8"><div class="ttname"><a href="group__tautotune.html#gace8c9bc009963933acd5817b8bab7ac8">tAutotune_setFreqs</a></div><div class="ttdeci">void tAutotune_setFreqs(tAutotune *const, float f)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1760</div></div>
+<div class="ttc" id="agroup__tretune_html_ga126c94026f5b022a4e50dec9a5b8e294"><div class="ttname"><a href="group__tretune.html#ga126c94026f5b022a4e50dec9a5b8e294">tRetune_setNumVoices</a></div><div class="ttdeci">void tRetune_setNumVoices(tRetune *const, int numVoices)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1590</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga37ce5ae24b2262dcf2ae676d78cc7bb7"><div class="ttname"><a href="group__tautotune.html#ga37ce5ae24b2262dcf2ae676d78cc7bb7">tAutotune_setHopSize</a></div><div class="ttdeci">void tAutotune_setHopSize(tAutotune *const, int hs)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1785</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gab4d9198bc06d81125663dd3da00fbf47"><div class="ttname"><a href="group__tformantshifter.html#gab4d9198bc06d81125663dd3da00fbf47">tFormantShifter_free</a></div><div class="ttdeci">void tFormantShifter_free(tFormantShifter *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1879</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_gae40ca7ded73c082a64e62597ba0d726b"><div class="ttname"><a href="group__tpitchshift.html#gae40ca7ded73c082a64e62597ba0d726b">tPitchShift_shift</a></div><div class="ttdeci">float tPitchShift_shift(tPitchShift *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1407</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga8ed1845d8de81a427d4ea23881588ed0"><div class="ttname"><a href="group__tautotune.html#ga8ed1845d8de81a427d4ea23881588ed0">tAutotune_free</a></div><div class="ttdeci">void tAutotune_free(tAutotune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1712</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_ga4d727726fcc33c1b3d8ecea7e82e71d8"><div class="ttname"><a href="group__tpitchshift.html#ga4d727726fcc33c1b3d8ecea7e82e71d8">tPitchShift_setPitchFactor</a></div><div class="ttdeci">void tPitchShift_setPitchFactor(tPitchShift *const, float pf)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1400</div></div>
+<div class="ttc" id="agroup__tretune_html_ga9054a73b7bb08d4721b109b7c2c94042"><div class="ttname"><a href="group__tretune.html#ga9054a73b7bb08d4721b109b7c2c94042">tRetune_free</a></div><div class="ttdeci">void tRetune_free(tRetune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1558</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_gaaf24817cade6b1e44ec8224e385eaf76"><div class="ttname"><a href="group__ttalkboxfloat.html#gaaf24817cade6b1e44ec8224e385eaf76">tTalkboxFloat_init</a></div><div class="ttdeci">void tTalkboxFloat_init(tTalkboxFloat *const, int bufsize)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:361</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_gadbf13772282402d02eb7623fda03d496"><div class="ttname"><a href="group__trosenbergglottalpulse.html#gadbf13772282402d02eb7623fda03d496">tRosenbergGlottalPulse_tickHQ</a></div><div class="ttdeci">float tRosenbergGlottalPulse_tickHQ(tRosenbergGlottalPulse *const gp)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:929</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga881ae8cbae41f12f2fb4a7446d73a6be"><div class="ttname"><a href="group__ttalkbox.html#ga881ae8cbae41f12f2fb4a7446d73a6be">tTalkbox_warpedAutocorrelate</a></div><div class="ttdeci">void tTalkbox_warpedAutocorrelate(float *x, double *dl, double *Rt, unsigned int L, float *R, unsigned int P, float lambda)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:138</div></div>
+<div class="ttc" id="agroup__tautotune_html_gafa9741473b8bd0e90d3f9ef2df04bbe3"><div class="ttname"><a href="group__tautotune.html#gafa9741473b8bd0e90d3f9ef2df04bbe3">tAutotune_setWindowSize</a></div><div class="ttdeci">void tAutotune_setWindowSize(tAutotune *const, int ws)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1793</div></div>
+<div class="ttc" id="agroup__tretune_html_ga3a31091641537dbbf7dc897294c38370"><div class="ttname"><a href="group__tretune.html#ga3a31091641537dbbf7dc897294c38370">tRetune_setPitchFactors</a></div><div class="ttdeci">void tRetune_setPitchFactors(tRetune *const, float pf)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1602</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga199fe228e20140018c943b72347ba434"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga199fe228e20140018c943b72347ba434">tRosenbergGlottalPulse_setFreq</a></div><div class="ttdeci">void tRosenbergGlottalPulse_setFreq(tRosenbergGlottalPulse *const, float freq)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:957</div></div>
+<div class="ttc" id="agroup__tretune_html_gac89bc566816f8f0fd7c309e13bc329c5"><div class="ttname"><a href="group__tretune.html#gac89bc566816f8f0fd7c309e13bc329c5">tRetune_setPitchFactor</a></div><div class="ttdeci">void tRetune_setPitchFactor(tRetune *const, float pf, int voice)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1613</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga7e94d16d57e24df5fd16a812101d2f4c"><div class="ttname"><a href="group__tautotune.html#ga7e94d16d57e24df5fd16a812101d2f4c">tAutotune_setNumVoices</a></div><div class="ttdeci">void tAutotune_setNumVoices(tAutotune *const, int numVoices)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1748</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga0ebbc0ca662434c8685cbca2e44f656a"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga0ebbc0ca662434c8685cbca2e44f656a">tRosenbergGlottalPulse_setOpenLengthAndPulseLength</a></div><div class="ttdeci">void tRosenbergGlottalPulse_setOpenLengthAndPulseLength(tRosenbergGlottalPulse *const gp, float openLength, float pulseLength)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:978</div></div>
+<div class="ttc" id="agroup__tretune_html_gae5ed387f5a71deac43ab89b8f8986060"><div class="ttname"><a href="group__tretune.html#gae5ed387f5a71deac43ab89b8f8986060">tRetune_tick</a></div><div class="ttdeci">float * tRetune_tick(tRetune *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1576</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga8f10b76186682cda5b4a546df84c35e3"><div class="ttname"><a href="group__ttalkbox.html#ga8f10b76186682cda5b4a546df84c35e3">tTalkbox_initToPool</a></div><div class="ttdeci">void tTalkbox_initToPool(tTalkbox *const, int bufsize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:40</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gafd5193315cf309b8c7607795bc5ad995"><div class="ttname"><a href="group__ttalkbox.html#gafd5193315cf309b8c7607795bc5ad995">tTalkbox_tickFrozen</a></div><div class="ttdeci">float tTalkbox_tickFrozen(tTalkbox *const voc, float synth, float voice)</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga994b70735a97c25f30a7f26981c3334e"><div class="ttname"><a href="group__ttalkboxfloat.html#ga994b70735a97c25f30a7f26981c3334e">tTalkboxFloat_update</a></div><div class="ttdeci">void tTalkboxFloat_update(tTalkboxFloat *const)</div><div class="ttdoc">update internal parameters...</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:412</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gad79a5e074c0f99ac7c7af3d530fdd214"><div class="ttname"><a href="group__tformantshifter.html#gad79a5e074c0f99ac7c7af3d530fdd214">tFormantShifter_initToPool</a></div><div class="ttdeci">void tFormantShifter_initToPool(tFormantShifter *const, int order, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1844</div></div>
+<div class="ttc" id="agroup__tretune_html_ga44aa80248c741e3a86ff7ae91cba01ca"><div class="ttname"><a href="group__tretune.html#ga44aa80248c741e3a86ff7ae91cba01ca">tRetune_init</a></div><div class="ttdeci">void tRetune_init(tRetune *const, int numVoices, int bufSize, int frameSize)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1517</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga1b3ffa561a92ba5f64e51eeb670e16ac"><div class="ttname"><a href="group__tsolad.html#ga1b3ffa561a92ba5f64e51eeb670e16ac">tSOLAD_setPitchFactor</a></div><div class="ttdeci">void tSOLAD_setPitchFactor(tSOLAD *w, float pitchfactor)</div><div class="ttdoc">set pitch factor between 0.25 and 4</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1058</div></div>
+<div class="ttc" id="agroup__tvocoder_html_gae4c7fd1376d81bcfce49f4a8a407ec16"><div class="ttname"><a href="group__tvocoder.html#gae4c7fd1376d81bcfce49f4a8a407ec16">tVocoder_suspend</a></div><div class="ttdeci">void tVocoder_suspend(tVocoder *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:861</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_gadd4842e734ce7a996920a77d252c43cf"><div class="ttname"><a href="group__tpitchshift.html#gadd4842e734ce7a996920a77d252c43cf">tPitchShift_initToPool</a></div><div class="ttdeci">void tPitchShift_initToPool(tPitchShift *const, tPeriodDetection *const, float *out, int bufSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1365</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gab45e4c3be7561f157b4ab47de8d939db"><div class="ttname"><a href="group__ttalkbox.html#gab45e4c3be7561f157b4ab47de8d939db">tTalkbox_tick</a></div><div class="ttdeci">float tTalkbox_tick(tTalkbox *const, float synth, float voice)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:209</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_gae08e32413cb892b0aa5c489d9e9ef3dd"><div class="ttname"><a href="group__ttalkboxfloat.html#gae08e32413cb892b0aa5c489d9e9ef3dd">tTalkboxFloat_setFreeze</a></div><div class="ttdeci">void tTalkboxFloat_setFreeze(tTalkboxFloat *const voc, float freeze)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:668</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gadf13d01a3ed6e8941d93e521769f5447"><div class="ttname"><a href="group__tformantshifter.html#gadf13d01a3ed6e8941d93e521769f5447">tFormantShifter_ioSamples</a></div><div class="ttdeci">void tFormantShifter_ioSamples(tFormantShifter *const, float *in, float *out, int size, float fwarp)</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga6b306f7b3f6abc6a2e48ce932d74e720"><div class="ttname"><a href="group__tautotune.html#ga6b306f7b3f6abc6a2e48ce932d74e720">tAutotune_initToPool</a></div><div class="ttdeci">void tAutotune_initToPool(tAutotune *const, int numVoices, int bufSize, int frameSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1675</div></div>
+<div class="ttc" id="agroup__tretune_html_ga11143bcfb7ebdd4a38c183a8a87e987f"><div class="ttname"><a href="group__tretune.html#ga11143bcfb7ebdd4a38c183a8a87e987f">tRetune_initToPool</a></div><div class="ttdeci">void tRetune_initToPool(tRetune *const, int numVoices, int bufSize, int frameSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1522</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga10ab230431665f2b621fd0b21b366e02"><div class="ttname"><a href="group__ttalkboxfloat.html#ga10ab230431665f2b621fd0b21b366e02">tTalkboxFloat_initToPool</a></div><div class="ttdeci">void tTalkboxFloat_initToPool(tTalkboxFloat *const, int bufsize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:366</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_gaa13740e5d8e0cab56e61eb0cb242fabe"><div class="ttname"><a href="group__trosenbergglottalpulse.html#gaa13740e5d8e0cab56e61eb0cb242fabe">tRosenbergGlottalPulse_tick</a></div><div class="ttdeci">float tRosenbergGlottalPulse_tick(tRosenbergGlottalPulse *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:900</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_ga6e02d685feef8233a0949e19718b2884"><div class="ttname"><a href="group__tformantshifter.html#ga6e02d685feef8233a0949e19718b2884">tFormantShifter_tick</a></div><div class="ttdeci">float tFormantShifter_tick(tFormantShifter *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1899</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gabdfa3fca0a50509623d4c57d851f3315"><div class="ttname"><a href="group__ttalkbox.html#gabdfa3fca0a50509623d4c57d851f3315">tTalkbox_update</a></div><div class="ttdeci">void tTalkbox_update(tTalkbox *const)</div><div class="ttdoc">update internal parameters...</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:86</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga8a3cc4f44b1a271133982d2aea9ed544"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga8a3cc4f44b1a271133982d2aea9ed544">tRosenbergGlottalPulse_init</a></div><div class="ttdeci">void tRosenbergGlottalPulse_init(tRosenbergGlottalPulse *const)</div><div class="ttdoc">Glottal Pulse (Rosenberg model)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:875</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_gad01eb39b5892107d65a3590f3ea69fec"><div class="ttname"><a href="group__ttalkboxfloat.html#gad01eb39b5892107d65a3590f3ea69fec">tTalkboxFloat_setWarpFactor</a></div><div class="ttdeci">void tTalkboxFloat_setWarpFactor(tTalkboxFloat *const voc, float warp)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:654</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_ga3f5493a4bce93a71124aed52d374cfdc"><div class="ttname"><a href="group__tformantshifter.html#ga3f5493a4bce93a71124aed52d374cfdc">tFormantShifter_setShiftFactor</a></div><div class="ttdeci">void tFormantShifter_setShiftFactor(tFormantShifter *const, float shiftFactor)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:2041</div></div>
+<div class="ttc" id="agroup__tretune_html_gadc97a085cc8e8bd4ba2900b215dd92ad"><div class="ttname"><a href="group__tretune.html#gadc97a085cc8e8bd4ba2900b215dd92ad">tRetune_setHopSize</a></div><div class="ttdeci">void tRetune_setHopSize(tRetune *const, int hs)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1629</div></div>
+<div class="ttc" id="agroup__tretune_html_ga1cf5ae651d2cbf0d903f14d7833d3d43"><div class="ttname"><a href="group__tretune.html#ga1cf5ae651d2cbf0d903f14d7833d3d43">tRetune_setTimeConstant</a></div><div class="ttdeci">void tRetune_setTimeConstant(tRetune *const, float tc)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1621</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga6197f6afcadbd023e1036c030c175fb1"><div class="ttname"><a href="group__tautotune.html#ga6197f6afcadbd023e1036c030c175fb1">tAutotune_tick</a></div><div class="ttdeci">float * tAutotune_tick(tAutotune *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1730</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga5f1f85266d1c3e968b9f277fd6530e61"><div class="ttname"><a href="group__ttalkbox.html#ga5f1f85266d1c3e968b9f277fd6530e61">tTalkbox_free</a></div><div class="ttdeci">void tTalkbox_free(tTalkbox *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:70</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga92607d41da7f4fbf93386e071806f788"><div class="ttname"><a href="group__tsolad.html#ga92607d41da7f4fbf93386e071806f788">tSOLAD_setReadLag</a></div><div class="ttdeci">void tSOLAD_setReadLag(tSOLAD *w, float readlag)</div><div class="ttdoc">force readpointer lag</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1067</div></div>
+<div class="ttc" id="agroup__tvocoder_html_ga6ae72878b932a14fac7503e4f3226312"><div class="ttname"><a href="group__tvocoder.html#ga6ae72878b932a14fac7503e4f3226312">tVocoder_update</a></div><div class="ttdeci">void tVocoder_update(tVocoder *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:710</div></div>
+<div class="ttc" id="agroup__tautotune_html_gac157ad740e040242b7ccd75680653501"><div class="ttname"><a href="group__tautotune.html#gac157ad740e040242b7ccd75680653501">tAutotune_setTimeConstant</a></div><div class="ttdeci">void tAutotune_setTimeConstant(tAutotune *const, float tc)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1777</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_gac8456d804e084f2c4938d1255c723cfc"><div class="ttname"><a href="group__ttalkboxfloat.html#gac8456d804e084f2c4938d1255c723cfc">tTalkboxFloat_suspend</a></div><div class="ttdeci">void tTalkboxFloat_suspend(tTalkboxFloat *const)</div><div class="ttdoc">clear any buffers...</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:441</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga7339007dec7bc4164d850e63d57a75ec"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga7339007dec7bc4164d850e63d57a75ec">tRosenbergGlottalPulse_setPulseLength</a></div><div class="ttdeci">void tRosenbergGlottalPulse_setPulseLength(tRosenbergGlottalPulse *const, float pulseLength)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:971</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gaaba470c9d175927857b9befd5e903da8"><div class="ttname"><a href="group__ttalkbox.html#gaaba470c9d175927857b9befd5e903da8">tTalkbox_lpcDurbin</a></div><div class="ttdeci">void tTalkbox_lpcDurbin(float *r, int p, float *k, float *g)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:176</div></div>
+<div class="ttc" id="agroup__tretune_html_gaf650307cc15069f1436d7e20d7ec88f2"><div class="ttname"><a href="group__tretune.html#gaf650307cc15069f1436d7e20d7ec88f2">tRetune_setWindowSize</a></div><div class="ttdeci">void tRetune_setWindowSize(tRetune *const, int ws)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1637</div></div>
+<div class="ttc" id="agroup__tretune_html_ga7b3b6fe968a292311a29d688829c0f2b"><div class="ttname"><a href="group__tretune.html#ga7b3b6fe968a292311a29d688829c0f2b">tRetune_getInputFreq</a></div><div class="ttdeci">float tRetune_getInputFreq(tRetune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1659</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gaf975f968b7428a7d744b2493c68267d4"><div class="ttname"><a href="group__tformantshifter.html#gaf975f968b7428a7d744b2493c68267d4">tFormantShifter_setIntensity</a></div><div class="ttdeci">void tFormantShifter_setIntensity(tFormantShifter *const, float intensity)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:2047</div></div>
+<div class="ttc" id="agroup__tautotune_html_gaf23dfecfff0ae55ece6af4b396ebbdeb"><div class="ttname"><a href="group__tautotune.html#gaf23dfecfff0ae55ece6af4b396ebbdeb">tAutotune_setTolerance</a></div><div class="ttdeci">void tAutotune_setTolerance(tAutotune *const, float tolerance)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1814</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_gac23f160eacd6098f0be43ef2ad50adba"><div class="ttname"><a href="group__trosenbergglottalpulse.html#gac23f160eacd6098f0be43ef2ad50adba">tRosenbergGlottalPulse_free</a></div><div class="ttdeci">void tRosenbergGlottalPulse_free(tRosenbergGlottalPulse *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:894</div></div>
+<div class="ttc" id="agroup__tsolad_html_gaca4ac87e9a68d8b88402fc4642956613"><div class="ttname"><a href="group__tsolad.html#gaca4ac87e9a68d8b88402fc4642956613">tSOLAD_initToPool</a></div><div class="ttdeci">void tSOLAD_initToPool(tSOLAD *const, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1010</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gac42065cf3278a41a73c1b42cdb4ab906"><div class="ttname"><a href="group__ttalkbox.html#gac42065cf3278a41a73c1b42cdb4ab906">tTalkbox_init</a></div><div class="ttdeci">void tTalkbox_init(tTalkbox *const, int bufsize)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:35</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga83b3a42d6348a062eaed4eace6fa9461"><div class="ttname"><a href="group__ttalkboxfloat.html#ga83b3a42d6348a062eaed4eace6fa9461">tTalkboxFloat_tick</a></div><div class="ttdeci">float tTalkboxFloat_tick(tTalkboxFloat *const, float synth, float voice)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:536</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga2e51fbab57ccc810832c23dc3286efb1"><div class="ttname"><a href="group__tsolad.html#ga2e51fbab57ccc810832c23dc3286efb1">tSOLAD_free</a></div><div class="ttdeci">void tSOLAD_free(tSOLAD *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1022</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga9345cb1b1bdb78e2c264dc711c29050b"><div class="ttname"><a href="group__ttalkbox.html#ga9345cb1b1bdb78e2c264dc711c29050b">tTalkbox_setFreeze</a></div><div class="ttdeci">void tTalkbox_setFreeze(tTalkbox *const voc, float freeze)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:341</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_ga6544286393ef4dbd68f8366345ec137e"><div class="ttname"><a href="group__tpitchshift.html#ga6544286393ef4dbd68f8366345ec137e">tPitchShift_shiftToFreq</a></div><div class="ttdeci">float tPitchShift_shiftToFreq(tPitchShift *const, float freq)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1439</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga337b99d9c13835ad7d44dc496de018d6"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga337b99d9c13835ad7d44dc496de018d6">tRosenbergGlottalPulse_initToPool</a></div><div class="ttdeci">void tRosenbergGlottalPulse_initToPool(tRosenbergGlottalPulse *const, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:880</div></div>
+<div class="ttc" id="agroup__tretune_html_ga95cb1e0f1f285c8e8b515bffcfc525e2"><div class="ttname"><a href="group__tretune.html#ga95cb1e0f1f285c8e8b515bffcfc525e2">tRetune_getInputPeriod</a></div><div class="ttdeci">float tRetune_getInputPeriod(tRetune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1652</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga667dcd77640c7a6b2fa3995d6d2190be"><div class="ttname"><a href="group__ttalkboxfloat.html#ga667dcd77640c7a6b2fa3995d6d2190be">tTalkboxFloat_lpcDurbin</a></div><div class="ttdeci">void tTalkboxFloat_lpcDurbin(float *r, int p, float *k, float *g)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:502</div></div>
+<div class="ttc" id="agroup__tvocoder_html_gaa54cfb22d5fab7c12d70d7e5fd4a0cd0"><div class="ttname"><a href="group__tvocoder.html#gaa54cfb22d5fab7c12d70d7e5fd4a0cd0">tVocoder_free</a></div><div class="ttdeci">void tVocoder_free(tVocoder *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:703</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gaa1697aa8f5614be25546943c7a3c6f46"><div class="ttname"><a href="group__tformantshifter.html#gaa1697aa8f5614be25546943c7a3c6f46">tFormantShifter_add</a></div><div class="ttdeci">float tFormantShifter_add(tFormantShifter *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1943</div></div>
+<div class="ttc" id="agroup__tvocoder_html_gad625ecd68ef438606e5a82fe11a3484f"><div class="ttname"><a href="group__tvocoder.html#gad625ecd68ef438606e5a82fe11a3484f">tVocoder_initToPool</a></div><div class="ttdeci">void tVocoder_initToPool(tVocoder *const, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:685</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga1a4f834888e5c77c8bfc8e85f827127b"><div class="ttname"><a href="group__tsolad.html#ga1a4f834888e5c77c8bfc8e85f827127b">tSOLAD_init</a></div><div class="ttdeci">void tSOLAD_init(tSOLAD *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1005</div></div>
+<div class="ttc" id="agroup__tautotune_html_gaf151ba40269001a3518cd3d591e1d4b3"><div class="ttname"><a href="group__tautotune.html#gaf151ba40269001a3518cd3d591e1d4b3">tAutotune_setFidelityThreshold</a></div><div class="ttdeci">void tAutotune_setFidelityThreshold(tAutotune *const, float threshold)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1801</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga9f9fbc4bd62efcd9502a0217740e5366"><div class="ttname"><a href="group__ttalkboxfloat.html#ga9f9fbc4bd62efcd9502a0217740e5366">tTalkboxFloat_setQuality</a></div><div class="ttdeci">void tTalkboxFloat_setQuality(tTalkboxFloat *const, float quality)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:643</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_gaa11d2bf41d69ed89fe86f5840fe1b612"><div class="ttname"><a href="group__tpitchshift.html#gaa11d2bf41d69ed89fe86f5840fe1b612">tPitchShift_free</a></div><div class="ttdeci">void tPitchShift_free(tPitchShift *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1391</div></div>
+<div class="ttc" id="agroup__tformantshifter_html_gab1f033c37da7572103cb168e4a49449c"><div class="ttname"><a href="group__tformantshifter.html#gab1f033c37da7572103cb168e4a49449c">tFormantShifter_init</a></div><div class="ttdeci">void tFormantShifter_init(tFormantShifter *const, int order)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1839</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_gae0e16e4627683deeb7d849f9f6b13367"><div class="ttname"><a href="group__ttalkbox.html#gae0e16e4627683deeb7d849f9f6b13367">tTalkbox_setQuality</a></div><div class="ttdeci">void tTalkbox_setQuality(tTalkbox *const, float quality)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:316</div></div>
+<div class="ttc" id="agroup__trosenbergglottalpulse_html_ga703d56589fa0121e978609f5315ea1e7"><div class="ttname"><a href="group__trosenbergglottalpulse.html#ga703d56589fa0121e978609f5315ea1e7">tRosenbergGlottalPulse_setOpenLength</a></div><div class="ttdeci">void tRosenbergGlottalPulse_setOpenLength(tRosenbergGlottalPulse *const, float openLength)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:964</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga15d263af4269739442c7187a403996e4"><div class="ttname"><a href="group__ttalkbox.html#ga15d263af4269739442c7187a403996e4">tTalkbox_setWarpFactor</a></div><div class="ttdeci">void tTalkbox_setWarpFactor(tTalkbox *const voc, float warp)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:327</div></div>
+<div class="ttc" id="agroup__tvocoder_html_gaf809f26807d22a348156bbcced99ae91"><div class="ttname"><a href="group__tvocoder.html#gaf809f26807d22a348156bbcced99ae91">tVocoder_tick</a></div><div class="ttdeci">float tVocoder_tick(tVocoder *const, float synth, float voice)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:794</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga361f8a48a8ac118804852e99022a2144"><div class="ttname"><a href="group__ttalkbox.html#ga361f8a48a8ac118804852e99022a2144">tTalkbox_suspend</a></div><div class="ttdeci">void tTalkbox_suspend(tTalkbox *const)</div><div class="ttdoc">clear any buffers...</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:115</div></div>
+<div class="ttc" id="agroup__ttalkbox_html_ga37320fd9c7f3c4d065fa4ae27431bc61"><div class="ttname"><a href="group__ttalkbox.html#ga37320fd9c7f3c4d065fa4ae27431bc61">tTalkbox_setWarpOn</a></div><div class="ttdeci">void tTalkbox_setWarpOn(tTalkbox *const voc, float warpOn)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:334</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_gad3fcea1040f86daa6bbd791c9f10c3a5"><div class="ttname"><a href="group__tpitchshift.html#gad3fcea1040f86daa6bbd791c9f10c3a5">tPitchShift_shiftToFunc</a></div><div class="ttdeci">float tPitchShift_shiftToFunc(tPitchShift *const, float(*fun)(float))</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1474</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_gabbd684033b9869aaac6eb57a694904d9"><div class="ttname"><a href="group__ttalkboxfloat.html#gabbd684033b9869aaac6eb57a694904d9">tTalkboxFloat_free</a></div><div class="ttdeci">void tTalkboxFloat_free(tTalkboxFloat *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:396</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga4a9d62be45b3f85144efb5f6bb5d1d73"><div class="ttname"><a href="group__tautotune.html#ga4a9d62be45b3f85144efb5f6bb5d1d73">tAutotune_setFreq</a></div><div class="ttdeci">void tAutotune_setFreq(tAutotune *const, float f, int voice)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1770</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga6ff97dea55ab5fa791fca6a6c4cacdbc"><div class="ttname"><a href="group__tsolad.html#ga6ff97dea55ab5fa791fca6a6c4cacdbc">tSOLAD_setPeriod</a></div><div class="ttdeci">void tSOLAD_setPeriod(tSOLAD *w, float period)</div><div class="ttdoc">set periodicity analysis data</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1049</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga7435d0f32dbeaeb3e1483fad156ad104"><div class="ttname"><a href="group__tautotune.html#ga7435d0f32dbeaeb3e1483fad156ad104">tAutotune_setAlpha</a></div><div class="ttdeci">void tAutotune_setAlpha(tAutotune *const, float alpha)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1808</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga074c2670dc08cf1c4a8f27737a96c3a6"><div class="ttname"><a href="group__tautotune.html#ga074c2670dc08cf1c4a8f27737a96c3a6">tAutotune_getInputPeriod</a></div><div class="ttdeci">float tAutotune_getInputPeriod(tAutotune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1820</div></div>
+<div class="ttc" id="agroup__tsolad_html_ga69b20c8acef373a2590f4e3138d1d4d8"><div class="ttname"><a href="group__tsolad.html#ga69b20c8acef373a2590f4e3138d1d4d8">tSOLAD_resetState</a></div><div class="ttdeci">void tSOLAD_resetState(tSOLAD *w)</div><div class="ttdoc">reset state variables</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1082</div></div>
+<div class="ttc" id="agroup__tvocoder_html_ga5a0dc03419aff30be9341416d5143f50"><div class="ttname"><a href="group__tvocoder.html#ga5a0dc03419aff30be9341416d5143f50">tVocoder_init</a></div><div class="ttdeci">void tVocoder_init(tVocoder *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:680</div></div>
+<div class="ttc" id="agroup__tpitchshift_html_gac3dd2f153d36d17692c54a2b766d2494"><div class="ttname"><a href="group__tpitchshift.html#gac3dd2f153d36d17692c54a2b766d2494">tPitchShift_init</a></div><div class="ttdeci">void tPitchShift_init(tPitchShift *const, tPeriodDetection *const, float *out, int bufSize)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1360</div></div>
+<div class="ttc" id="agroup__tautotune_html_ga95658493f0095108e79de5c1ee685a22"><div class="ttname"><a href="group__tautotune.html#ga95658493f0095108e79de5c1ee685a22">tAutotune_getInputFreq</a></div><div class="ttdeci">float tAutotune_getInputFreq(tAutotune *const)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1827</div></div>
+<div class="ttc" id="agroup__ttalkboxfloat_html_ga7d3e3bc6ecf3e1bd9c1ebe5f717ba06b"><div class="ttname"><a href="group__ttalkboxfloat.html#ga7d3e3bc6ecf3e1bd9c1ebe5f717ba06b">tTalkboxFloat_tickFrozen</a></div><div class="ttdeci">float tTalkboxFloat_tickFrozen(tTalkboxFloat *const voc, float synth, float voice)</div></div>
+<div class="ttc" id="agroup__tautotune_html_gaf98c92df2312518b1d0069e76dd6c724"><div class="ttname"><a href="group__tautotune.html#gaf98c92df2312518b1d0069e76dd6c724">tAutotune_init</a></div><div class="ttdeci">void tAutotune_init(tAutotune *const, int numVoices, int bufSize, int frameSize)</div><div class="ttdef"><b>Definition:</b> leaf-effects.c:1670</div></div>
 <!-- HTML footer for doxygen 1.8.18-->
 <!-- start footer part -->
 <footer></footer><script>getFooter()</script>

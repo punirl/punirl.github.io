@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -124,18 +124,24 @@ Functions</h2></td></tr>
 <tr class="memitem:gaad8376b6c55995e763ce26d084d23a67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#gaad8376b6c55995e763ce26d084d23a67">tPoly_noteOff</a> (tPoly *const poly, uint8_t note)</td></tr>
 <tr class="memdesc:gaad8376b6c55995e763ce26d084d23a67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a note from the poly handler.  <a href="group__tpoly.html#gaad8376b6c55995e763ce26d084d23a67">More...</a><br /></td></tr>
 <tr class="separator:gaad8376b6c55995e763ce26d084d23a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5abdfc6cd4b26b74647cb23a822b0f38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga5abdfc6cd4b26b74647cb23a822b0f38">tPoly_orderedAddToStack</a> (tPoly *const poly, uint8_t note)</td></tr>
+<tr class="separator:ga5abdfc6cd4b26b74647cb23a822b0f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf3aae31d4b20eb71be39351989bc06d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#gaf3aae31d4b20eb71be39351989bc06d1">tPoly_setNumVoices</a> (tPoly *const poly, uint8_t numVoices)</td></tr>
 <tr class="memdesc:gaf3aae31d4b20eb71be39351989bc06d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of voices available to play notes.  <a href="group__tpoly.html#gaf3aae31d4b20eb71be39351989bc06d1">More...</a><br /></td></tr>
 <tr class="separator:gaf3aae31d4b20eb71be39351989bc06d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1620006f72aa00a6f6b643f0bae29a33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga1620006f72aa00a6f6b643f0bae29a33">tPoly_setPitchGlideActive</a> (tPoly *const poly, oBool isActive)</td></tr>
-<tr class="memdesc:ga1620006f72aa00a6f6b643f0bae29a33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether pitch glide over note changes in voices is active.  <a href="group__tpoly.html#ga1620006f72aa00a6f6b643f0bae29a33">More...</a><br /></td></tr>
-<tr class="separator:ga1620006f72aa00a6f6b643f0bae29a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ddfc026e440e208064ce48d655ee317"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga9ddfc026e440e208064ce48d655ee317">tPoly_setPitchGlideActive</a> (tPoly *const poly, int isActive)</td></tr>
+<tr class="memdesc:ga9ddfc026e440e208064ce48d655ee317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether pitch glide over note changes in voices is active.  <a href="group__tpoly.html#ga9ddfc026e440e208064ce48d655ee317">More...</a><br /></td></tr>
+<tr class="separator:ga9ddfc026e440e208064ce48d655ee317"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga12e5fba9072b6e7d91d50a2e3c82bc87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga12e5fba9072b6e7d91d50a2e3c82bc87">tPoly_setPitchGlideTime</a> (tPoly *const poly, float t)</td></tr>
 <tr class="memdesc:ga12e5fba9072b6e7d91d50a2e3c82bc87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set how long pitch glide over note changes in voices takes.  <a href="group__tpoly.html#ga12e5fba9072b6e7d91d50a2e3c82bc87">More...</a><br /></td></tr>
 <tr class="separator:ga12e5fba9072b6e7d91d50a2e3c82bc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8608941b79fe9ba1b8e92b5a8046a915"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga8608941b79fe9ba1b8e92b5a8046a915">tPoly_setPitchBend</a> (tPoly *const poly, float pitchBend)</td></tr>
 <tr class="memdesc:ga8608941b79fe9ba1b8e92b5a8046a915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the amount of pitch bend.  <a href="group__tpoly.html#ga8608941b79fe9ba1b8e92b5a8046a915">More...</a><br /></td></tr>
 <tr class="separator:ga8608941b79fe9ba1b8e92b5a8046a915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8dad5daee7f10d0bb59e96ad55ec0402"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga8dad5daee7f10d0bb59e96ad55ec0402">tPoly_setBendGlideTime</a> (tPoly *const poly, float t)</td></tr>
+<tr class="separator:ga8dad5daee7f10d0bb59e96ad55ec0402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f6a93b108ac8654eaa860575d2f1cd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#ga1f6a93b108ac8654eaa860575d2f1cd5">tPoly_setBendSamplesPerTick</a> (tPoly *const poly, float t)</td></tr>
+<tr class="separator:ga1f6a93b108ac8654eaa860575d2f1cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf30b4a4aabd43c297d49258acf8e0cb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpoly.html#gaf30b4a4aabd43c297d49258acf8e0cb3">tPoly_tickPitch</a> (tPoly *const poly)</td></tr>
 <tr class="memdesc:gaf30b4a4aabd43c297d49258acf8e0cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute all tick-rate changes in the poly handler's pitch, including glide and bend.  <a href="group__tpoly.html#gaf30b4a4aabd43c297d49258acf8e0cb3">More...</a><br /></td></tr>
 <tr class="separator:gaf30b4a4aabd43c297d49258acf8e0cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,6 +362,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga5abdfc6cd4b26b74647cb23a822b0f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5abdfc6cd4b26b74647cb23a822b0f38">&#9670;&nbsp;</a></span>tPoly_orderedAddToStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tPoly_orderedAddToStack </td>
+          <td>(</td>
+          <td class="paramtype">tPoly *const&#160;</td>
+          <td class="paramname"><em>poly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>note</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gaf3aae31d4b20eb71be39351989bc06d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf3aae31d4b20eb71be39351989bc06d1">&#9670;&nbsp;</a></span>tPoly_setNumVoices()</h2>
 
@@ -393,8 +433,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga1620006f72aa00a6f6b643f0bae29a33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1620006f72aa00a6f6b643f0bae29a33">&#9670;&nbsp;</a></span>tPoly_setPitchGlideActive()</h2>
+<a id="ga9ddfc026e440e208064ce48d655ee317"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9ddfc026e440e208064ce48d655ee317">&#9670;&nbsp;</a></span>tPoly_setPitchGlideActive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -408,7 +448,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">oBool&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>isActive</em>&#160;</td>
         </tr>
         <tr>
@@ -498,6 +538,74 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">poly</td><td>A pointer to the relevant tPoly. </td></tr>
     <tr><td class="paramname">pitchBend</td><td>The new amount of pitch bend. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga8dad5daee7f10d0bb59e96ad55ec0402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8dad5daee7f10d0bb59e96ad55ec0402">&#9670;&nbsp;</a></span>tPoly_setBendGlideTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tPoly_setBendGlideTime </td>
+          <td>(</td>
+          <td class="paramtype">tPoly *const&#160;</td>
+          <td class="paramname"><em>poly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga1f6a93b108ac8654eaa860575d2f1cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f6a93b108ac8654eaa860575d2f1cd5">&#9670;&nbsp;</a></span>tPoly_setBendSamplesPerTick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tPoly_setBendSamplesPerTick </td>
+          <td>(</td>
+          <td class="paramtype">tPoly *const&#160;</td>
+          <td class="paramname"><em>poly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
   </table>
   </dd>
 </dl>

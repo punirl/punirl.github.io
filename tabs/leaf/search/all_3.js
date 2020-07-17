@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['clearonallocation_4',['clearOnAllocation',['../struct_l_e_a_f.html#ad65a59f4aa73365d2e77aeddfca7a449',1,'LEAF']]]
+  ['delay_3',['Delay',['../group__delay.html',1,'']]],
+  ['distortion_4',['Distortion',['../group__distortion.html',1,'']]],
+  ['dynamics_5',['Dynamics',['../group__dynamics.html',1,'']]]
 ];

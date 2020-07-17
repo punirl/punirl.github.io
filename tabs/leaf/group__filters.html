@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -97,10 +97,58 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#groups">Modules</a>  </div>
   <div class="headertitle">
 <div class="title">Filters</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group__tallpass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tallpass.html">tAllpass</a></td></tr>
+<tr class="memdesc:group__tallpass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schroeder allpass. Comb-filter with feedforward and feedback. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tonepole"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tonepole.html">tOnePole</a></td></tr>
+<tr class="memdesc:group__tonepole"><td class="mdescLeft">&#160;</td><td class="mdescRight">OnePole filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__ttwopole"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ttwopole.html">tTwoPole</a></td></tr>
+<tr class="memdesc:group__ttwopole"><td class="mdescLeft">&#160;</td><td class="mdescRight">TwoPole filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tonezero"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tonezero.html">tOneZero</a></td></tr>
+<tr class="memdesc:group__tonezero"><td class="mdescLeft">&#160;</td><td class="mdescRight">OneZero filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__ttwozero"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ttwozero.html">tTwoZero</a></td></tr>
+<tr class="memdesc:group__ttwozero"><td class="mdescLeft">&#160;</td><td class="mdescRight">TwoZero filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tpolezero"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tpolezero.html">tPoleZero</a></td></tr>
+<tr class="memdesc:group__tpolezero"><td class="mdescLeft">&#160;</td><td class="mdescRight">PoleZero filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tbiquad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tbiquad.html">tBiQuad</a></td></tr>
+<tr class="memdesc:group__tbiquad"><td class="mdescLeft">&#160;</td><td class="mdescRight">BiQuad filter, reimplemented from STK (Cook and Scavone). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tsvf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tsvf.html">tSVF</a></td></tr>
+<tr class="memdesc:group__tsvf"><td class="mdescLeft">&#160;</td><td class="mdescRight">State Variable Filter, algorithm from Andy Simper. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tefficientsvf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tefficientsvf.html">tEfficientSVF</a></td></tr>
+<tr class="memdesc:group__tefficientsvf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Efficient State Variable Filter for 14-bit control input, [0, 4096). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__thighpass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thighpass.html">tHighpass</a></td></tr>
+<tr class="memdesc:group__thighpass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple Highpass filter. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tbutterworth"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tbutterworth.html">tButterworth</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tfir"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tfir.html">tFIR</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tmedianfilter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmedianfilter.html">tMedianFilter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tvzfilter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tvzfilter.html">tVZFilter</a></td></tr>
+<tr class="memdesc:group__tvzfilter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vadim Zavalishin style from VA book (from implementation in RSlib posted to kvr forum) <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__tdiodefilter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tdiodefilter.html">tDiodeFilter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.18-->
 <!-- start footer part -->

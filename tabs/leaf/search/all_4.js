@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['delay_5',['Delay',['../group__delay.html',1,'']]],
-  ['distortion_6',['Distortion',['../group__distortion.html',1,'']]],
-  ['dynamics_7',['Dynamics',['../group__dynamics.html',1,'']]]
+  ['effects_6',['Effects',['../group__effects.html',1,'']]],
+  ['electrical_20models_7',['Electrical Models',['../group__electrical.html',1,'']]],
+  ['envelopes_8',['Envelopes',['../group__envelopes.html',1,'']]]
 ];

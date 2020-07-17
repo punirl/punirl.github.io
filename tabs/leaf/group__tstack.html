@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -104,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>A basic stack of integers with a fixed max size of 128, used by tPoly to keep track of MIDI notes.  
+<p>A basic stack of integers with a fixed capacity of 128, used by tPoly to keep track of MIDI notes.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -150,7 +150,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga15d80c513c339ff2c87fb96fcfca9353"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>A basic stack of integers with a fixed max size of 128, used by tPoly to keep track of MIDI notes. </p>
+<p>A basic stack of integers with a fixed capacity of 128, used by tPoly to keep track of MIDI notes. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gae9934aa98a683fae3e29e81a79741ed3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae9934aa98a683fae3e29e81a79741ed3">&#9670;&nbsp;</a></span>tStack_init()</h2>
@@ -194,7 +194,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">tMempool *const&#160;</td>
-          <td class="paramname"><em>pool</em>&#160;</td>
+          <td class="paramname"><em>mempool</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -208,7 +208,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stack</td><td>A pointer to the tStack to be initialized. </td></tr>
-    <tr><td class="paramname">pool</td><td>A pointer to the tMempool to which the tStack should be initialized. </td></tr>
+    <tr><td class="paramname">mempool</td><td>A pointer to the tMempool to which the tStack should be initialized. </td></tr>
   </table>
   </dd>
 </dl>

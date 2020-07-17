@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blocksize_3',['blockSize',['../struct_l_e_a_f.html#a4aaa73e329d20f35039fa5cdd2e6f648',1,'LEAF']]]
+  ['clearonallocation_2',['clearOnAllocation',['../struct_l_e_a_f.html#ad65a59f4aa73365d2e77aeddfca7a449',1,'LEAF']]]
 ];

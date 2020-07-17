@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -132,277 +132,556 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;leaf-math.h&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;leaf-filters.h&quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;leaf-envelopes.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">/* Envelope Follower */</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tEnvelopeFollower</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">float</span> y;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">float</span> a_thresh;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">float</span> d_coeff;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    } _tEnvelopeFollower;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">typedef</span> _tEnvelopeFollower* tEnvelopeFollower;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span>    tEnvelopeFollower_init          (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThreshold, <span class="keywordtype">float</span> decayCoeff);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span>    tEnvelopeFollower_initToPool    (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThreshold, <span class="keywordtype">float</span> decayCoeff, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span>    tEnvelopeFollower_free          (tEnvelopeFollower* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">float</span>   tEnvelopeFollower_tick          (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> x);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">int</span>     tEnvelopeFollower_decayCoeff    (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> decayCoeff);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">int</span>     tEnvelopeFollower_attackThresh  (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThresh);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">/* Zero Crossing Detector */</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tZeroCrossing {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">int</span> count;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">int</span> maxWindowSize;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">int</span> currentWindowSize;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">float</span> invCurrentWindowSize;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        uint16_t* countBuffer;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">int</span> prevPosition;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordtype">int</span> position;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    } _tZeroCrossing;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">typedef</span> _tZeroCrossing* tZeroCrossing;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing_init         (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">int</span> maxWindowSize);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing_initToPool   (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">int</span> maxWindowSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing_free         (tZeroCrossing* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">float</span>   tZeroCrossing_tick         (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing_setWindow        (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">float</span> windowSize);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">/* PowerEnvelopeFollower */</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPowerFollower</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">float</span> factor, oneminusfactor;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">float</span> curr;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } _tPowerFollower;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">typedef</span> _tPowerFollower* tPowerFollower;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>    tPowerFollower_init         (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span>    tPowerFollower_initToPool   (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span>    tPowerFollower_free         (tPowerFollower* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">float</span>   tPowerFollower_tick         (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">float</span>   tPowerFollower_sample       (tPowerFollower* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">int</span>     tPowerFollower_setFactor    (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">// ENV~ from PD, modified for LEAF</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#define MAXOVERLAP 32</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#define INITVSTAKEN 64</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#define ENV_WINDOW_SIZE 1024</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#define ENV_HOP_SIZE 256</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tEnvPD</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordtype">float</span> buf[ENV_WINDOW_SIZE + INITVSTAKEN];</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        uint16_t x_phase;                    <span class="comment">/* number of points since last output */</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        uint16_t x_period;                   <span class="comment">/* requested period of output */</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        uint16_t x_realperiod;               <span class="comment">/* period rounded up to vecsize multiple */</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        uint16_t x_npoints;                  <span class="comment">/* analysis window size in samples */</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordtype">float</span> x_result;                 <span class="comment">/* result to output */</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">float</span> x_sumbuf[MAXOVERLAP];     <span class="comment">/* summing buffer */</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordtype">float</span> x_f;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        uint16_t windowSize, hopSize, blockSize;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        uint16_t x_allocforvs;               <span class="comment">/* extra buffer for DSP vector size */</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    } _tEnvPD;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">typedef</span> _tEnvPD* tEnvPD;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">void</span>    tEnvPD_init             (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">int</span> hopSize, <span class="keywordtype">int</span> blockSize);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">void</span>    tEnvPD_initToPool       (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">int</span> hopSize, <span class="keywordtype">int</span> blockSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span>    tEnvPD_free             (tEnvPD* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">float</span>   tEnvPD_tick             (tEnvPD* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span>    tEnvPD_processBlock     (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;leaf-delay.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tEnvelopeFollower</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">float</span> y;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">float</span> a_thresh;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">float</span> d_coeff;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } _tEnvelopeFollower;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">typedef</span> _tEnvelopeFollower* tEnvelopeFollower;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvelopefollower.html#ga294a33b0f81578dffffec8097676f910">tEnvelopeFollower_init</a>          (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThreshold, <span class="keywordtype">float</span> decayCoeff);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvelopefollower.html#ga7d5b75526457b2098f06df8394a82c20">tEnvelopeFollower_initToPool</a>    (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThreshold, <span class="keywordtype">float</span> decayCoeff, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvelopefollower.html#ga798edc825af5cda6af9ee8ad43381de8">tEnvelopeFollower_free</a>          (tEnvelopeFollower* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tenvelopefollower.html#ga3a2df8ff251272de5dbe8d9318c9cbba">tEnvelopeFollower_tick</a>          (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> x);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tenvelopefollower.html#ga5d2f20c3c0bb2b0952b1c17d4a2c98b8">tEnvelopeFollower_decayCoeff</a>    (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> decayCoeff);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tenvelopefollower.html#ga7be8c7b6f08a5ae8748f8d021125ee30">tEnvelopeFollower_attackThresh</a>  (tEnvelopeFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> attackThresh);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">/* Zero Crossing Detector */</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tZeroCrossing {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordtype">int</span> count;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordtype">int</span> maxWindowSize;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordtype">int</span> currentWindowSize;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordtype">float</span> invCurrentWindowSize;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        uint16_t* countBuffer;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordtype">int</span> prevPosition;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordtype">int</span> position;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    } _tZeroCrossing;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">typedef</span> _tZeroCrossing* tZeroCrossing;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">/* tAttackDetection */</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">#define DEFBLOCKSIZE 1024</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#define DEFTHRESHOLD 6</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#define DEFATTACK    10</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#define DEFRELEASE    10</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAttackDetection</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordtype">float</span> env;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="comment">//Attack &amp; Release times in msec</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordtype">int</span> atk;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordtype">int</span> rel;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="comment">//Attack &amp; Release coefficients based on times</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordtype">float</span> atk_coeff;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keywordtype">float</span> rel_coeff;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <span class="keywordtype">int</span> blocksize;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordtype">int</span> samplerate;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="comment">//RMS amplitude of previous block - used to decide if attack is present</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordtype">float</span> prevAmp;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">float</span> threshold;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    } _tAttackDetection;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">typedef</span> _tAttackDetection* tAttackDetection;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_init           (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> blocksize, <span class="keywordtype">int</span> atk, <span class="keywordtype">int</span> rel);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_initToPool     (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> blocksize, <span class="keywordtype">int</span> atk, <span class="keywordtype">int</span> rel, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_free           (tAttackDetection* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">// set expected input blocksize</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_setBlocksize   (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">// change atkDetector sample rate</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_setSamplerate  (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inRate);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// set attack time and coeff</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_setAttack      (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inAtk);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// set release time and coeff</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_setRelease     (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inRel);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">// set level above which values are identified as attacks</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">void</span>    tAttackDetection_setThreshold   (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> thres);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tzerocrossing.html#ga95dee0455b05b55f423be9c4c2b7b34b">tZeroCrossing_init</a>         (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">int</span> maxWindowSize);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tzerocrossing.html#ga873bf05450d1043839d36a9b8b971f2e">tZeroCrossing_initToPool</a>   (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">int</span> maxWindowSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tzerocrossing.html#ga725a38b0414d2888660c14a52f0579ce">tZeroCrossing_free</a>         (tZeroCrossing* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tzerocrossing.html#ga4ad51c547e85bdbfd86e522e3437d5d3">tZeroCrossing_tick</a>         (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tzerocrossing.html#ga744530c43a089f7fce910991737456a1">tZeroCrossing_setWindow</a>        (tZeroCrossing* <span class="keyword">const</span>, <span class="keywordtype">float</span> windowSize);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">/* PowerEnvelopeFollower */</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPowerFollower</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordtype">float</span> factor, oneminusfactor;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordtype">float</span> curr;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    } _tPowerFollower;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keyword">typedef</span> _tPowerFollower* tPowerFollower;</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="comment">// find largest transient in input block, return index of attack</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">int</span>     tAttackDetection_detect         (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> *in);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// tSNAC: period detector</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">// from Katja Vetters http://www.katjaas.nl/helmholtz/helmholtz.html</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#define SNAC_FRAME_SIZE 1024           // default analysis framesize // should be the same as (or smaller than?) PS_FRAME_SIZE</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#define DEFOVERLAP 1                // default overlap</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#define DEFBIAS 0.2f        // default bias</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#define DEFMINRMS 0.003f   // default minimum RMS</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#define SEEK 0.85f       // seek-length as ratio of framesize</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSNAC</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordtype">float</span>* inputbuf;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordtype">float</span>* processbuf;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keywordtype">float</span>* spectrumbuf;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordtype">float</span>* biasbuf;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        uint16_t timeindex;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        uint16_t framesize;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        uint16_t overlap;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        uint16_t periodindex;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordtype">float</span> periodlength;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keywordtype">float</span> fidelity;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordtype">float</span> biasfactor;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordtype">float</span> minrms;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    } _tSNAC;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keyword">typedef</span> _tSNAC* tSNAC;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">void</span>    tSNAC_init          (tSNAC* <span class="keyword">const</span>, <span class="keywordtype">int</span> overlaparg);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">void</span>    tSNAC_initToPool    (tSNAC* <span class="keyword">const</span>, <span class="keywordtype">int</span> overlaparg, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordtype">void</span>    tSNAC_free          (tSNAC* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    </div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">void</span>    tSNAC_ioSamples     (tSNAC *s, <span class="keywordtype">float</span> *in, <span class="keywordtype">float</span> *out, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">void</span>    tSNAC_setOverlap    (tSNAC *s, <span class="keywordtype">int</span> lap);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">void</span>    tSNAC_setBias       (tSNAC *s, <span class="keywordtype">float</span> bias);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordtype">void</span>    tSNAC_setMinRMS     (tSNAC *s, <span class="keywordtype">float</span> rms);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpowerfollower.html#gadb67420e0d50fc047b1e3d674204cdf6">tPowerFollower_init</a>         (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpowerfollower.html#ga726f0b8ec4ab97346fb8521934452a2e">tPowerFollower_initToPool</a>   (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpowerfollower.html#ga479317d7fd22a86a832ebec92eae4782">tPowerFollower_free</a>         (tPowerFollower* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpowerfollower.html#ga0b422a35ef8ccdd72b3db45fc53c1e96">tPowerFollower_tick</a>         (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpowerfollower.html#ga43f058c6413f39aeac137d67454e7195">tPowerFollower_sample</a>       (tPowerFollower* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tpowerfollower.html#gac7ab521ba7345c90b2455acc66a7caf1">tPowerFollower_setFactor</a>    (tPowerFollower* <span class="keyword">const</span>, <span class="keywordtype">float</span> factor);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// ENV~ from PD, modified for LEAF</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">#define MAXOVERLAP 32</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="preprocessor">#define INITVSTAKEN 64</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor">#define ENV_WINDOW_SIZE 1024</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="preprocessor">#define ENV_HOP_SIZE 256</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">/*To get freq, perform SAMPLE_RATE/snac_getperiod() */</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">float</span>   tSNAC_getPeriod     (tSNAC *s);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordtype">float</span>   tSNAC_getFidelity   (tSNAC *s);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="preprocessor">#define DEFPITCHRATIO 2.0f</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#define DEFTIMECONSTANT 100.0f</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">#define DEFHOPSIZE 64</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="preprocessor">#define DEFWINDOWSIZE 64</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#define FBA 20</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="preprocessor">#define HPFREQ 40.0f</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="comment">// Period detection</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPeriodDetection</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    {</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        tEnvPD env;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        tSNAC snac;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordtype">float</span>* outBuffer;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordtype">int</span> framesPerBuffer;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordtype">int</span> curBlock;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keywordtype">int</span> lastBlock;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordtype">int</span> indexstore;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">int</span> iLast;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordtype">int</span> index;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keywordtype">float</span> period;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        uint16_t hopSize;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        uint16_t windowSize;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        uint8_t fba;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordtype">float</span> radius;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordtype">float</span> max;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordtype">float</span> lastmax;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordtype">float</span> deltamax;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordtype">float</span> fidelityThreshold;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordtype">float</span> history;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keywordtype">float</span> alpha;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="keywordtype">float</span> tolerance;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    } _tPeriodDetection;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">typedef</span> _tPeriodDetection* tPeriodDetection;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_init               (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_initToPool         (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_free               (tPeriodDetection* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordtype">float</span>   tPeriodDetection_tick               (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordtype">float</span>   tPeriodDetection_getPeriod          (tPeriodDetection* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_setHopSize         (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_setWindowSize      (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_setFidelityThreshold(tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_setAlpha           (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> alpha);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keywordtype">void</span>    tPeriodDetection_setTolerance       (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> tolerance);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;}</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">#endif  // LEAF_ANALYSIS_H_INCLUDED</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tEnvPD</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordtype">float</span> buf[ENV_WINDOW_SIZE + INITVSTAKEN];</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        uint16_t x_phase;                    <span class="comment">/* number of points since last output */</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        uint16_t x_period;                   <span class="comment">/* requested period of output */</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        uint16_t x_realperiod;               <span class="comment">/* period rounded up to vecsize multiple */</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        uint16_t x_npoints;                  <span class="comment">/* analysis window size in samples */</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="keywordtype">float</span> x_result;                 <span class="comment">/* result to output */</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordtype">float</span> x_sumbuf[MAXOVERLAP];     <span class="comment">/* summing buffer */</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordtype">float</span> x_f;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        uint16_t windowSize, hopSize, blockSize;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        uint16_t x_allocforvs;               <span class="comment">/* extra buffer for DSP vector size */</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    } _tEnvPD;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">typedef</span> _tEnvPD* tEnvPD;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvpd.html#ga3a4d8375057447cf5894a08464f8d103">tEnvPD_init</a>             (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">int</span> hopSize, <span class="keywordtype">int</span> blockSize);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvpd.html#ga31446fa14ee57bd0f19d260f4c748e2e">tEnvPD_initToPool</a>       (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">int</span> hopSize, <span class="keywordtype">int</span> blockSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvpd.html#ga28ade0e2893d6e94bca4dfa6cdd0f0ea">tEnvPD_free</a>             (tEnvPD* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tenvpd.html#ga73ca443b1b36dc5995bf1659fdb242ab">tEnvPD_tick</a>             (tEnvPD* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tenvpd.html#ga15bd0b8018ca2c67120053eb8cd1fc9a">tEnvPD_processBlock</a>     (tEnvPD* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">#define DEFBLOCKSIZE 1024</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor">#define DEFTHRESHOLD 6</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor">#define DEFATTACK    10</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#define DEFRELEASE    10</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAttackDetection</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordtype">float</span> env;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="comment">//Attack &amp; Release times in msec</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keywordtype">int</span> atk;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordtype">int</span> rel;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="comment">//Attack &amp; Release coefficients based on times</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordtype">float</span> atk_coeff;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <span class="keywordtype">float</span> rel_coeff;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keywordtype">int</span> blocksize;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordtype">int</span> samplerate;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        <span class="comment">//RMS amplitude of previous block - used to decide if attack is present</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keywordtype">float</span> prevAmp;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordtype">float</span> threshold;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    } _tAttackDetection;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    </div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keyword">typedef</span> _tAttackDetection* tAttackDetection;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#ga70ea3f3dc514d127b7abc4e85d754568">tAttackDetection_init</a>           (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> blocksize, <span class="keywordtype">int</span> atk, <span class="keywordtype">int</span> rel);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#ga159b77e3617708f63d34705f66891eca">tAttackDetection_initToPool</a>     (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> blocksize, <span class="keywordtype">int</span> atk, <span class="keywordtype">int</span> rel, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#gac0cecbd3eb9478a8ac62ad056b4e65e8">tAttackDetection_free</a>           (tAttackDetection* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#ga330419a7bcf2aea460cbb8341d0cc7a1">tAttackDetection_setBlocksize</a>   (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#gafc1088d0fc65cb8c9ca3e219dc6ee23e">tAttackDetection_setSamplerate</a>  (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inRate);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#gae1258e29699c07368168a5a06e847c1c">tAttackDetection_setAttack</a>      (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inAtk);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#ga849d76be546d42e00dcfaee4ca326adb">tAttackDetection_setRelease</a>     (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> inRel);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tattackdetection.html#gafc46d23c20523048eaf45a68e146dbcf">tAttackDetection_setThreshold</a>   (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> thres);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tattackdetection.html#ga628b4e4305fb135f7f363b94a209cb37">tAttackDetection_detect</a>         (tAttackDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> *in);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    </div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    </div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="preprocessor">#define SNAC_FRAME_SIZE 1024           // default analysis framesize // should be the same as (or smaller than?) PS_FRAME_SIZE</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="preprocessor">#define DEFOVERLAP 1                // default overlap</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="preprocessor">#define DEFBIAS 0.2f        // default bias</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="preprocessor">#define DEFMINRMS 0.003f   // default minimum RMS</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="preprocessor">#define SEEK 0.85f       // seek-length as ratio of framesize</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tSNAC</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    {</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordtype">float</span>* inputbuf;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordtype">float</span>* processbuf;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <span class="keywordtype">float</span>* spectrumbuf;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="keywordtype">float</span>* biasbuf;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        uint16_t timeindex;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        uint16_t framesize;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        uint16_t overlap;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        uint16_t periodindex;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        <span class="keywordtype">float</span> periodlength;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <span class="keywordtype">float</span> fidelity;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keywordtype">float</span> biasfactor;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        <span class="keywordtype">float</span> minrms;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        </div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    } _tSNAC;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    </div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keyword">typedef</span> _tSNAC* tSNAC;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    </div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#ga3b9776559a9361818630e03dddcf331e">tSNAC_init</a>          (tSNAC* <span class="keyword">const</span>, <span class="keywordtype">int</span> overlaparg);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#ga9779c23ab83bf93c8df11a6b4982c0b2">tSNAC_initToPool</a>    (tSNAC* <span class="keyword">const</span>, <span class="keywordtype">int</span> overlaparg, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#gad7fc6ce1e80847dfcd9da75d4c734f12">tSNAC_free</a>          (tSNAC* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    </div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#gad01ad110119703cd525fb529fd505b77">tSNAC_ioSamples</a>     (tSNAC *s, <span class="keywordtype">float</span> *in, <span class="keywordtype">float</span> *out, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#gab6a4ff9c52fb26d19f3bc4d080f91845">tSNAC_setOverlap</a>    (tSNAC *s, <span class="keywordtype">int</span> lap);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#ga3dbb9845079ebe1b3dbba647180a1168">tSNAC_setBias</a>       (tSNAC *s, <span class="keywordtype">float</span> bias);</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tsnac.html#ga777b3cb40c7dcb7826b0945358ffe1ec">tSNAC_setMinRMS</a>     (tSNAC *s, <span class="keywordtype">float</span> rms);</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="comment">/*To get freq, perform SAMPLE_RATE/snac_getperiod() */</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tsnac.html#ga71074b5888fe76260f3c1fae7e2aeec8">tSNAC_getPeriod</a>     (tSNAC *s);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tsnac.html#ga8568190ff50745df3b220f9f8dba3289">tSNAC_getFidelity</a>   (tSNAC *s);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    </div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="preprocessor">#define DEFPITCHRATIO 2.0f</span></div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="preprocessor">#define DEFTIMECONSTANT 100.0f</span></div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="preprocessor">#define DEFHOPSIZE 64</span></div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="preprocessor">#define DEFWINDOWSIZE 64</span></div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="preprocessor">#define FBA 20</span></div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="preprocessor">#define HPFREQ 40.0f</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    </div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPeriodDetection</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    {</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        </div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        tEnvPD env;</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        tSNAC snac;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        <span class="keywordtype">float</span>* inBuffer;</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        <span class="keywordtype">float</span>* outBuffer;</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordtype">int</span> frameSize;</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;        <span class="keywordtype">int</span> bufSize;</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        <span class="keywordtype">int</span> framesPerBuffer;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        <span class="keywordtype">int</span> curBlock;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        <span class="keywordtype">int</span> lastBlock;</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keywordtype">int</span> indexstore;</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        <span class="keywordtype">int</span> iLast;</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        <span class="keywordtype">int</span> index;</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        <span class="keywordtype">float</span> period;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        </div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        uint16_t hopSize;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        uint16_t windowSize;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        uint8_t fba;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        </div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        <span class="keywordtype">float</span> timeConstant;</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <span class="keywordtype">float</span> radius;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        <span class="keywordtype">float</span> max;</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        <span class="keywordtype">float</span> lastmax;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <span class="keywordtype">float</span> deltamax;</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        </div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <span class="keywordtype">float</span> fidelityThreshold;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        </div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <span class="keywordtype">float</span> history;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        <span class="keywordtype">float</span> alpha;</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        <span class="keywordtype">float</span> tolerance;</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        </div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    } _tPeriodDetection;</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;    </div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    <span class="keyword">typedef</span> _tPeriodDetection* tPeriodDetection;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    </div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga40ce6baebc4b4b165e420b91429e4361">tPeriodDetection_init</a>               (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#gae190c9fb516dfd6bb84c8d4929a30a4b">tPeriodDetection_initToPool</a>         (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span>* in, <span class="keywordtype">float</span>* out, <span class="keywordtype">int</span> bufSize, <span class="keywordtype">int</span> frameSize, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga94c9cff1d6cb0f0d6a70fdeb8764cdb0">tPeriodDetection_free</a>               (tPeriodDetection* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    </div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetection.html#ga18cf97615547a615aec4b183da82e8ee">tPeriodDetection_tick</a>               (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetection.html#ga04f0fa73e75e8fc128243515b039c474">tPeriodDetection_getPeriod</a>          (tPeriodDetection* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga207a7ec884eebc58c9cd9f17518d5a1b">tPeriodDetection_setHopSize</a>         (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> hs);</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga9a3ed4fe9806b0ee691b56090cef4339">tPeriodDetection_setWindowSize</a>      (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">int</span> ws);</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga2249345fb1cb419173b35ef258cf4248">tPeriodDetection_setFidelityThreshold</a>(tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> threshold);</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga95602fa326fda0ab685a626508166d15">tPeriodDetection_setAlpha</a>           (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> alpha);</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetection.html#ga49b5e95b84c6e101abac2ab7ec0cdebd">tPeriodDetection_setTolerance</a>       (tPeriodDetection* <span class="keyword">const</span>, <span class="keywordtype">float</span> tolerance);</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    </div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    </div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="comment">// Maybe keep these up to PeriodDetector internal?</span></div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    </div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tZeroCrossing2</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    {</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        </div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        <span class="keywordtype">float</span> _before_crossing;</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="keywordtype">float</span> _after_crossing;</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        </div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        <span class="keywordtype">float</span>             _peak;</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        <span class="keywordtype">int</span>               _leading_edge;<span class="comment">// = undefined_edge; int_min</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;        <span class="keywordtype">int</span>               _trailing_edge;<span class="comment">// = undefined_edge;</span></div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        <span class="keywordtype">float</span>             _width;<span class="comment">// = 0.0f;</span></div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    } _tZeroCrossing2;</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    </div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;    <span class="keyword">typedef</span> _tZeroCrossing2* tZeroCrossing2;</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    </div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing2_init  (tZeroCrossing2* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing2_initToPool    (tZeroCrossing2* <span class="keyword">const</span>, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing2_free  (tZeroCrossing2* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    </div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossing2_tick(tZeroCrossing2* <span class="keyword">const</span>, <span class="keywordtype">float</span> s);</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossing2_getState(tZeroCrossing2* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossing2_updatePeak(tZeroCrossing2* <span class="keyword">const</span>, <span class="keywordtype">float</span> s, <span class="keywordtype">int</span> pos);</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossing2_period(tZeroCrossing2* <span class="keyword">const</span>, tZeroCrossing2* <span class="keyword">const</span> next);</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;    <span class="keywordtype">float</span>   tZeroCrossing2_fractionalPeriod(tZeroCrossing2* <span class="keyword">const</span>, tZeroCrossing2* <span class="keyword">const</span> next);</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossing2_getWidth(tZeroCrossing2* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossing2_isSimilar(tZeroCrossing2* <span class="keyword">const</span>, tZeroCrossing2* <span class="keyword">const</span> next);</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    </div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;    </div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="preprocessor">#define PULSE_HEIGHT_DIFF 0.8</span></div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="preprocessor">#define PULSE_WIDTH_DIFF 0.85</span></div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    </div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tZeroCrossings</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    {</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        </div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        tZeroCrossing2* _info;</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _size;</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _pos;</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _mask;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        </div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        <span class="keywordtype">float</span>                _prev;<span class="comment">// = 0.0f;</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="keywordtype">float</span>                _hysteresis;</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        <span class="keywordtype">int</span>                  _state;<span class="comment">// = false;</span></div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;        <span class="keywordtype">int</span>                  _num_edges;<span class="comment">// = 0;</span></div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        <span class="keywordtype">int</span>                  _window_size;</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <span class="keywordtype">int</span>                  _frame;<span class="comment">// = 0;</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        <span class="keywordtype">int</span>                  _ready;<span class="comment">// = false;</span></div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        <span class="keywordtype">float</span>                _peak_update;<span class="comment">// = 0.0f;</span></div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        <span class="keywordtype">float</span>                _peak;<span class="comment">// = 0.0f;</span></div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    } _tZeroCrossings;</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    </div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    <span class="keyword">typedef</span> _tZeroCrossings* tZeroCrossings;</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    </div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossings_init  (tZeroCrossings* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">float</span> hysteresis);</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossings_initToPool    (tZeroCrossings* <span class="keyword">const</span>, <span class="keywordtype">int</span> windowSize, <span class="keywordtype">float</span> hysteresis, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    <span class="keywordtype">void</span>    tZeroCrossings_free  (tZeroCrossings* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    </div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_tick(tZeroCrossings* <span class="keyword">const</span>, <span class="keywordtype">float</span> s);</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_getState(tZeroCrossings* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    </div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_getNumEdges(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_getCapacity(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_getFrame(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_getWindowSize(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    </div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_isReady(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;    <span class="keywordtype">float</span>   tZeroCrossings_getPeak(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;    <span class="keywordtype">int</span>     tZeroCrossings_isReset(tZeroCrossings* <span class="keyword">const</span> zc);</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    </div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    tZeroCrossing2 <span class="keyword">const</span> tZeroCrossings_getCrossing(tZeroCrossings* <span class="keyword">const</span> zc, <span class="keywordtype">int</span> index);</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    </div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    </div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tBitset</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    {</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        </div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _value_size;</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _size;</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _bit_size;</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* _bits;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    } _tBitset;</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    </div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    <span class="keyword">typedef</span> _tBitset* tBitset;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    </div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    <span class="keywordtype">void</span>    tBitset_init    (tBitset* <span class="keyword">const</span> bitset, <span class="keywordtype">int</span> numBits);</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    <span class="keywordtype">void</span>    tBitset_initToPool  (tBitset* <span class="keyword">const</span> bitset, <span class="keywordtype">int</span> numBits, tMempool* <span class="keyword">const</span> mempool);</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    <span class="keywordtype">void</span>    tBitset_free    (tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    </div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    <span class="keywordtype">int</span>     tBitset_get     (tBitset* <span class="keyword">const</span> bitset, <span class="keywordtype">int</span> index);</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>*   tBitset_getData   (tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    </div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    <span class="keywordtype">void</span>    tBitset_set     (tBitset* <span class="keyword">const</span> bitset, <span class="keywordtype">int</span> index, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> val);</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    <span class="keywordtype">void</span>    tBitset_setMultiple (tBitset* <span class="keyword">const</span> bitset, <span class="keywordtype">int</span> index, <span class="keywordtype">int</span> n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> val);</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160; </div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    <span class="keywordtype">int</span>     tBitset_getSize (tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordtype">void</span>    tBitset_clear   (tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160; </div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    </div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    </div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tBACF</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;    {</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        </div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        tBitset _bitset;</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _mid_array;</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    } _tBACF;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    </div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keyword">typedef</span> _tBACF* tBACF;</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    </div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="keywordtype">void</span>    tBACF_init  (tBACF* <span class="keyword">const</span> bacf, tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    <span class="keywordtype">void</span>    tBACF_initToPool    (tBACF* <span class="keyword">const</span> bacf, tBitset* <span class="keyword">const</span> bitset, tMempool* <span class="keyword">const</span> mempool);</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    <span class="keywordtype">void</span>    tBACF_free  (tBACF* <span class="keyword">const</span> bacf);</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    </div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;    <span class="keywordtype">int</span>     tBACF_getCorrelation    (tBACF* <span class="keyword">const</span> bacf, <span class="keywordtype">int</span> pos);</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    <span class="keywordtype">void</span>    tBACF_set  (tBACF* <span class="keyword">const</span> bacf, tBitset* <span class="keyword">const</span> bitset);</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;    </div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    </div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;<span class="preprocessor">#define PULSE_THRESHOLD 0.6f</span></div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;<span class="preprocessor">#define HARMONIC_PERIODICITY_FACTOR 16</span></div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;<span class="preprocessor">#define PERIODICITY_DIFF_FACTOR 0.008f</span></div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    </div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_auto_correlation_info</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    {</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;        <span class="keywordtype">int</span>               _i1;<span class="comment">// = -1;</span></div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        <span class="keywordtype">int</span>               _i2;<span class="comment">// = -1;</span></div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        <span class="keywordtype">int</span>               _period;<span class="comment">// = -1;</span></div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        <span class="keywordtype">float</span>             _periodicity;<span class="comment">// = 0.0f;</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>      _harmonic;</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;    } _auto_correlation_info;</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    </div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_sub_collector</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    {</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        </div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        <span class="keywordtype">float</span>             _first_period;</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        </div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        _auto_correlation_info _fundamental;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        </div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        <span class="comment">// passed in, not initialized</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        tZeroCrossings    _zc;</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;        </div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <span class="keywordtype">float</span>             _harmonic_threshold;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        <span class="keywordtype">float</span>             _periodicity_diff_threshold;</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        <span class="keywordtype">int</span>               _range;</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    } _sub_collector;</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160; </div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPeriodDetector</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    {</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        </div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        tZeroCrossings          _zc;</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;        <span class="keywordtype">float</span>                   _period_info[2]; <span class="comment">// i0 is period, i1 is periodicity</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            _min_period;</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        <span class="keywordtype">int</span>                     _range;</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        tBitset                 _bits;</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        <span class="keywordtype">float</span>                   _weight;</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            _mid_point;</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        <span class="keywordtype">float</span>                   _periodicity_diff_threshold;</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;        <span class="keywordtype">float</span>                   _predicted_period;<span class="comment">// = -1.0f;</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            _edge_mark;<span class="comment">// = 0;</span></div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            _predict_edge;<span class="comment">// = 0;</span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;        </div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        tBACF                   _bacf;</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        </div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    } _tPeriodDetector;</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    </div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="keyword">typedef</span> _tPeriodDetector* tPeriodDetector;</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    </div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetector.html#ga3d724b185361443b9fbf6f443b5c2a5f">tPeriodDetector_init</a>    (tPeriodDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> lowestFreq, <span class="keywordtype">float</span> highestFreq, <span class="keywordtype">float</span> hysteresis);</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetector.html#ga03431f353481718a4e573f4df4a0161f">tPeriodDetector_initToPool</a>  (tPeriodDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> lowestFreq, <span class="keywordtype">float</span> highestFreq, <span class="keywordtype">float</span> hysteresis, tMempool* <span class="keyword">const</span> mempool);</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tperioddetector.html#ga55e2ad80c68f2fbf0cafceee206abf3f">tPeriodDetector_free</a>    (tPeriodDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    </div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tperioddetector.html#gaed4bf4a51580ba6209dfe5d35a235644">tPeriodDetector_tick</a>    (tPeriodDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    </div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="comment">// get the periodicity for a given harmonic</span></div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetector.html#ga025e1bc096ca88fc2f6e493513f0d6fb">tPeriodDetector_getPeriod</a>   (tPeriodDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetector.html#ga9e836c21a0dcabe9f3438bc56e671f39">tPeriodDetector_getPeriodicity</a>  (tPeriodDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetector.html#ga4a66a46a4a6bea562bae63640e6855a5">tPeriodDetector_harmonic</a>    (tPeriodDetector* <span class="keyword">const</span> detector, <span class="keywordtype">int</span> harmonicIndex);</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tperioddetector.html#ga6bea587938466ba988a6e716446975ed">tPeriodDetector_predictPeriod</a>   (tPeriodDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tperioddetector.html#ga3d58e36fafa3e5b5102175e2c9062010">tPeriodDetector_isReady</a> (tPeriodDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    </div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    </div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="preprocessor">#define MAX_DEVIATION 0.9f</span></div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="preprocessor">#define MIN_PERIODICITY 0.8f</span></div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    </div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tPitchDetector</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    {</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        </div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        tPeriodDetector _pd;</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        <span class="keywordtype">float</span> _frequency;</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        <span class="keywordtype">float</span> _median, _median_b, _median_c;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        <span class="keywordtype">float</span> _predict_median, _predict_median_b, _predict_median_c;</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        <span class="keywordtype">int</span> _frames_after_shift;<span class="comment">// = 0;</span></div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        </div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    } _tPitchDetector;</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    </div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    <span class="keyword">typedef</span> _tPitchDetector* tPitchDetector;</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    </div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchdetector.html#ga63d5c788a1fff2bd48568629b93003a7">tPitchDetector_init</a> (tPitchDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> lowestFreq, <span class="keywordtype">float</span> highestFreq, <span class="keywordtype">float</span> hysteresis);</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchdetector.html#ga97f34c38971d6dd90f01f72a9c8b3412">tPitchDetector_initToPool</a>   (tPitchDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> lowestFreq, <span class="keywordtype">float</span> highestFreq, <span class="keywordtype">float</span> hysteresis, tMempool* <span class="keyword">const</span> mempool);</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchdetector.html#ga21a8caf85569fa4366e83aa776831273">tPitchDetector_free</a> (tPitchDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    </div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tpitchdetector.html#ga7ff9d62bb716a57fce8ffeb5558c4890">tPitchDetector_tick</a>    (tPitchDetector* <span class="keyword">const</span> detector, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchdetector.html#ga5b4f011cdb1812ab29022e4851e81c7e">tPitchDetector_getFrequency</a>    (tPitchDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchdetector.html#gad99b1eb3569ac87a54a31ddc7ec78eea">tPitchDetector_getPeriodicity</a>  (tPitchDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchdetector.html#gae830c20dc77369d3055f23cd0fc51435">tPitchDetector_harmonic</a>    (tPitchDetector* <span class="keyword">const</span> detector, <span class="keywordtype">int</span> harmonicIndex);</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tpitchdetector.html#ga1ab7de0dc14801a50815405f81d6ceec">tPitchDetector_predictFrequency</a> (tPitchDetector* <span class="keyword">const</span> detector, <span class="keywordtype">int</span> init);</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tpitchdetector.html#ga9fb12aa4a5685fe475da2687404eb666">tPitchDetector_reset</a>    (tPitchDetector* <span class="keyword">const</span> detector);</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    </div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    </div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    </div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    </div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    </div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    </div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    </div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    </div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;}</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160; </div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="preprocessor">#endif  // LEAF_ANALYSIS_H_INCLUDED</span></div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160; </div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160; </div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="agroup__tzerocrossing_html_ga725a38b0414d2888660c14a52f0579ce"><div class="ttname"><a href="group__tzerocrossing.html#ga725a38b0414d2888660c14a52f0579ce">tZeroCrossing_free</a></div><div class="ttdeci">void tZeroCrossing_free(tZeroCrossing *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:106</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_ga159b77e3617708f63d34705f66891eca"><div class="ttname"><a href="group__tattackdetection.html#ga159b77e3617708f63d34705f66891eca">tAttackDetection_initToPool</a></div><div class="ttdeci">void tAttackDetection_initToPool(tAttackDetection *const, int blocksize, int atk, int rel, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:343</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_ga849d76be546d42e00dcfaee4ca326adb"><div class="ttname"><a href="group__tattackdetection.html#ga849d76be546d42e00dcfaee4ca326adb">tAttackDetection_setRelease</a></div><div class="ttdeci">void tAttackDetection_setRelease(tAttackDetection *const, int inRel)</div><div class="ttdoc">Set release time and coeff.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:398</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga3b9776559a9361818630e03dddcf331e"><div class="ttname"><a href="group__tsnac.html#ga3b9776559a9361818630e03dddcf331e">tSNAC_init</a></div><div class="ttdeci">void tSNAC_init(tSNAC *const, int overlaparg)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:483</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga7be8c7b6f08a5ae8748f8d021125ee30"><div class="ttname"><a href="group__tenvelopefollower.html#ga7be8c7b6f08a5ae8748f8d021125ee30">tEnvelopeFollower_attackThresh</a></div><div class="ttdeci">int tEnvelopeFollower_attackThresh(tEnvelopeFollower *const, float attackThresh)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:73</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga777b3cb40c7dcb7826b0945358ffe1ec"><div class="ttname"><a href="group__tsnac.html#ga777b3cb40c7dcb7826b0945358ffe1ec">tSNAC_setMinRMS</a></div><div class="ttdeci">void tSNAC_setMinRMS(tSNAC *s, float rms)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:568</div></div>
+<div class="ttc" id="agroup__tsnac_html_gab6a4ff9c52fb26d19f3bc4d080f91845"><div class="ttname"><a href="group__tsnac.html#gab6a4ff9c52fb26d19f3bc4d080f91845">tSNAC_setOverlap</a></div><div class="ttdeci">void tSNAC_setOverlap(tSNAC *s, int lap)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:549</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_ga0b422a35ef8ccdd72b3db45fc53c1e96"><div class="ttname"><a href="group__tpowerfollower.html#ga0b422a35ef8ccdd72b3db45fc53c1e96">tPowerFollower_tick</a></div><div class="ttdeci">float tPowerFollower_tick(tPowerFollower *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:210</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_ga726f0b8ec4ab97346fb8521934452a2e"><div class="ttname"><a href="group__tpowerfollower.html#ga726f0b8ec4ab97346fb8521934452a2e">tPowerFollower_initToPool</a></div><div class="ttdeci">void tPowerFollower_initToPool(tPowerFollower *const, float factor, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:181</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga2249345fb1cb419173b35ef258cf4248"><div class="ttname"><a href="group__tperioddetection.html#ga2249345fb1cb419173b35ef258cf4248">tPeriodDetection_setFidelityThreshold</a></div><div class="ttdeci">void tPeriodDetection_setFidelityThreshold(tPeriodDetection *const, float threshold)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:935</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga1ab7de0dc14801a50815405f81d6ceec"><div class="ttname"><a href="group__tpitchdetector.html#ga1ab7de0dc14801a50815405f81d6ceec">tPitchDetector_predictFrequency</a></div><div class="ttdeci">float tPitchDetector_predictFrequency(tPitchDetector *const detector, int init)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1897</div></div>
+<div class="ttc" id="agroup__tenvpd_html_ga3a4d8375057447cf5894a08464f8d103"><div class="ttname"><a href="group__tenvpd.html#ga3a4d8375057447cf5894a08464f8d103">tEnvPD_init</a></div><div class="ttdeci">void tEnvPD_init(tEnvPD *const, int windowSize, int hopSize, int blockSize)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:230</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga3dbb9845079ebe1b3dbba647180a1168"><div class="ttname"><a href="group__tsnac.html#ga3dbb9845079ebe1b3dbba647180a1168">tSNAC_setBias</a></div><div class="ttdeci">void tSNAC_setBias(tSNAC *s, float bias)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:557</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga97f34c38971d6dd90f01f72a9c8b3412"><div class="ttname"><a href="group__tpitchdetector.html#ga97f34c38971d6dd90f01f72a9c8b3412">tPitchDetector_initToPool</a></div><div class="ttdeci">void tPitchDetector_initToPool(tPitchDetector *const detector, float lowestFreq, float highestFreq, float hysteresis, tMempool *const mempool)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1827</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_ga628b4e4305fb135f7f363b94a209cb37"><div class="ttname"><a href="group__tattackdetection.html#ga628b4e4305fb135f7f363b94a209cb37">tAttackDetection_detect</a></div><div class="ttdeci">int tAttackDetection_detect(tAttackDetection *const, float *in)</div><div class="ttdoc">Find the largest transient in input block, return index of attack.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:406</div></div>
+<div class="ttc" id="agroup__tsnac_html_gad01ad110119703cd525fb529fd505b77"><div class="ttname"><a href="group__tsnac.html#gad01ad110119703cd525fb529fd505b77">tSNAC_ioSamples</a></div><div class="ttdeci">void tSNAC_ioSamples(tSNAC *s, float *in, float *out, int size)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:527</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_gafc1088d0fc65cb8c9ca3e219dc6ee23e"><div class="ttname"><a href="group__tattackdetection.html#gafc1088d0fc65cb8c9ca3e219dc6ee23e">tAttackDetection_setSamplerate</a></div><div class="ttdeci">void tAttackDetection_setSamplerate(tAttackDetection *const, int inRate)</div><div class="ttdoc">Set attack detection sample rate.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:374</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_gae1258e29699c07368168a5a06e847c1c"><div class="ttname"><a href="group__tattackdetection.html#gae1258e29699c07368168a5a06e847c1c">tAttackDetection_setAttack</a></div><div class="ttdeci">void tAttackDetection_setAttack(tAttackDetection *const, int inAtk)</div><div class="ttdoc">Set attack time and coeff.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:391</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga3d724b185361443b9fbf6f443b5c2a5f"><div class="ttname"><a href="group__tperioddetector.html#ga3d724b185361443b9fbf6f443b5c2a5f">tPeriodDetector_init</a></div><div class="ttdeci">void tPeriodDetector_init(tPeriodDetector *const detector, float lowestFreq, float highestFreq, float hysteresis)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1486</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga94c9cff1d6cb0f0d6a70fdeb8764cdb0"><div class="ttname"><a href="group__tperioddetection.html#ga94c9cff1d6cb0f0d6a70fdeb8764cdb0">tPeriodDetection_free</a></div><div class="ttdeci">void tPeriodDetection_free(tPeriodDetection *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:870</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga6bea587938466ba988a6e716446975ed"><div class="ttname"><a href="group__tperioddetector.html#ga6bea587938466ba988a6e716446975ed">tPeriodDetector_predictPeriod</a></div><div class="ttdeci">float tPeriodDetector_predictPeriod(tPeriodDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1588</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga5d2f20c3c0bb2b0952b1c17d4a2c98b8"><div class="ttname"><a href="group__tenvelopefollower.html#ga5d2f20c3c0bb2b0952b1c17d4a2c98b8">tEnvelopeFollower_decayCoeff</a></div><div class="ttdeci">int tEnvelopeFollower_decayCoeff(tEnvelopeFollower *const, float decayCoeff)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:67</div></div>
+<div class="ttc" id="agroup__tenvpd_html_ga28ade0e2893d6e94bca4dfa6cdd0f0ea"><div class="ttname"><a href="group__tenvpd.html#ga28ade0e2893d6e94bca4dfa6cdd0f0ea">tEnvPD_free</a></div><div class="ttdeci">void tEnvPD_free(tEnvPD *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:279</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_gac0cecbd3eb9478a8ac62ad056b4e65e8"><div class="ttname"><a href="group__tattackdetection.html#gac0cecbd3eb9478a8ac62ad056b4e65e8">tAttackDetection_free</a></div><div class="ttdeci">void tAttackDetection_free(tAttackDetection *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:352</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga8568190ff50745df3b220f9f8dba3289"><div class="ttname"><a href="group__tsnac.html#ga8568190ff50745df3b220f9f8dba3289">tSNAC_getFidelity</a></div><div class="ttdeci">float tSNAC_getFidelity(tSNAC *s)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:585</div></div>
+<div class="ttc" id="agroup__tenvpd_html_ga31446fa14ee57bd0f19d260f4c748e2e"><div class="ttname"><a href="group__tenvpd.html#ga31446fa14ee57bd0f19d260f4c748e2e">tEnvPD_initToPool</a></div><div class="ttdeci">void tEnvPD_initToPool(tEnvPD *const, int windowSize, int hopSize, int blockSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:235</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga95602fa326fda0ab685a626508166d15"><div class="ttname"><a href="group__tperioddetection.html#ga95602fa326fda0ab685a626508166d15">tPeriodDetection_setAlpha</a></div><div class="ttdeci">void tPeriodDetection_setAlpha(tPeriodDetection *const, float alpha)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:941</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_ga70ea3f3dc514d127b7abc4e85d754568"><div class="ttname"><a href="group__tattackdetection.html#ga70ea3f3dc514d127b7abc4e85d754568">tAttackDetection_init</a></div><div class="ttdeci">void tAttackDetection_init(tAttackDetection *const, int blocksize, int atk, int rel)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:338</div></div>
+<div class="ttc" id="agroup__tzerocrossing_html_ga744530c43a089f7fce910991737456a1"><div class="ttname"><a href="group__tzerocrossing.html#ga744530c43a089f7fce910991737456a1">tZeroCrossing_setWindow</a></div><div class="ttdeci">void tZeroCrossing_setWindow(tZeroCrossing *const, float windowSize)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:155</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga9fb12aa4a5685fe475da2687404eb666"><div class="ttname"><a href="group__tpitchdetector.html#ga9fb12aa4a5685fe475da2687404eb666">tPitchDetector_reset</a></div><div class="ttdeci">void tPitchDetector_reset(tPitchDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1922</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga18cf97615547a615aec4b183da82e8ee"><div class="ttname"><a href="group__tperioddetection.html#ga18cf97615547a615aec4b183da82e8ee">tPeriodDetection_tick</a></div><div class="ttdeci">float tPeriodDetection_tick(tPeriodDetection *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:879</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga03431f353481718a4e573f4df4a0161f"><div class="ttname"><a href="group__tperioddetector.html#ga03431f353481718a4e573f4df4a0161f">tPeriodDetector_initToPool</a></div><div class="ttdeci">void tPeriodDetector_initToPool(tPeriodDetector *const detector, float lowestFreq, float highestFreq, float hysteresis, tMempool *const mempool)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1491</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga3d58e36fafa3e5b5102175e2c9062010"><div class="ttname"><a href="group__tperioddetector.html#ga3d58e36fafa3e5b5102175e2c9062010">tPeriodDetector_isReady</a></div><div class="ttdeci">int tPeriodDetector_isReady(tPeriodDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1620</div></div>
+<div class="ttc" id="agroup__tzerocrossing_html_ga95dee0455b05b55f423be9c4c2b7b34b"><div class="ttname"><a href="group__tzerocrossing.html#ga95dee0455b05b55f423be9c4c2b7b34b">tZeroCrossing_init</a></div><div class="ttdeci">void tZeroCrossing_init(tZeroCrossing *const, int maxWindowSize)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:85</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_ga43f058c6413f39aeac137d67454e7195"><div class="ttname"><a href="group__tpowerfollower.html#ga43f058c6413f39aeac137d67454e7195">tPowerFollower_sample</a></div><div class="ttdeci">float tPowerFollower_sample(tPowerFollower *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:217</div></div>
+<div class="ttc" id="agroup__tenvpd_html_ga73ca443b1b36dc5995bf1659fdb242ab"><div class="ttname"><a href="group__tenvpd.html#ga73ca443b1b36dc5995bf1659fdb242ab">tEnvPD_tick</a></div><div class="ttdeci">float tEnvPD_tick(tEnvPD *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:286</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga3a2df8ff251272de5dbe8d9318c9cbba"><div class="ttname"><a href="group__tenvelopefollower.html#ga3a2df8ff251272de5dbe8d9318c9cbba">tEnvelopeFollower_tick</a></div><div class="ttdeci">float tEnvelopeFollower_tick(tEnvelopeFollower *const, float x)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:48</div></div>
+<div class="ttc" id="agroup__tzerocrossing_html_ga4ad51c547e85bdbfd86e522e3437d5d3"><div class="ttname"><a href="group__tzerocrossing.html#ga4ad51c547e85bdbfd86e522e3437d5d3">tZeroCrossing_tick</a></div><div class="ttdeci">float tZeroCrossing_tick(tZeroCrossing *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:116</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga294a33b0f81578dffffec8097676f910"><div class="ttname"><a href="group__tenvelopefollower.html#ga294a33b0f81578dffffec8097676f910">tEnvelopeFollower_init</a></div><div class="ttdeci">void tEnvelopeFollower_init(tEnvelopeFollower *const, float attackThreshold, float decayCoeff)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:25</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga025e1bc096ca88fc2f6e493513f0d6fb"><div class="ttname"><a href="group__tperioddetector.html#ga025e1bc096ca88fc2f6e493513f0d6fb">tPeriodDetector_getPeriod</a></div><div class="ttdeci">float tPeriodDetector_getPeriod(tPeriodDetector *const detector)</div><div class="ttdoc">Get the periodicity for a given harmonic of the detected pitch.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1554</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga40ce6baebc4b4b165e420b91429e4361"><div class="ttname"><a href="group__tperioddetection.html#ga40ce6baebc4b4b165e420b91429e4361">tPeriodDetection_init</a></div><div class="ttdeci">void tPeriodDetection_init(tPeriodDetection *const, float *in, float *out, int bufSize, int frameSize)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:834</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga9a3ed4fe9806b0ee691b56090cef4339"><div class="ttname"><a href="group__tperioddetection.html#ga9a3ed4fe9806b0ee691b56090cef4339">tPeriodDetection_setWindowSize</a></div><div class="ttdeci">void tPeriodDetection_setWindowSize(tPeriodDetection *const, int ws)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:929</div></div>
+<div class="ttc" id="agroup__tenvpd_html_ga15bd0b8018ca2c67120053eb8cd1fc9a"><div class="ttname"><a href="group__tenvpd.html#ga15bd0b8018ca2c67120053eb8cd1fc9a">tEnvPD_processBlock</a></div><div class="ttdeci">void tEnvPD_processBlock(tEnvPD *const, float *in)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:292</div></div>
+<div class="ttc" id="agroup__tzerocrossing_html_ga873bf05450d1043839d36a9b8b971f2e"><div class="ttname"><a href="group__tzerocrossing.html#ga873bf05450d1043839d36a9b8b971f2e">tZeroCrossing_initToPool</a></div><div class="ttdeci">void tZeroCrossing_initToPool(tZeroCrossing *const, int maxWindowSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:90</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga63d5c788a1fff2bd48568629b93003a7"><div class="ttname"><a href="group__tpitchdetector.html#ga63d5c788a1fff2bd48568629b93003a7">tPitchDetector_init</a></div><div class="ttdeci">void tPitchDetector_init(tPitchDetector *const detector, float lowestFreq, float highestFreq, float hysteresis)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1822</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_gac7ab521ba7345c90b2455acc66a7caf1"><div class="ttname"><a href="group__tpowerfollower.html#gac7ab521ba7345c90b2455acc66a7caf1">tPowerFollower_setFactor</a></div><div class="ttdeci">int tPowerFollower_setFactor(tPowerFollower *const, float factor)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:199</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga55e2ad80c68f2fbf0cafceee206abf3f"><div class="ttname"><a href="group__tperioddetector.html#ga55e2ad80c68f2fbf0cafceee206abf3f">tPeriodDetector_free</a></div><div class="ttdeci">void tPeriodDetector_free(tPeriodDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1514</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga04f0fa73e75e8fc128243515b039c474"><div class="ttname"><a href="group__tperioddetection.html#ga04f0fa73e75e8fc128243515b039c474">tPeriodDetection_getPeriod</a></div><div class="ttdeci">float tPeriodDetection_getPeriod(tPeriodDetection *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:917</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga9e836c21a0dcabe9f3438bc56e671f39"><div class="ttname"><a href="group__tperioddetector.html#ga9e836c21a0dcabe9f3438bc56e671f39">tPeriodDetector_getPeriodicity</a></div><div class="ttdeci">float tPeriodDetector_getPeriodicity(tPeriodDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1561</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga7ff9d62bb716a57fce8ffeb5558c4890"><div class="ttname"><a href="group__tpitchdetector.html#ga7ff9d62bb716a57fce8ffeb5558c4890">tPitchDetector_tick</a></div><div class="ttdeci">int tPitchDetector_tick(tPitchDetector *const detector, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1846</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga7d5b75526457b2098f06df8394a82c20"><div class="ttname"><a href="group__tenvelopefollower.html#ga7d5b75526457b2098f06df8394a82c20">tEnvelopeFollower_initToPool</a></div><div class="ttdeci">void tEnvelopeFollower_initToPool(tEnvelopeFollower *const, float attackThreshold, float decayCoeff, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:30</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_gadb67420e0d50fc047b1e3d674204cdf6"><div class="ttname"><a href="group__tpowerfollower.html#gadb67420e0d50fc047b1e3d674204cdf6">tPowerFollower_init</a></div><div class="ttdeci">void tPowerFollower_init(tPowerFollower *const, float factor)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:176</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_ga330419a7bcf2aea460cbb8341d0cc7a1"><div class="ttname"><a href="group__tattackdetection.html#ga330419a7bcf2aea460cbb8341d0cc7a1">tAttackDetection_setBlocksize</a></div><div class="ttdeci">void tAttackDetection_setBlocksize(tAttackDetection *const, int size)</div><div class="ttdoc">Set expected input blocksize.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:362</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_ga4a66a46a4a6bea562bae63640e6855a5"><div class="ttname"><a href="group__tperioddetector.html#ga4a66a46a4a6bea562bae63640e6855a5">tPeriodDetector_harmonic</a></div><div class="ttdeci">float tPeriodDetector_harmonic(tPeriodDetector *const detector, int harmonicIndex)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1568</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_gad99b1eb3569ac87a54a31ddc7ec78eea"><div class="ttname"><a href="group__tpitchdetector.html#gad99b1eb3569ac87a54a31ddc7ec78eea">tPitchDetector_getPeriodicity</a></div><div class="ttdeci">float tPitchDetector_getPeriodicity(tPitchDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1890</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga21a8caf85569fa4366e83aa776831273"><div class="ttname"><a href="group__tpitchdetector.html#ga21a8caf85569fa4366e83aa776831273">tPitchDetector_free</a></div><div class="ttdeci">void tPitchDetector_free(tPitchDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1838</div></div>
+<div class="ttc" id="agroup__tsnac_html_gad7fc6ce1e80847dfcd9da75d4c734f12"><div class="ttname"><a href="group__tsnac.html#gad7fc6ce1e80847dfcd9da75d4c734f12">tSNAC_free</a></div><div class="ttdeci">void tSNAC_free(tSNAC *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:511</div></div>
+<div class="ttc" id="agroup__tpowerfollower_html_ga479317d7fd22a86a832ebec92eae4782"><div class="ttname"><a href="group__tpowerfollower.html#ga479317d7fd22a86a832ebec92eae4782">tPowerFollower_free</a></div><div class="ttdeci">void tPowerFollower_free(tPowerFollower *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:192</div></div>
+<div class="ttc" id="agroup__tattackdetection_html_gafc46d23c20523048eaf45a68e146dbcf"><div class="ttname"><a href="group__tattackdetection.html#gafc46d23c20523048eaf45a68e146dbcf">tAttackDetection_setThreshold</a></div><div class="ttdeci">void tAttackDetection_setThreshold(tAttackDetection *const, float thres)</div><div class="ttdoc">Set level above which values are identified as attacks.</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:385</div></div>
+<div class="ttc" id="agroup__tenvelopefollower_html_ga798edc825af5cda6af9ee8ad43381de8"><div class="ttname"><a href="group__tenvelopefollower.html#ga798edc825af5cda6af9ee8ad43381de8">tEnvelopeFollower_free</a></div><div class="ttdeci">void tEnvelopeFollower_free(tEnvelopeFollower *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:41</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga207a7ec884eebc58c9cd9f17518d5a1b"><div class="ttname"><a href="group__tperioddetection.html#ga207a7ec884eebc58c9cd9f17518d5a1b">tPeriodDetection_setHopSize</a></div><div class="ttdeci">void tPeriodDetection_setHopSize(tPeriodDetection *const, int hs)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:923</div></div>
+<div class="ttc" id="agroup__tperioddetector_html_gaed4bf4a51580ba6209dfe5d35a235644"><div class="ttname"><a href="group__tperioddetector.html#gaed4bf4a51580ba6209dfe5d35a235644">tPeriodDetector_tick</a></div><div class="ttdeci">int tPeriodDetector_tick(tPeriodDetector *const detector, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1525</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_ga5b4f011cdb1812ab29022e4851e81c7e"><div class="ttname"><a href="group__tpitchdetector.html#ga5b4f011cdb1812ab29022e4851e81c7e">tPitchDetector_getFrequency</a></div><div class="ttdeci">float tPitchDetector_getFrequency(tPitchDetector *const detector)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:1883</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga9779c23ab83bf93c8df11a6b4982c0b2"><div class="ttname"><a href="group__tsnac.html#ga9779c23ab83bf93c8df11a6b4982c0b2">tSNAC_initToPool</a></div><div class="ttdeci">void tSNAC_initToPool(tSNAC *const, int overlaparg, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:488</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_ga49b5e95b84c6e101abac2ab7ec0cdebd"><div class="ttname"><a href="group__tperioddetection.html#ga49b5e95b84c6e101abac2ab7ec0cdebd">tPeriodDetection_setTolerance</a></div><div class="ttdeci">void tPeriodDetection_setTolerance(tPeriodDetection *const, float tolerance)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:947</div></div>
+<div class="ttc" id="agroup__tperioddetection_html_gae190c9fb516dfd6bb84c8d4929a30a4b"><div class="ttname"><a href="group__tperioddetection.html#gae190c9fb516dfd6bb84c8d4929a30a4b">tPeriodDetection_initToPool</a></div><div class="ttdeci">void tPeriodDetection_initToPool(tPeriodDetection *const, float *in, float *out, int bufSize, int frameSize, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:839</div></div>
+<div class="ttc" id="agroup__tsnac_html_ga71074b5888fe76260f3c1fae7e2aeec8"><div class="ttname"><a href="group__tsnac.html#ga71074b5888fe76260f3c1fae7e2aeec8">tSNAC_getPeriod</a></div><div class="ttdeci">float tSNAC_getPeriod(tSNAC *s)</div><div class="ttdef"><b>Definition:</b> leaf-analysis.c:578</div></div>
+<div class="ttc" id="agroup__tpitchdetector_html_gae830c20dc77369d3055f23cd0fc51435"><div class="ttname"><a href="group__tpitchdetector.html#gae830c20dc77369d3055f23cd0fc51435">tPitchDetector_harmonic</a></div><div class="ttdeci">float tPitchDetector_harmonic(tPitchDetector *const detector, int harmonicIndex)</div></div>
 <!-- HTML footer for doxygen 1.8.18-->
 <!-- start footer part -->
 <footer></footer><script>getFooter()</script>

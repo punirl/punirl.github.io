@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/css/tachyons.css" type="text/css">
 </head>
 <body class="bg-washed-green black-70 ph0 sans-serif">
-<header class="fl bg-black-70 w-100 pt4-ns pb3-ns pl5">
+<header class="fl bg-deep-green w-100 pt4-ns pb3-ns pl5">
   <div class="bg-dark-green pv0">
     <h1 class="black-70 pv3 ph4 f-headline-m">
       <a class="link hover-gold white dib mr3" href="/" title="NIRL">NIRL &#8212; New Instrument Research Lab
@@ -132,212 +132,307 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">//==============================================================================</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">/* Non-interpolating delay, reimplemented from STK (Cook and Scavone). */</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tDelay</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">float</span> gain;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        uint32_t inPoint, outPoint;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        uint32_t delay, maxDelay;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    } _tDelay;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">typedef</span> _tDelay* tDelay;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span>        tDelay_init         (tDelay* <span class="keyword">const</span>, uint32_t delay, uint32_t maxDelay);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span>        tDelay_initToPool   (tDelay* <span class="keyword">const</span>, uint32_t delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span>        tDelay_free         (tDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span>        tDelay_clear        (tDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">int</span>         tDelay_setDelay     (tDelay* <span class="keyword">const</span>, uint32_t delay);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    uint32_t    tDelay_getDelay     (tDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span>        tDelay_tapIn        (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">float</span>       tDelay_tapOut       (tDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">float</span>       tDelay_addTo        (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">float</span>       tDelay_tick         (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">float</span>       tDelay_getLastOut   (tDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">float</span>       tDelay_getLastIn    (tDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">/* Linearly-interpolating delay, reimplemented from STK (Cook and Scavone). */</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tLinearDelay</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">float</span> gain;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        uint32_t inPoint, outPoint;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        uint32_t maxDelay;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">float</span> delay;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    } _tLinearDelay;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">typedef</span> _tLinearDelay* tLinearDelay;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_init        (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_initToPool  (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_free        (tLinearDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_clear       (tLinearDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">int</span>     tLinearDelay_setDelay    (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_getDelay    (tLinearDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_tapIn       (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_tapOut      (tLinearDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_addTo       (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_tick        (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">void</span>    tLinearDelay_tickIn      (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_tickOut     (tLinearDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_getLastOut  (tLinearDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">float</span>   tLinearDelay_getLastIn   (tLinearDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">/* Hermite-interpolating delay, created by adapting STK linear delay with Hermite interpolation */</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tHermiteDelay</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">float</span> gain;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        uint32_t inPoint, outPoint;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        uint32_t maxDelay;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordtype">float</span> delay;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    } _tHermiteDelay;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">typedef</span> _tHermiteDelay* tHermiteDelay;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_init          (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_initToPool    (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span> mp);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span>     tHermiteDelay_free            (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_clear         (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_tick          (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_tickIn        (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> input);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_tickOut       (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">int</span>     tHermiteDelay_setDelay      (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_tapOut        (tHermiteDelay* <span class="keyword">const</span> dl, uint32_t tapDelay);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_tapIn         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_addTo         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_getDelay      (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_getLastOut    (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_getLastIn     (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">void</span>    tHermiteDelay_setGain       (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> gain);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">float</span>   tHermiteDelay_getGain       (tHermiteDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">/* Allpass-interpolating delay, reimplemented from STK (Cook and Scavone). */</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAllpassDelay</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordtype">float</span> gain;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        uint32_t inPoint, outPoint;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        uint32_t maxDelay;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordtype">float</span> delay;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha, coeff;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordtype">float</span> apInput;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    } _tAllpassDelay;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">typedef</span> _tAllpassDelay* tAllpassDelay;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">void</span>    tAllpassDelay_init        (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">void</span>    tAllpassDelay_initToPool  (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">void</span>    tAllpassDelay_free        (tAllpassDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordtype">void</span>    tAllpassDelay_clear       (tAllpassDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">int</span>     tAllpassDelay_setDelay    (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_getDelay    (tAllpassDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">void</span>    tAllpassDelay_tapIn       (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_tapOut      (tAllpassDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_addTo       (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_tick        (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_getLastOut  (tAllpassDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">float</span>   tAllpassDelay_getLastIn   (tAllpassDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">/* Linear interpolating delay with fixed read and write pointers, variable rate. */</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTapeDelay</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        tMempool mempool;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordtype">float</span> gain;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tDelay</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">float</span> gain;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        uint32_t inPoint, outPoint;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        uint32_t delay, maxDelay;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    } _tDelay;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">typedef</span> _tDelay* tDelay;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span>        <a class="code" href="group__tdelay.html#ga32d71a786590eaf3e426ed8a9df31c3e">tDelay_init</a>         (tDelay* <span class="keyword">const</span>, uint32_t delay, uint32_t maxDelay);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">void</span>        <a class="code" href="group__tdelay.html#gacaaaaabc7ddb4259f05481f10ba5c403">tDelay_initToPool</a>   (tDelay* <span class="keyword">const</span>, uint32_t delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span>        <a class="code" href="group__tdelay.html#gac96fb1d4b4997a3137f211b6f22e14ba">tDelay_free</a>         (tDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">void</span>        <a class="code" href="group__tdelay.html#ga10738582699eb8e6ff892b4ba662c4ef">tDelay_clear</a>        (tDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">int</span>         <a class="code" href="group__tdelay.html#ga95c0e415eb3cce370bae65a700cca989">tDelay_setDelay</a>     (tDelay* <span class="keyword">const</span>, uint32_t delay);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    uint32_t    <a class="code" href="group__tdelay.html#ga5686cf386894dcee3c9241bef0ca4c41">tDelay_getDelay</a>     (tDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">void</span>        <a class="code" href="group__tdelay.html#gadc5709febff70f7cbca38c2508103ac0">tDelay_tapIn</a>        (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">float</span>       <a class="code" href="group__tdelay.html#ga94c07f9e8bfdaf402ebfbcd38d0150b5">tDelay_tapOut</a>       (tDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">float</span>       <a class="code" href="group__tdelay.html#gac4014573da91d0da9c8b7d48d515de5a">tDelay_addTo</a>        (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">float</span>       <a class="code" href="group__tdelay.html#ga2f3b8939018fd6972756a9137cab3567">tDelay_tick</a>         (tDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">float</span>       <a class="code" href="group__tdelay.html#ga3e00ec62933b69e09d9eed5b7608e094">tDelay_getLastOut</a>   (tDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">float</span>       <a class="code" href="group__tdelay.html#gab23b7051f02d2f7108939bdb034fe308">tDelay_getLastIn</a>    (tDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tLinearDelay</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keywordtype">float</span> gain;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        uint32_t inPoint, outPoint;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        uint32_t maxDelay;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordtype">float</span> delay;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        uint32_t inPoint;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        uint32_t maxDelay;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordtype">float</span> delay, inc, idx;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keywordtype">float</span> apInput;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    } _tTapeDelay;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    } _tLinearDelay;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keyword">typedef</span> _tLinearDelay* tLinearDelay;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#gad5fa8ca2a6778e4b34c1b97f08a5352f">tLinearDelay_init</a>        (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#ga6cb9f12ba9262386d8ecbf0dd8151b69">tLinearDelay_initToPool</a>  (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#gaeb62896b4392a7f9ca1c557ccc859f4f">tLinearDelay_free</a>        (tLinearDelay* <span class="keyword">const</span>);</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keyword">typedef</span> _tTapeDelay* tTapeDelay;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_init        (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_initToPool  (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_free        (tTapeDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_clear       (tTapeDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_setDelay    (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_getDelay    (tTapeDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_tapIn       (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_tapOut      (tTapeDelay* <span class="keyword">const</span> d, <span class="keywordtype">float</span> tapDelay);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_addTo       (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_tick        (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">void</span>    tTapeDelay_incrementInPoint(tTapeDelay* <span class="keyword">const</span> dl);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_getLastOut  (tTapeDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">float</span>   tTapeDelay_getLastIn   (tTapeDelay* <span class="keyword">const</span>);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#endif  // LEAF_DELAY_H_INCLUDED</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">//==============================================================================</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#ga890124d89744b9621ce802ad9e0e0759">tLinearDelay_clear</a>         (tLinearDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tlineardelay.html#gac8d74ff80111cecf0dc4d816c01b2a6c">tLinearDelay_setDelay</a>    (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#gac57ca1a251b96ec2aad7550049864b8c">tLinearDelay_getDelay</a>    (tLinearDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#ga16350a1576f9662c7ef8dade853c8f93">tLinearDelay_tapIn</a>       (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">float</span>     <a class="code" href="group__tlineardelay.html#ga8b5a87f1a03b6456cac6334085bf8be6">tLinearDelay_tapOut</a>      (tLinearDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#ga39f3f7376b5f38123678fea82c245368">tLinearDelay_addTo</a>       (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#ga2f4a6a73eea16bb9ce3408b945ddb8f7">tLinearDelay_tick</a>        (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tlineardelay.html#ga8f9c2a86422204321dbd56ba317a5662">tLinearDelay_tickIn</a>      (tLinearDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#gad7f62bcf8446ee6a3987ffa3c01bf31c">tLinearDelay_tickOut</a>     (tLinearDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#ga97b8b25f279b974a969dc0bd46b7547b">tLinearDelay_getLastOut</a>  (tLinearDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tlineardelay.html#ga710bf54a2fec7f40dcd1c5b99a7b44fd">tLinearDelay_getLastIn</a>   (tLinearDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tHermiteDelay</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    {</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordtype">float</span> gain;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        uint32_t inPoint, outPoint;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        uint32_t maxDelay;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordtype">float</span> delay;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    } _tHermiteDelay;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keyword">typedef</span> _tHermiteDelay* tHermiteDelay;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordtype">void</span>       <a class="code" href="group__thermitedelay.html#gafa394e86e941c9c067baec7108ab297f">tHermiteDelay_init</a>             (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__thermitedelay.html#ga6d3b413c7a3ac6addae36895e47ae3f4">tHermiteDelay_initToPool</a>      (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span> mp);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordtype">void</span>     <a class="code" href="group__thermitedelay.html#gaf3e5014213692ec0574c67713d562b83">tHermiteDelay_free</a>            (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__thermitedelay.html#gac47ba1719955d115217ce09c1dcd8aa3">tHermiteDelay_clear</a>            (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__thermitedelay.html#gabf6a43f6358e9fcfdb544bf6d93401d5">tHermiteDelay_tick</a>             (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordtype">void</span>       <a class="code" href="group__thermitedelay.html#ga9d4b6554bac1a01fcbe1deaf04b02a15">tHermiteDelay_tickIn</a>         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> input);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__thermitedelay.html#ga758ba680ae090cc70bc5d9be12332bb9">tHermiteDelay_tickOut</a>         (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__thermitedelay.html#gac15df2c8d05704ff6471028c2b2cdcee">tHermiteDelay_setDelay</a>         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> delay);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordtype">float</span>     <a class="code" href="group__thermitedelay.html#ga6aba8a52c0d7a9349fca81e0b7ae05c0">tHermiteDelay_tapOut</a>         (tHermiteDelay* <span class="keyword">const</span> dl, uint32_t tapDelay);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordtype">void</span>     <a class="code" href="group__thermitedelay.html#gac650bbef7f3f47f75160e7b90e65bab5">tHermiteDelay_tapIn</a>         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordtype">float</span>     <a class="code" href="group__thermitedelay.html#ga3b94d0644da904535f9f44481a9d2acd">tHermiteDelay_addTo</a>         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__thermitedelay.html#ga0965274c7d2b3b3af2ad88117476321f">tHermiteDelay_getDelay</a>         (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__thermitedelay.html#gab80cc6ce9c6b3909fd3427c4a75e42cb">tHermiteDelay_getLastOut</a>     (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__thermitedelay.html#ga81d270041108d9af64f97c83cb096955">tHermiteDelay_getLastIn</a>     (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordtype">void</span>     <a class="code" href="group__thermitedelay.html#ga8ff412ae2db6aa41afcf812db7c92057">tHermiteDelay_setGain</a>         (tHermiteDelay* <span class="keyword">const</span> dl, <span class="keywordtype">float</span> gain);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordtype">float</span>     <a class="code" href="group__thermitedelay.html#ga5e23e3b036fc9a98494b853794cd8421">tHermiteDelay_getGain</a>         (tHermiteDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    </div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tAllpassDelay</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    {</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordtype">float</span> gain;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        uint32_t inPoint, outPoint;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        </div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        uint32_t maxDelay;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        </div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <span class="keywordtype">float</span> delay;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keywordtype">float</span> alpha, omAlpha, coeff;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        </div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keywordtype">float</span> apInput;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        </div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    } _tAllpassDelay;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keyword">typedef</span> _tAllpassDelay* tAllpassDelay;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tallpassdelay.html#gae9dd1f03ccfc53d6b826378d54a3cf2d">tAllpassDelay_init</a>        (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tallpassdelay.html#ga9a65c14cde90540162d7fb94bedd4013">tAllpassDelay_initToPool</a>  (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tallpassdelay.html#gaae4b75bede117322eedbb806f92af672">tAllpassDelay_free</a>        (tAllpassDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tallpassdelay.html#ga22a3124a087816518ae22e7dd57049dd">tAllpassDelay_clear</a>       (tAllpassDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tallpassdelay.html#ga81b7e7f6efac2023bcc99b600b0704ac">tAllpassDelay_setDelay</a>    (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#ga7cda781e73a82d91e49f3ce5955cbd0a">tAllpassDelay_getDelay</a>    (tAllpassDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tallpassdelay.html#ga000dae89babb537265f9b56f8ce5560b">tAllpassDelay_tapIn</a>       (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#ga0348f7e531aa956c0e4f1e9eb3bb208a">tAllpassDelay_tapOut</a>      (tAllpassDelay* <span class="keyword">const</span>, uint32_t tapDelay);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#ga25124f2fc78144daa86e0008417f410c">tAllpassDelay_addTo</a>       (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#ga6145fe6d2e4fd9e423d96725183498cc">tAllpassDelay_tick</a>        (tAllpassDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#gab6937352ad500b205c4fc5e822937735">tAllpassDelay_getLastOut</a>  (tAllpassDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tallpassdelay.html#ga01be8563825023d090b5dbd750f2bba3">tAllpassDelay_getLastIn</a>   (tAllpassDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    </div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    </div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tTapeDelay</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    {</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        </div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordtype">float</span> gain;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keywordtype">float</span>* buff;</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        </div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        <span class="keywordtype">float</span> lastOut, lastIn;</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        </div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        uint32_t inPoint;</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        </div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        uint32_t maxDelay;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        </div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        <span class="keywordtype">float</span> delay, inc, idx;</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        </div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <span class="keywordtype">float</span> apInput;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        </div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    } _tTapeDelay;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    </div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <span class="keyword">typedef</span> _tTapeDelay* tTapeDelay;</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    </div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#gaaaff72bd0981e203320ed5623019e14a">tTapeDelay_init</a>        (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#ga2ceac9b3d3870c4a8ad0b9f8b795f829">tTapeDelay_initToPool</a>  (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay, uint32_t maxDelay, tMempool* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#ga4150731cc6b415a799818e32eabe5cc2">tTapeDelay_free</a>        (tTapeDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    </div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#ga984e1e72996c5833bcd99c39bf189bcb">tTapeDelay_clear</a>       (tTapeDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#ga99b94b13f3841e3b4b4915301854c03e">tTapeDelay_setDelay</a>    (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> delay);</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#ga5141a6c872bda215f52f93d480af75d4">tTapeDelay_getDelay</a>    (tTapeDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#gae3e1efc7c18c73defe5cdb0b9fa18e30">tTapeDelay_tapIn</a>       (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> in, uint32_t tapDelay);</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#ga50a4fcd89b612b1633e47d14d9de8844">tTapeDelay_tapOut</a>      (tTapeDelay* <span class="keyword">const</span> d, <span class="keywordtype">float</span> tapDelay);</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#ga17c1f8359ab1b2fd9c38981ca7d018f1">tTapeDelay_addTo</a>       (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> value, uint32_t tapDelay);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#ga3327247d0d5121629f841e355aa17780">tTapeDelay_tick</a>        (tTapeDelay* <span class="keyword">const</span>, <span class="keywordtype">float</span> sample);</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__ttapedelay.html#ga2207c4d6a5ea82102ec5e26dba957c66">tTapeDelay_incrementInPoint</a>(tTapeDelay* <span class="keyword">const</span> dl);</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#gae22aee2d1f8edf088a5df1f4da2a2f9f">tTapeDelay_getLastOut</a>  (tTapeDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__ttapedelay.html#ga19c905254cabf4d51f863ee8d92804ec">tTapeDelay_getLastIn</a>   (tTapeDelay* <span class="keyword">const</span>);</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;    </div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    </div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_tRingBuffer</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    {</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        tMempool mempool;</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        </div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        <span class="keywordtype">float</span>* buffer;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size;</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> pos;</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> mask;</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    } _tRingBuffer;</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    </div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    <span class="keyword">typedef</span> _tRingBuffer* tRingBuffer;</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    </div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tringbuffer.html#ga25ba4e2a073f959fe1f52bb7ea498b22">tRingBuffer_init</a>     (tRingBuffer* <span class="keyword">const</span> ring, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tringbuffer.html#ga42849a91b882ee8231fe494617f8e441">tRingBuffer_initToPool</a>   (tRingBuffer* <span class="keyword">const</span> ring, <span class="keywordtype">int</span> size, tMempool* <span class="keyword">const</span> mempool);</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tringbuffer.html#gafbf4874d2fa48aff8b15919cbf85df5b">tRingBuffer_free</a>     (tRingBuffer* <span class="keyword">const</span> ring);</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    </div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    <span class="keywordtype">void</span>    <a class="code" href="group__tringbuffer.html#ga9e95e5b6969ccde90391f5312f7cde69">tRingBuffer_push</a>     (tRingBuffer* <span class="keyword">const</span> ring, <span class="keywordtype">float</span> val);</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tringbuffer.html#gaef38082fdfabb5abb11d1d8d55c99f2a">tRingBuffer_getNewest</a>    (tRingBuffer* <span class="keyword">const</span> ring);</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tringbuffer.html#gaea32020dea77c0f0c65c3ea04460f598">tRingBuffer_getOldest</a>    (tRingBuffer* <span class="keyword">const</span> ring);</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tringbuffer.html#ga6925019a4a1418b61751da7240e489fd">tRingBuffer_get</a>      (tRingBuffer* <span class="keyword">const</span> ring, <span class="keywordtype">int</span> index);</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keywordtype">float</span>   <a class="code" href="group__tringbuffer.html#ga5ccb506695e81c7d6644413c75ea0c17">tRingBuffer_clear</a>    (tRingBuffer* <span class="keyword">const</span> ring);</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    <span class="keywordtype">int</span>     <a class="code" href="group__tringbuffer.html#ga33bf20b1a1a3f1bb3195f0735050d560">tRingBuffer_getSize</a>  (tRingBuffer* <span class="keyword">const</span> ring);</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    </div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;}</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="preprocessor">#endif  // LEAF_DELAY_H_INCLUDED</span></div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160; </div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;<span class="comment">//==============================================================================</span></div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160; </div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="agroup__tringbuffer_html_ga5ccb506695e81c7d6644413c75ea0c17"><div class="ttname"><a href="group__tringbuffer.html#ga5ccb506695e81c7d6644413c75ea0c17">tRingBuffer_clear</a></div><div class="ttdeci">float tRingBuffer_clear(tRingBuffer *const ring)</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga22a3124a087816518ae22e7dd57049dd"><div class="ttname"><a href="group__tallpassdelay.html#ga22a3124a087816518ae22e7dd57049dd">tAllpassDelay_clear</a></div><div class="ttdeci">void tAllpassDelay_clear(tAllpassDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:593</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga0965274c7d2b3b3af2ad88117476321f"><div class="ttname"><a href="group__thermitedelay.html#ga0965274c7d2b3b3af2ad88117476321f">tHermiteDelay_getDelay</a></div><div class="ttdeci">float tHermiteDelay_getDelay(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:517</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga000dae89babb537265f9b56f8ce5560b"><div class="ttname"><a href="group__tallpassdelay.html#ga000dae89babb537265f9b56f8ce5560b">tAllpassDelay_tapIn</a></div><div class="ttdeci">void tAllpassDelay_tapIn(tAllpassDelay *const, float in, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:672</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_gad5fa8ca2a6778e4b34c1b97f08a5352f"><div class="ttname"><a href="group__tlineardelay.html#gad5fa8ca2a6778e4b34c1b97f08a5352f">tLinearDelay_init</a></div><div class="ttdeci">void tLinearDelay_init(tLinearDelay *const, float delay, uint32_t maxDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:165</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga758ba680ae090cc70bc5d9be12332bb9"><div class="ttname"><a href="group__thermitedelay.html#ga758ba680ae090cc70bc5d9be12332bb9">tHermiteDelay_tickOut</a></div><div class="ttdeci">float tHermiteDelay_tickOut(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:439</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga39f3f7376b5f38123678fea82c245368"><div class="ttname"><a href="group__tlineardelay.html#ga39f3f7376b5f38123678fea82c245368">tLinearDelay_addTo</a></div><div class="ttdeci">float tLinearDelay_addTo(tLinearDelay *const, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:309</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga0348f7e531aa956c0e4f1e9eb3bb208a"><div class="ttname"><a href="group__tallpassdelay.html#ga0348f7e531aa956c0e4f1e9eb3bb208a">tAllpassDelay_tapOut</a></div><div class="ttdeci">float tAllpassDelay_tapOut(tAllpassDelay *const, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:659</div></div>
+<div class="ttc" id="agroup__tdelay_html_gacaaaaabc7ddb4259f05481f10ba5c403"><div class="ttname"><a href="group__tdelay.html#gacaaaaabc7ddb4259f05481f10ba5c403">tDelay_initToPool</a></div><div class="ttdeci">void tDelay_initToPool(tDelay *const, uint32_t delay, uint32_t maxDelay, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:27</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga890124d89744b9621ce802ad9e0e0759"><div class="ttname"><a href="group__tlineardelay.html#ga890124d89744b9621ce802ad9e0e0759">tLinearDelay_clear</a></div><div class="ttdeci">void tLinearDelay_clear(tLinearDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:203</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga6aba8a52c0d7a9349fca81e0b7ae05c0"><div class="ttname"><a href="group__thermitedelay.html#ga6aba8a52c0d7a9349fca81e0b7ae05c0">tHermiteDelay_tapOut</a></div><div class="ttdeci">float tHermiteDelay_tapOut(tHermiteDelay *const dl, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:480</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga2f4a6a73eea16bb9ce3408b945ddb8f7"><div class="ttname"><a href="group__tlineardelay.html#ga2f4a6a73eea16bb9ce3408b945ddb8f7">tLinearDelay_tick</a></div><div class="ttdeci">float tLinearDelay_tick(tLinearDelay *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:212</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gafa394e86e941c9c067baec7108ab297f"><div class="ttname"><a href="group__thermitedelay.html#gafa394e86e941c9c067baec7108ab297f">tHermiteDelay_init</a></div><div class="ttdeci">void tHermiteDelay_init(tHermiteDelay *const dl, float delay, uint32_t maxDelay)</div><div class="ttdoc">Hermite Interpolated Delay.</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:358</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_gafbf4874d2fa48aff8b15919cbf85df5b"><div class="ttname"><a href="group__tringbuffer.html#gafbf4874d2fa48aff8b15919cbf85df5b">tRingBuffer_free</a></div><div class="ttdeci">void tRingBuffer_free(tRingBuffer *const ring)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:926</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga5e23e3b036fc9a98494b853794cd8421"><div class="ttname"><a href="group__thermitedelay.html#ga5e23e3b036fc9a98494b853794cd8421">tHermiteDelay_getGain</a></div><div class="ttdeci">float tHermiteDelay_getGain(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:542</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga81b7e7f6efac2023bcc99b600b0704ac"><div class="ttname"><a href="group__tallpassdelay.html#ga81b7e7f6efac2023bcc99b600b0704ac">tAllpassDelay_setDelay</a></div><div class="ttdeci">int tAllpassDelay_setDelay(tAllpassDelay *const, float delay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:625</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_gaeb62896b4392a7f9ca1c557ccc859f4f"><div class="ttname"><a href="group__tlineardelay.html#gaeb62896b4392a7f9ca1c557ccc859f4f">tLinearDelay_free</a></div><div class="ttdeci">void tLinearDelay_free(tLinearDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:195</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga99b94b13f3841e3b4b4915301854c03e"><div class="ttname"><a href="group__ttapedelay.html#ga99b94b13f3841e3b4b4915301854c03e">tTapeDelay_setDelay</a></div><div class="ttdeci">void tTapeDelay_setDelay(tTapeDelay *const, float delay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:820</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga9d4b6554bac1a01fcbe1deaf04b02a15"><div class="ttname"><a href="group__thermitedelay.html#ga9d4b6554bac1a01fcbe1deaf04b02a15">tHermiteDelay_tickIn</a></div><div class="ttdeci">void tHermiteDelay_tickIn(tHermiteDelay *const dl, float input)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:429</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga19c905254cabf4d51f863ee8d92804ec"><div class="ttname"><a href="group__ttapedelay.html#ga19c905254cabf4d51f863ee8d92804ec">tTapeDelay_getLastIn</a></div><div class="ttdeci">float tTapeDelay_getLastIn(tTapeDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:885</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_ga25ba4e2a073f959fe1f52bb7ea498b22"><div class="ttname"><a href="group__tringbuffer.html#ga25ba4e2a073f959fe1f52bb7ea498b22">tRingBuffer_init</a></div><div class="ttdeci">void tRingBuffer_init(tRingBuffer *const ring, int size)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:906</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_gaea32020dea77c0f0c65c3ea04460f598"><div class="ttname"><a href="group__tringbuffer.html#gaea32020dea77c0f0c65c3ea04460f598">tRingBuffer_getOldest</a></div><div class="ttdeci">float tRingBuffer_getOldest(tRingBuffer *const ring)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:950</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_ga33bf20b1a1a3f1bb3195f0735050d560"><div class="ttname"><a href="group__tringbuffer.html#ga33bf20b1a1a3f1bb3195f0735050d560">tRingBuffer_getSize</a></div><div class="ttdeci">int tRingBuffer_getSize(tRingBuffer *const ring)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:964</div></div>
+<div class="ttc" id="agroup__tdelay_html_gac4014573da91d0da9c8b7d48d515de5a"><div class="ttname"><a href="group__tdelay.html#gac4014573da91d0da9c8b7d48d515de5a">tDelay_addTo</a></div><div class="ttdeci">float tDelay_addTo(tDelay *const, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:121</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga6d3b413c7a3ac6addae36895e47ae3f4"><div class="ttname"><a href="group__thermitedelay.html#ga6d3b413c7a3ac6addae36895e47ae3f4">tHermiteDelay_initToPool</a></div><div class="ttdeci">void tHermiteDelay_initToPool(tHermiteDelay *const dl, float delay, uint32_t maxDelay, tMempool *const mp)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:363</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_gaef38082fdfabb5abb11d1d8d55c99f2a"><div class="ttname"><a href="group__tringbuffer.html#gaef38082fdfabb5abb11d1d8d55c99f2a">tRingBuffer_getNewest</a></div><div class="ttdeci">float tRingBuffer_getNewest(tRingBuffer *const ring)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:943</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga2207c4d6a5ea82102ec5e26dba957c66"><div class="ttname"><a href="group__ttapedelay.html#ga2207c4d6a5ea82102ec5e26dba957c66">tTapeDelay_incrementInPoint</a></div><div class="ttdeci">void tTapeDelay_incrementInPoint(tTapeDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:806</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga710bf54a2fec7f40dcd1c5b99a7b44fd"><div class="ttname"><a href="group__tlineardelay.html#ga710bf54a2fec7f40dcd1c5b99a7b44fd">tLinearDelay_getLastIn</a></div><div class="ttdeci">float tLinearDelay_getLastIn(tLinearDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:333</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_gaaaff72bd0981e203320ed5623019e14a"><div class="ttname"><a href="group__ttapedelay.html#gaaaff72bd0981e203320ed5623019e14a">tTapeDelay_init</a></div><div class="ttdeci">void tTapeDelay_init(tTapeDelay *const, float delay, uint32_t maxDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:728</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga5141a6c872bda215f52f93d480af75d4"><div class="ttname"><a href="group__ttapedelay.html#ga5141a6c872bda215f52f93d480af75d4">tTapeDelay_getDelay</a></div><div class="ttdeci">float tTapeDelay_getDelay(tTapeDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:873</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga3b94d0644da904535f9f44481a9d2acd"><div class="ttname"><a href="group__thermitedelay.html#ga3b94d0644da904535f9f44481a9d2acd">tHermiteDelay_addTo</a></div><div class="ttdeci">float tHermiteDelay_addTo(tHermiteDelay *const dl, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:505</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga16350a1576f9662c7ef8dade853c8f93"><div class="ttname"><a href="group__tlineardelay.html#ga16350a1576f9662c7ef8dade853c8f93">tLinearDelay_tapIn</a></div><div class="ttdeci">void tLinearDelay_tapIn(tLinearDelay *const, float in, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:297</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga4150731cc6b415a799818e32eabe5cc2"><div class="ttname"><a href="group__ttapedelay.html#ga4150731cc6b415a799818e32eabe5cc2">tTapeDelay_free</a></div><div class="ttdeci">void tTapeDelay_free(tTapeDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:755</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga984e1e72996c5833bcd99c39bf189bcb"><div class="ttname"><a href="group__ttapedelay.html#ga984e1e72996c5833bcd99c39bf189bcb">tTapeDelay_clear</a></div><div class="ttdeci">void tTapeDelay_clear(tTapeDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:763</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_gae3e1efc7c18c73defe5cdb0b9fa18e30"><div class="ttname"><a href="group__ttapedelay.html#gae3e1efc7c18c73defe5cdb0b9fa18e30">tTapeDelay_tapIn</a></div><div class="ttdeci">void tTapeDelay_tapIn(tTapeDelay *const, float in, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:849</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga17c1f8359ab1b2fd9c38981ca7d018f1"><div class="ttname"><a href="group__ttapedelay.html#ga17c1f8359ab1b2fd9c38981ca7d018f1">tTapeDelay_addTo</a></div><div class="ttdeci">float tTapeDelay_addTo(tTapeDelay *const, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:861</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gac47ba1719955d115217ce09c1dcd8aa3"><div class="ttname"><a href="group__thermitedelay.html#gac47ba1719955d115217ce09c1dcd8aa3">tHermiteDelay_clear</a></div><div class="ttdeci">void tHermiteDelay_clear(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:397</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_gac57ca1a251b96ec2aad7550049864b8c"><div class="ttname"><a href="group__tlineardelay.html#gac57ca1a251b96ec2aad7550049864b8c">tLinearDelay_getDelay</a></div><div class="ttdeci">float tLinearDelay_getDelay(tLinearDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:321</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gabf6a43f6358e9fcfdb544bf6d93401d5"><div class="ttname"><a href="group__thermitedelay.html#gabf6a43f6358e9fcfdb544bf6d93401d5">tHermiteDelay_tick</a></div><div class="ttdeci">float tHermiteDelay_tick(tHermiteDelay *const dl, float input)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:406</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_gac8d74ff80111cecf0dc4d816c01b2a6c"><div class="ttname"><a href="group__tlineardelay.html#gac8d74ff80111cecf0dc4d816c01b2a6c">tLinearDelay_setDelay</a></div><div class="ttdeci">int tLinearDelay_setDelay(tLinearDelay *const, float delay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:265</div></div>
+<div class="ttc" id="agroup__tdelay_html_gab23b7051f02d2f7108939bdb034fe308"><div class="ttname"><a href="group__tdelay.html#gab23b7051f02d2f7108939bdb034fe308">tDelay_getLastIn</a></div><div class="ttdeci">float tDelay_getLastIn(tDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:145</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga2f3b8939018fd6972756a9137cab3567"><div class="ttname"><a href="group__tdelay.html#ga2f3b8939018fd6972756a9137cab3567">tDelay_tick</a></div><div class="ttdeci">float tDelay_tick(tDelay *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:67</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga32d71a786590eaf3e426ed8a9df31c3e"><div class="ttname"><a href="group__tdelay.html#ga32d71a786590eaf3e426ed8a9df31c3e">tDelay_init</a></div><div class="ttdeci">void tDelay_init(tDelay *const, uint32_t delay, uint32_t maxDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:22</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga3e00ec62933b69e09d9eed5b7608e094"><div class="ttname"><a href="group__tdelay.html#ga3e00ec62933b69e09d9eed5b7608e094">tDelay_getLastOut</a></div><div class="ttdeci">float tDelay_getLastOut(tDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:139</div></div>
+<div class="ttc" id="agroup__tdelay_html_gac96fb1d4b4997a3137f211b6f22e14ba"><div class="ttname"><a href="group__tdelay.html#gac96fb1d4b4997a3137f211b6f22e14ba">tDelay_free</a></div><div class="ttdeci">void tDelay_free(tDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:50</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga10738582699eb8e6ff892b4ba662c4ef"><div class="ttname"><a href="group__tdelay.html#ga10738582699eb8e6ff892b4ba662c4ef">tDelay_clear</a></div><div class="ttdeci">void tDelay_clear(tDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:58</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga01be8563825023d090b5dbd750f2bba3"><div class="ttname"><a href="group__tallpassdelay.html#ga01be8563825023d090b5dbd750f2bba3">tAllpassDelay_getLastIn</a></div><div class="ttdeci">float tAllpassDelay_getLastIn(tAllpassDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:708</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_gae9dd1f03ccfc53d6b826378d54a3cf2d"><div class="ttname"><a href="group__tallpassdelay.html#gae9dd1f03ccfc53d6b826378d54a3cf2d">tAllpassDelay_init</a></div><div class="ttdeci">void tAllpassDelay_init(tAllpassDelay *const, float delay, uint32_t maxDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:553</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_gab6937352ad500b205c4fc5e822937735"><div class="ttname"><a href="group__tallpassdelay.html#gab6937352ad500b205c4fc5e822937735">tAllpassDelay_getLastOut</a></div><div class="ttdeci">float tAllpassDelay_getLastOut(tAllpassDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:702</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga94c07f9e8bfdaf402ebfbcd38d0150b5"><div class="ttname"><a href="group__tdelay.html#ga94c07f9e8bfdaf402ebfbcd38d0150b5">tDelay_tapOut</a></div><div class="ttdeci">float tDelay_tapOut(tDelay *const, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:96</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga8f9c2a86422204321dbd56ba317a5662"><div class="ttname"><a href="group__tlineardelay.html#ga8f9c2a86422204321dbd56ba317a5662">tLinearDelay_tickIn</a></div><div class="ttdeci">void tLinearDelay_tickIn(tLinearDelay *const, float input)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:236</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gac15df2c8d05704ff6471028c2b2cdcee"><div class="ttname"><a href="group__thermitedelay.html#gac15df2c8d05704ff6471028c2b2cdcee">tHermiteDelay_setDelay</a></div><div class="ttdeci">int tHermiteDelay_setDelay(tHermiteDelay *const dl, float delay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:459</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_gaae4b75bede117322eedbb806f92af672"><div class="ttname"><a href="group__tallpassdelay.html#gaae4b75bede117322eedbb806f92af672">tAllpassDelay_free</a></div><div class="ttdeci">void tAllpassDelay_free(tAllpassDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:585</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_gae22aee2d1f8edf088a5df1f4da2a2f9f"><div class="ttname"><a href="group__ttapedelay.html#gae22aee2d1f8edf088a5df1f4da2a2f9f">tTapeDelay_getLastOut</a></div><div class="ttdeci">float tTapeDelay_getLastOut(tTapeDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:879</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga50a4fcd89b612b1633e47d14d9de8844"><div class="ttname"><a href="group__ttapedelay.html#ga50a4fcd89b612b1633e47d14d9de8844">tTapeDelay_tapOut</a></div><div class="ttdeci">float tTapeDelay_tapOut(tTapeDelay *const d, float tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:826</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_gad7f62bcf8446ee6a3987ffa3c01bf31c"><div class="ttname"><a href="group__tlineardelay.html#gad7f62bcf8446ee6a3987ffa3c01bf31c">tLinearDelay_tickOut</a></div><div class="ttdeci">float tLinearDelay_tickOut(tLinearDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:246</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gab80cc6ce9c6b3909fd3427c4a75e42cb"><div class="ttname"><a href="group__thermitedelay.html#gab80cc6ce9c6b3909fd3427c4a75e42cb">tHermiteDelay_getLastOut</a></div><div class="ttdeci">float tHermiteDelay_getLastOut(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:523</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga6cb9f12ba9262386d8ecbf0dd8151b69"><div class="ttname"><a href="group__tlineardelay.html#ga6cb9f12ba9262386d8ecbf0dd8151b69">tLinearDelay_initToPool</a></div><div class="ttdeci">void tLinearDelay_initToPool(tLinearDelay *const, float delay, uint32_t maxDelay, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:170</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga6145fe6d2e4fd9e423d96725183498cc"><div class="ttname"><a href="group__tallpassdelay.html#ga6145fe6d2e4fd9e423d96725183498cc">tAllpassDelay_tick</a></div><div class="ttdeci">float tAllpassDelay_tick(tAllpassDelay *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:602</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gaf3e5014213692ec0574c67713d562b83"><div class="ttname"><a href="group__thermitedelay.html#gaf3e5014213692ec0574c67713d562b83">tHermiteDelay_free</a></div><div class="ttdeci">void tHermiteDelay_free(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:388</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga3327247d0d5121629f841e355aa17780"><div class="ttname"><a href="group__ttapedelay.html#ga3327247d0d5121629f841e355aa17780">tTapeDelay_tick</a></div><div class="ttdeci">float tTapeDelay_tick(tTapeDelay *const, float sample)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:774</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga7cda781e73a82d91e49f3ce5955cbd0a"><div class="ttname"><a href="group__tallpassdelay.html#ga7cda781e73a82d91e49f3ce5955cbd0a">tAllpassDelay_getDelay</a></div><div class="ttdeci">float tAllpassDelay_getDelay(tAllpassDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:696</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_gac650bbef7f3f47f75160e7b90e65bab5"><div class="ttname"><a href="group__thermitedelay.html#gac650bbef7f3f47f75160e7b90e65bab5">tHermiteDelay_tapIn</a></div><div class="ttdeci">void tHermiteDelay_tapIn(tHermiteDelay *const dl, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:493</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga5686cf386894dcee3c9241bef0ca4c41"><div class="ttname"><a href="group__tdelay.html#ga5686cf386894dcee3c9241bef0ca4c41">tDelay_getDelay</a></div><div class="ttdeci">uint32_t tDelay_getDelay(tDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:133</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga81d270041108d9af64f97c83cb096955"><div class="ttname"><a href="group__thermitedelay.html#ga81d270041108d9af64f97c83cb096955">tHermiteDelay_getLastIn</a></div><div class="ttdeci">float tHermiteDelay_getLastIn(tHermiteDelay *const dl)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:529</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga8b5a87f1a03b6456cac6334085bf8be6"><div class="ttname"><a href="group__tlineardelay.html#ga8b5a87f1a03b6456cac6334085bf8be6">tLinearDelay_tapOut</a></div><div class="ttdeci">float tLinearDelay_tapOut(tLinearDelay *const, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:286</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_ga6925019a4a1418b61751da7240e489fd"><div class="ttname"><a href="group__tringbuffer.html#ga6925019a4a1418b61751da7240e489fd">tRingBuffer_get</a></div><div class="ttdeci">float tRingBuffer_get(tRingBuffer *const ring, int index)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:957</div></div>
+<div class="ttc" id="agroup__tdelay_html_gadc5709febff70f7cbca38c2508103ac0"><div class="ttname"><a href="group__tdelay.html#gadc5709febff70f7cbca38c2508103ac0">tDelay_tapIn</a></div><div class="ttdeci">void tDelay_tapIn(tDelay *const, float in, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:109</div></div>
+<div class="ttc" id="agroup__tlineardelay_html_ga97b8b25f279b974a969dc0bd46b7547b"><div class="ttname"><a href="group__tlineardelay.html#ga97b8b25f279b974a969dc0bd46b7547b">tLinearDelay_getLastOut</a></div><div class="ttdeci">float tLinearDelay_getLastOut(tLinearDelay *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:327</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga9a65c14cde90540162d7fb94bedd4013"><div class="ttname"><a href="group__tallpassdelay.html#ga9a65c14cde90540162d7fb94bedd4013">tAllpassDelay_initToPool</a></div><div class="ttdeci">void tAllpassDelay_initToPool(tAllpassDelay *const, float delay, uint32_t maxDelay, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:558</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_ga9e95e5b6969ccde90391f5312f7cde69"><div class="ttname"><a href="group__tringbuffer.html#ga9e95e5b6969ccde90391f5312f7cde69">tRingBuffer_push</a></div><div class="ttdeci">void tRingBuffer_push(tRingBuffer *const ring, float val)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:934</div></div>
+<div class="ttc" id="agroup__ttapedelay_html_ga2ceac9b3d3870c4a8ad0b9f8b795f829"><div class="ttname"><a href="group__ttapedelay.html#ga2ceac9b3d3870c4a8ad0b9f8b795f829">tTapeDelay_initToPool</a></div><div class="ttdeci">void tTapeDelay_initToPool(tTapeDelay *const, float delay, uint32_t maxDelay, tMempool *const)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:733</div></div>
+<div class="ttc" id="agroup__tringbuffer_html_ga42849a91b882ee8231fe494617f8e441"><div class="ttname"><a href="group__tringbuffer.html#ga42849a91b882ee8231fe494617f8e441">tRingBuffer_initToPool</a></div><div class="ttdeci">void tRingBuffer_initToPool(tRingBuffer *const ring, int size, tMempool *const mempool)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:911</div></div>
+<div class="ttc" id="agroup__tallpassdelay_html_ga25124f2fc78144daa86e0008417f410c"><div class="ttname"><a href="group__tallpassdelay.html#ga25124f2fc78144daa86e0008417f410c">tAllpassDelay_addTo</a></div><div class="ttdeci">float tAllpassDelay_addTo(tAllpassDelay *const, float value, uint32_t tapDelay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:684</div></div>
+<div class="ttc" id="agroup__thermitedelay_html_ga8ff412ae2db6aa41afcf812db7c92057"><div class="ttname"><a href="group__thermitedelay.html#ga8ff412ae2db6aa41afcf812db7c92057">tHermiteDelay_setGain</a></div><div class="ttdeci">void tHermiteDelay_setGain(tHermiteDelay *const dl, float gain)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:535</div></div>
+<div class="ttc" id="agroup__tdelay_html_ga95c0e415eb3cce370bae65a700cca989"><div class="ttname"><a href="group__tdelay.html#ga95c0e415eb3cce370bae65a700cca989">tDelay_setDelay</a></div><div class="ttdeci">int tDelay_setDelay(tDelay *const, uint32_t delay)</div><div class="ttdef"><b>Definition:</b> leaf-delay.c:83</div></div>
 <!-- HTML footer for doxygen 1.8.18-->
 <!-- start footer part -->
 <footer></footer><script>getFooter()</script>

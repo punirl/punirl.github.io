@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['math_20',['Math',['../group__math.html',1,'']]],
-  ['mempool_21',['mempool',['../struct_l_e_a_f.html#a8bcf1ce65df673f85688cca6f0883723',1,'LEAF::mempool()'],['../group__mempool.html',1,'(Global Namespace)']]],
-  ['midi_22',['MIDI',['../group__midi.html',1,'']]]
+  ['neuronaaltoshaper_21',['NeuronAaltoShaper',['../group__tneuron.html#gga39c8ad8b35bf050f69b21ca34b56cc01acdbcb725e463ccad89f2384b1254ab0c',1,'leaf-oscillators.h']]],
+  ['neuronmode_22',['NeuronMode',['../group__tneuron.html#ga39c8ad8b35bf050f69b21ca34b56cc01',1,'leaf-oscillators.h']]],
+  ['neuronnormal_23',['NeuronNormal',['../group__tneuron.html#gga39c8ad8b35bf050f69b21ca34b56cc01acedc049c7a14e2b30b266d88d46b3f76',1,'leaf-oscillators.h']]],
+  ['neurontanh_24',['NeuronTanh',['../group__tneuron.html#gga39c8ad8b35bf050f69b21ca34b56cc01a0f637d7316b91b66dfea6ef832b1d178',1,'leaf-oscillators.h']]],
+  ['noisetype_25',['NoiseType',['../group__tnoise.html#ga9253d111035d4a83996ec5bbfd3d8963',1,'leaf-oscillators.h']]]
 ];

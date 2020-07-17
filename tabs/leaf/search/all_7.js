@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['header_5fsize_12',['header_size',['../struct_l_e_a_f.html#a64f1d0c53909f30b0aac882348cd32f2',1,'LEAF']]]
+  ['instruments_11',['Instruments',['../group__instruments.html',1,'']]],
+  ['invsamplerate_12',['invSampleRate',['../struct_l_e_a_f.html#ae4c744f56f561ff4acc66ba4bd3ed201',1,'LEAF']]]
 ];
