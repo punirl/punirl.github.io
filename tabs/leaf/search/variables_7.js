@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['twopitimesinvsamplerate_1817',['twoPiTimesInvSampleRate',['../struct_l_e_a_f.html#aabd759d3fcb8411249ab4813424e6b29',1,'LEAF']]]
+  ['samplerate_1804',['sampleRate',['../struct_l_e_a_f.html#af6a61da668f2188e2850eba261e217c4',1,'LEAF']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['header_5fsize_1812',['header_size',['../struct_l_e_a_f.html#a64f1d0c53909f30b0aac882348cd32f2',1,'LEAF']]]
+  ['errorcallback_1798',['errorCallback',['../struct_l_e_a_f.html#a7c7ae1db705b3fdea2bec18add896856',1,'LEAF']]],
+  ['errorstate_1799',['errorState',['../struct_l_e_a_f.html#afdc66be5b816adc061930cf832328a44',1,'LEAF']]]
 ];

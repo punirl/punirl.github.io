@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['invsamplerate_1813',['invSampleRate',['../struct_l_e_a_f.html#ae4c744f56f561ff4acc66ba4bd3ed201',1,'LEAF']]]
+  ['header_5fsize_1800',['header_size',['../struct_l_e_a_f.html#a64f1d0c53909f30b0aac882348cd32f2',1,'LEAF']]]
 ];
